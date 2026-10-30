@@ -245,8 +245,10 @@ h1.title{margin:0;line-height:0}
 .cchip b{max-width:16ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cchip em{font-style:normal;font-family:var(--f-display);font-size:13px}
 .bigdraw{--sw:min(32cqw,calc(var(--bw) * 1.35))}
-.p3.loc .mid{justify-content:flex-start;padding-top:1cqh;gap:2.2cqh}
-.stack{position:relative;width:var(--sw);aspect-ratio:338/489;margin:6px 8px 16px}
+.p3.loc .mid{justify-content:flex-start;padding-top:3.5cqh;position:relative}
+.p3.loc .control{position:absolute;left:0;right:0;top:62%;display:flex;flex-direction:column;align-items:center;gap:1.2cqh}
+.flyer{position:fixed;z-index:14;transform-origin:0 0;transition:transform .55s cubic-bezier(.4,.1,.2,1);pointer-events:none}
+.stack{position:relative;width:var(--sw);aspect-ratio:338/489;margin:4px 8px 4px}
 .stack .sc{position:absolute;inset:0}
 .stack .card{--w:var(--sw)}
 .stack .sc.top{animation:liftOff 1.2s .7s ease-in forwards}
@@ -255,7 +257,7 @@ h1.title{margin:0;line-height:0}
 .arrow{width:min(68px,17cqw);height:min(68px,17cqw);border-radius:50%;border:3px solid var(--bus);background:var(--seat);color:var(--bus);font-size:clamp(24px,7cqw,32px);line-height:1;box-shadow:0 4px 0 #0b1226}
 .arrow:active{transform:translateY(3px);box-shadow:0 1px 0 #0b1226;background:#3a3410}
 .p3.loc .ask{font-size:13.5px;color:var(--muted);max-width:22ch}
-.pop{position:fixed;inset:0;z-index:18;display:grid;place-items:center;background:rgba(3,6,16,.6);animation:fade .25s .7s both;padding:0 24px}
+.pop{position:fixed;inset:0;z-index:18;display:grid;place-items:center;background:rgba(3,6,16,.6);animation:fade .25s 1.45s both;padding:0 24px}
 .pop-box{width:min(320px,100%);background:var(--ticket);color:var(--ticket-ink);border-radius:16px;padding:20px 20px 18px;text-align:center;display:flex;flex-direction:column;gap:6px;box-shadow:0 5px 0 var(--ticket-edge),0 24px 50px rgba(0,0,0,.5);transform:rotate(-2deg)}
 .pop-box span{font-family:var(--f-display);font-size:22px;color:var(--stop);text-transform:uppercase}
 .pop-box b{font-family:var(--f-display);font-weight:400;font-size:clamp(34px,11vw,46px);line-height:1.05;text-transform:uppercase}
@@ -1789,8 +1791,32 @@ function slotHTML(P, i, opt){
   let cls = 'slot'; if(i === P.pos && P.s === 'g') cls += ' cur'; if(i < P.pos || P.s === 'w') cls += ' done';
   if(i === 4) cls += ' cp' + (P.cp ? ' on' : '');
   const under = P.un && P.un[i] ? `<div class="under">${cardHTML(P.un[i])}</div>` : '';
-  const face = cardHTML(P.sl[i], opt), top = `<div class="ontop">${face}</div>`;
-  return `<div class="${cls}">${under}${top}<span class="tg" title="${t('sipsIfFail')}">${i+1}</span></div>`;
+  const face = cardHTML(P.sl[i], opt), top = `<div class="ontop"${opt.hide ? ' style="visibility:hidden"' : ''}>${face}</div>`;
+  return `<div class="${cls}" data-i="${i}">${under}${top}<span class="tg" title="${t('sipsIfFail')}">${i+1}</span></div>`;
+}
+function placeControl(){
+  const ctl = document.querySelector('.p3.loc .control'); if(!ctl) return;
+  const mid = ctl.closest('.mid'), s0 = document.querySelector('.col.l .slot[data-i="0"]'), s1 = document.querySelector('.col.l .slot[data-i="1"]');
+  if(!mid || !s0 || !s1) return;
+  const m = mid.getBoundingClientRect(), y = (s0.getBoundingClientRect().top + s1.getBoundingClientRect().bottom) / 2;
+  const ar = ctl.querySelector('.arrows') || ctl.lastElementChild;
+  const off = ar ? ar.offsetTop + ar.offsetHeight / 2 : ctl.offsetHeight / 2;
+  ctl.style.top = Math.max(0, y - m.top - off) + 'px';
+}
+addEventListener('resize', () => placeControl());
+function flyToSlot(c, i){
+  const from = document.querySelector('.mid .stack'), slotEl = document.querySelector(`.slot[data-i="${i}"]`);
+  const top = slotEl && slotEl.querySelector('.ontop');
+  if(!from || !slotEl){ if(top) top.style.visibility = ''; return; }
+  const fr = from.getBoundingClientRect(), tr = slotEl.getBoundingClientRect();
+  const fly = document.createElement('div'); fly.className = 'flyer';
+  fly.style.cssText = `left:${fr.left}px;top:${fr.top}px;width:${fr.width}px`;
+  fly.innerHTML = cardHTML(c, {up:false});
+  fly.firstElementChild.style.setProperty('--w', fr.width + 'px');
+  document.body.appendChild(fly);
+  requestAnimationFrame(() => requestAnimationFrame(() => fly.firstElementChild.classList.add('up')));
+  setTimeout(() => { fly.style.transform = `translate(${tr.left - fr.left}px,${tr.top - fr.top}px) scale(${tr.width / fr.width})`; }, 750);
+  setTimeout(() => { fly.remove(); if(top) top.style.visibility = ''; }, 1350);
 }
 function deckStack(top){
   const backs = [[-7,-5,-4],[6,4,3],[-3,2,-1.5],[2,-2,1]].map(([x,y,r]) => `<div class="sc" style="transform:translate(${x}%,${y}%) rotate(${r}deg)">${cardHTML(null, {up:false})}</div>`).join('');
@@ -1799,23 +1825,24 @@ function deckStack(top){
 function renderP3Local(E){
   const P = st.p3, L2 = P.last, landing = typeof E.land === 'number';
   setPhase(t('stage3', {n: Math.min(P.pos+1, 9)}));
-  const slot = i => { const c = P.sl[i], up = !!P.rv[i]; return slotHTML(P, i, {up, flip: up && E.flip === c}); };
+  const flying = landing && L2 && E.flip === L2.c ? E.land : -1;
+  const slot = i => { const c = P.sl[i], up = !!P.rv[i]; return i === flying ? slotHTML(P, i, {up:true, hide:true}) : slotHTML(P, i, {up, flip: up && E.flip === c}); };
   const cur = P.sl[Math.min(P.pos, 8)];
   let mid = `<div class="bigdraw">${deckStack(null)}</div>`;
-  if(P.s === 'g') mid += `<div class="ask">${t('hlThan', {c: shortArt(cur)})}</div><div class="arrows"><button class="arrow" data-act="vote" data-v="mayor" aria-label="${t('higherAria')}">▲</button><button class="arrow" data-act="vote" data-v="menor" aria-label="${t('lowerAria')}">▼</button></div>`;
-  else if(P.s === 'r') mid += `<div class="stamp good">${t('hit')}</div>`;
-  else if(P.s === 'w') mid += `<div class="stamp win">${t('endTrip')}</div>`;
-  else mid += `<div class="stamp bad">${t('miss')}</div>`;
+  if(P.s === 'g') mid += `<div class="control"><div class="ask">${t('hlThan', {c: shortArt(cur)})}</div><div class="arrows"><button class="arrow" data-act="vote" data-v="mayor" aria-label="${t('higherAria')}">▲</button><button class="arrow" data-act="vote" data-v="menor" aria-label="${t('lowerAria')}">▼</button></div></div>`;
+  else mid += `<div class="control">${P.s === 'r' ? `<div class="stamp good">${t('hit')}</div>` : P.s === 'w' ? `<div class="stamp win">${t('endTrip')}</div>` : `<div class="stamp bad">${t('miss')}</div>`}</div>`;
   const names = P.rid.map(i => esc(st.pl[i].n)).join(', ');
   const pop = P.s === 'f' ? `<div class="pop"><div class="pop-box"><span>${t('drinkWord')}</span><b>${sips(L2.n)}</b><small>${P.cp ? t('backCp') : t('backStart')}</small><button class="next" data-act="cont">${t('continue')}</button></div></div>` : '';
   main.innerHTML = `<section class="scr p3 loc"><p class="riders">${t('onBus')} <b>${names}</b></p>
     <div class="bus"><div class="bridge">${slot(4)}</div><div class="col l">${[3,2,1,0].map(slot).join('')}</div>
       <div class="mid">${mid}</div><div class="col r">${[5,6,7,8].map(slot).join('')}</div></div>${pop}</section>`;
+  placeControl();
+  if(flying >= 0) flyToSlot(L2.c, flying);
   if(P.s === 'g') setNext(t('chooseArrow'), false);
   else if(P.s === 'r'){
     setNext(t('nextN'), true, () => act({t:'next'}));
     const seq = st.ev.s;
-    setTimeout(() => { if(st && st.ev && st.ev.s === seq && st.p3 && st.p3.s === 'r') act({t:'next'}); }, 1600);
+    setTimeout(() => { if(st && st.ev && st.ev.s === seq && st.p3 && st.p3.s === 'r') act({t:'next'}); }, 2300);
   }
   else if(P.s === 'f') setNext(t('continueN'), true, () => act({t:'next'}));
   else setNext(t('toFinal'), true, () => act({t:'next'}));
@@ -1825,9 +1852,10 @@ function renderP3(E){
   const P = st.p3, me = myIdx(), rider = can(P.rid.includes(me)), multi = !LOCAL() && P.rid.length > 1;
   setPhase(t('stage3', {n: Math.min(P.pos+1, 9)}));
   const landing = typeof E.land === 'number';
+  const flyingO = landing && P.last && E.flip === P.last.c ? E.land : -1;
   const slot = i => {
     const c = P.sl[i], up = !!P.rv[i];
-    return slotHTML(P, i, {up, flip: up && E.flip === c});
+    return i === flyingO ? slotHTML(P, i, {up:true, hide:true}) : slotHTML(P, i, {up, flip: up && E.flip === c});
   };
   const cur = P.sl[Math.min(P.pos, 8)], L2 = P.last;
   let mid;
@@ -1845,6 +1873,7 @@ function renderP3(E){
   }
   const drawn = '';
   const names = P.rid.map(i => esc(st.pl[i].n)).join(', ');
+  setTimeout(() => { if(flyingO >= 0) flyToSlot(P.last.c, flyingO); }, 0);
   main.innerHTML = `<section class="scr p3"><p class="riders">${t('onBus')} <b>${names}</b>${!rider ? ' · ' + t('watching') : ''}</p>
     <div class="bus"><div class="bridge">${slot(4)}</div><div class="col l">${[3,2,1,0].map(slot).join('')}</div>
       <div class="mid"><div class="pile"><div class="deckstack" style="--sw:calc(var(--bw) * .95)">${deckStack(null)}<span class="cnt">${P.dc}</span></div>${drawn}</div>${mid}</div>

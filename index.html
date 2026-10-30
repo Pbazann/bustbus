@@ -257,17 +257,17 @@ h1.title{margin:0;line-height:0}
 
 
 /* ---------- Perfil y avatares ---------- */
-.av{display:inline-grid;place-items:center;flex:none;width:28px;height:28px;border-radius:50%;overflow:hidden;background:#3a4262;color:#fff;font-family:var(--f-display);font-size:13px;box-shadow:0 0 0 2px rgba(255,255,255,.85)}
+.av{--avs:28px;display:inline-grid;place-items:center;flex:none;width:var(--avs);height:var(--avs);border-radius:50%;overflow:hidden;background:#3a4262;color:#fff;font-family:var(--f-display);font-size:13px;box-shadow:0 0 0 1.5px rgba(0,0,0,.18)}
 .av img,.av svg{width:100%;height:100%;display:block;object-fit:cover}
-.av.sm{width:30px;height:30px}
-.av.xl{width:min(96px,16cqh);height:min(96px,16cqh);font-size:34px;box-shadow:0 0 0 4px var(--bus)}
+.av.sm{--avs:30px}
+.av.xl{--avs:min(96px,16cqh);font-size:34px;box-shadow:0 0 0 4px var(--bus)}
 .av.ini{background:var(--seat)}
 .profhead{display:flex;align-items:center;gap:16px}
 .photo-btns{display:flex;flex-direction:column;gap:8px;flex:1}
 .secondary.small{padding:10px;font-size:15px;text-align:center;display:block}
 .avgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
 .avpick{border:0;background:none;padding:3px;border-radius:50%;display:grid;place-items:center}
-.avpick .av{width:100%;height:auto;aspect-ratio:1}
+.avpick .av{--avs:min(40px,10cqw)}
 .avpick[aria-pressed="true"]{box-shadow:0 0 0 3px var(--bus)}
 .adult{display:flex;gap:10px;align-items:center;font-weight:600;font-size:15.5px}
 .adult input{width:22px;height:22px;accent-color:var(--bus)}
@@ -281,12 +281,12 @@ h1.title{margin:0;line-height:0}
 .warn-line{color:var(--muted);font-size:12.5px;margin:0 6px;line-height:1.3}
 .tk-name .av{margin-left:12px}
 .p1.loc .who{display:flex;align-items:center;gap:10px;justify-content:center}
-.p1.loc .who .av{width:1.1em;height:1.1em;font-size:.6em}
+.p1.loc .who .av{--avs:clamp(30px,9cqw,44px);font-size:18px}
 .p1.loc .who span{overflow:hidden;text-overflow:ellipsis}
 .rrow .av{margin-left:10px}
 .pchip{justify-content:flex-start}
 .pchip span{flex:1;min-width:0}
-.stub .av{width:24px;height:24px}
+.stub .av{--avs:26px}
 .deckseg{display:flex;background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:3px;gap:3px}
 .deckseg button{border:0;background:transparent;border-radius:9px;padding:8px 18px;font-weight:700}
 .deckseg button[aria-pressed="true"]{background:var(--bus);color:#1c1503}
@@ -295,7 +295,7 @@ h1.title{margin:0;line-height:0}
 .flipbtn{border:0;padding:0;background:none;display:block;border-radius:8%/6%;animation:nudge 1.6s ease-in-out infinite}
 @keyframes nudge{0%,100%{transform:none}50%{transform:translateY(-4px)}}
 .flipbtn:active{transform:scale(.97)}
-.av .emo{font-size:1.55em;line-height:1;font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif}
+.av .emo{font-size:calc(var(--avs) * .62);line-height:1;display:block;text-align:center;font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif}
 .prof{gap:clamp(8px,1.6cqh,14px)}
 .profcard{padding:12px 16px 12px 14px;gap:14px;align-items:center}
 .avwrap{position:relative;flex:none}
@@ -307,7 +307,7 @@ h1.title{margin:0;line-height:0}
 .nmwrap{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;border-left:2px dashed rgba(43,34,54,.35);padding-left:14px}
 .nmwrap input{padding:6px 0;font-family:var(--f-display);font-weight:400;font-size:clamp(20px,6.5cqw,26px)}
 .prof .avgrid{flex:1;min-height:0;overflow-y:auto;grid-template-columns:repeat(8,1fr);align-content:start;padding:4px 2px}
-.avpick .av{font-size:clamp(12px,3.4cqw,16px)}
+
 .mact .go{background:var(--bus);border-color:var(--bus);color:#1c1503}
 
 
@@ -444,7 +444,7 @@ let seenEv = 0, bannerT = null;
 
 const I18N = {
 es:{
- langName:"Español", options:"Opciones", music:"Música", sfx:"Efectos de sonido", hints:"Pistas en la pirámide", language:"Idioma", rules:"Ver reglas", exitMenu:"Salir al menú principal", openMenu:"Abrir opciones",
+ chooseOne:"Elige una opción", langName:"Español", options:"Opciones", music:"Música", sfx:"Efectos de sonido", hints:"Pistas en la pirámide", language:"Idioma", rules:"Ver reglas", exitMenu:"Salir al menú principal", openMenu:"Abrir opciones",
  back:"‹ Volver", credit:"juego creado por", tagline:"Sube al bus y disfruta de la previa", editProfile:"Editar perfil", edit:"Editar", resume:"Volver a la partida",
  create:"Crear partida", join:"Unirse a partida ya creada", local:"Jugar en un solo móvil",
  warn:"Solo para mayores de 18.", tip1:"Bebed con cabeza", tip2:"Los tragos pueden ser de cualquier bebida", tip3:"Bebe agua entre parada y parada", tip4:"Que nadie conduzca después", nobodyIt:"Nadie la tiene.", anyoneIt:"¿Alguien la tiene? Toca tu carta para tirarla.",
@@ -453,13 +453,13 @@ es:{
  errName:"Escribe tu nombre", errAdult:"BustBus es solo para mayores de 18 años",
  deck:"Baraja", poker:"Póker", spanish:"Española", playerName:"Tu nombre de jugador", namePh:"Cómo te llamas",
  createHint:"Serás el admin de la partida. Al continuar se genera un código para que tus amigos entren en tu lobby.", continueN:"Continuar ▸",
- codeLbl:"Código de partida (4 números)", joinBtn:"Unirse ▸", phJoin:"Unirse", phLocal:"Un solo móvil", players:"Jugadores", addPlayer:"+ Añadir jugador", nameShort:"Nombre", removePlayer:"Quitar jugador {n}", startN:"Empezar ▸",
+ codeLbl:"Código de partida (4 números)", joinBtn:"Unirse ▸", phJoin:"Unirse", phLocal:"Un solo móvil", players:"Pasajeros", addPlayer:"+ Añadir pasajero", nameShort:"Nombre", removePlayer:"Quitar jugador {n}", startN:"Empezar ▸",
  game:"Partida {c}", searching:"Buscando", connecting:"Conectando con quien ha creado la partida…", waiting:"Esperando…",
  lobbyAdmin:"Lobby · eres el admin", lobby:"Lobby", chooseDeck:"Escoge la baraja", deckInfoPoker:"Baraja de póker · empieza el admin.", deckInfoEs:"Baraja española · empieza el admin.",
  gameCode:"Código de partida", tellCode:"Comparte este código con tus amigos.", passengers:"Pasajeros", admin:"Admin", you:"Tú", photoEdit:"✎ Foto", changePhoto:"Cambiar tu foto de perfil", tapTicket:"Toca tu billete para cambiar tu foto.",
  waitPlayers:"Esperando jugadores…", startWith:"Iniciar con {n} ▸", waitAdmin:"Esperando al admin", creating:"Creando partida…", searchingGame:"Buscando partida…",
  errCode:"El código son 4 números", notFound:"No encuentro la partida {c}. Revisa el código", errConn:"No se pudo conectar. Revisa tu conexión a internet e inténtalo otra vez", errSync:"No se pudo sincronizar la partida", lostConn:"Se ha perdido la conexión", hostGone:"El anfitrión se ha desconectado. Esperando a que vuelva…",
- errMin2:"Hacen falta al menos 2 jugadores", errMax:"Con esta baraja caben {n} jugadores", errDup:"Hay dos nombres iguales", deckEmpty:"Mazo vacío: se barajan los descartes",
+ errMin2:"Hacen falta al menos 2 pasajeros", errMax:"Caben {n} pasajeros como máximo", errDup:"Hay dos nombres iguales", deckEmpty:"Mazo vacío: se barajan los descartes",
  yourTicket:"Tu billete", name:"Nombre", orIcon:"Elige un icono", randomIcon:"Icono aleatorio", gallery:"Galería", camera:"Cámara", yourPhoto:"Tu foto", close:"Cerrar", errImg:"Elige una imagen", errPhoto:"No se pudo usar esa foto", errReadPhoto:"No se pudo leer la foto", saveN:"Guardar ▸",
  stage1:"Parada 1 · Carta {n} de 4", q0:"¿Par o impar?", q1:"¿Arriba o abajo?", q2:"¿Dentro o fuera?", q3:"¿Mismo palo o diferente?",
  o_par:"Par", o_impar:"Impar", o_mayor:"Arriba", o_menor:"Abajo", o_dentro:"Dentro", o_fuera:"Fuera", o_mismo:"Mismo palo", o_distinto:"Diferente",
@@ -486,7 +486,7 @@ es:{
  suits:{S:"picas",H:"corazones",D:"diamantes",C:"tréboles"}, suitsEs:{O:"oros",C:"copas",E:"espadas",B:"bastos"}
 },
 ca:{
- langName:"Català", options:"Opcions", music:"Música", sfx:"Efectes de so", hints:"Pistes a la piràmide", language:"Idioma", rules:"Veure les regles", exitMenu:"Sortir al menú principal", openMenu:"Obrir opcions",
+ chooseOne:"Tria una opció", langName:"Català", options:"Opcions", music:"Música", sfx:"Efectes de so", hints:"Pistes a la piràmide", language:"Idioma", rules:"Veure les regles", exitMenu:"Sortir al menú principal", openMenu:"Obrir opcions",
  back:"‹ Tornar", credit:"joc creat per", tagline:"Puja al bus i gaudeix de la prèvia", editProfile:"Editar el perfil", edit:"Editar", resume:"Tornar a la partida",
  create:"Crear partida", join:"Unir-se a una partida ja creada", local:"Jugar en un sol mòbil",
  warn:"Només per a majors de 18 anys.", tip1:"Beveu amb cap", tip2:"Els glops poden ser de qualsevol beguda", tip3:"Beu aigua entre parada i parada", tip4:"Que ningú condueixi després", nobodyIt:"Ningú la té.", anyoneIt:"Algú la té? Toca la teva carta per tirar-la.",
@@ -495,7 +495,7 @@ ca:{
  errName:"Escriu el teu nom", errAdult:"BustBus és només per a majors de 18 anys",
  deck:"Baralla", poker:"Pòquer", spanish:"Espanyola", playerName:"El teu nom de jugador", namePh:"Com et dius",
  createHint:"Seràs l'admin de la partida. En continuar es genera un codi perquè els teus amics entrin al teu lobby.", continueN:"Continuar ▸",
- codeLbl:"Codi de partida (4 números)", joinBtn:"Unir-se ▸", phJoin:"Unir-se", phLocal:"Un sol mòbil", players:"Jugadors", addPlayer:"+ Afegir jugador", nameShort:"Nom", removePlayer:"Treure el jugador {n}", startN:"Començar ▸",
+ codeLbl:"Codi de partida (4 números)", joinBtn:"Unir-se ▸", phJoin:"Unir-se", phLocal:"Un sol mòbil", players:"Passatgers", addPlayer:"+ Afegir passatger", nameShort:"Nom", removePlayer:"Treure el jugador {n}", startN:"Començar ▸",
  game:"Partida {c}", searching:"Buscant", connecting:"Connectant amb qui ha creat la partida…", waiting:"Esperant…",
  lobbyAdmin:"Lobby · ets l'admin", lobby:"Lobby", chooseDeck:"Tria la baralla", deckInfoPoker:"Baralla de pòquer · comença l'admin.", deckInfoEs:"Baralla espanyola · comença l'admin.",
  gameCode:"Codi de partida", tellCode:"Comparteix aquest codi amb els teus amics.", passengers:"Passatgers", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Canviar la foto de perfil", tapTicket:"Toca el teu bitllet per canviar la foto.",
@@ -528,7 +528,7 @@ ca:{
  suits:{S:"piques",H:"cors",D:"diamants",C:"trèvols"}, suitsEs:{O:"oros",C:"copes",E:"espases",B:"bastos"}
 },
 eu:{
- langName:"Euskara", options:"Aukerak", music:"Musika", sfx:"Soinu-efektuak", hints:"Piramideko pistak", language:"Hizkuntza", rules:"Arauak ikusi", exitMenu:"Menu nagusira irten", openMenu:"Aukerak ireki",
+ chooseOne:"Aukeratu aukera bat", langName:"Euskara", options:"Aukerak", music:"Musika", sfx:"Soinu-efektuak", hints:"Piramideko pistak", language:"Hizkuntza", rules:"Arauak ikusi", exitMenu:"Menu nagusira irten", openMenu:"Aukerak ireki",
  back:"‹ Itzuli", credit:"jokoaren egilea:", tagline:"Igo autobusera eta gozatu aurrefestaz", editProfile:"Profila editatu", edit:"Editatu", resume:"Partidara itzuli",
  create:"Partida sortu", join:"Sortutako partida batera batu", local:"Mugikor bakarrean jokatu",
  warn:"18 urtetik gorakoentzat soilik.", tip1:"Edan buruarekin", tip2:"Zurrutadak edozein edarirekin izan daitezke", tip3:"Edan ura geltoki artean", tip4:"Inork ez dezala gidatu gero", nobodyIt:"Inork ez du.", anyoneIt:"Norbaitek du? Ukitu zure karta botatzeko.",
@@ -537,7 +537,7 @@ eu:{
  errName:"Idatzi zure izena", errAdult:"BustBus 18 urtetik gorakoentzat soilik da",
  deck:"Karta-sorta", poker:"Pokerra", spanish:"Espainiarra", playerName:"Zure jokalari-izena", namePh:"Nola duzu izena",
  createHint:"Partidaren admina izango zara. Jarraitzean kode bat sortuko da zure lagunak zure lobby-ra sar daitezen.", continueN:"Jarraitu ▸",
- codeLbl:"Partidaren kodea (4 zenbaki)", joinBtn:"Batu ▸", phJoin:"Batu", phLocal:"Mugikor bakarra", players:"Jokalariak", addPlayer:"+ Jokalaria gehitu", nameShort:"Izena", removePlayer:"{n}. jokalaria kendu", startN:"Hasi ▸",
+ codeLbl:"Partidaren kodea (4 zenbaki)", joinBtn:"Batu ▸", phJoin:"Batu", phLocal:"Mugikor bakarra", players:"Bidaiariak", addPlayer:"+ Bidaiaria gehitu", nameShort:"Izena", removePlayer:"{n}. jokalaria kendu", startN:"Hasi ▸",
  game:"{c} partida", searching:"Bilatzen", connecting:"Partida sortu duenarekin konektatzen…", waiting:"Zain…",
  lobbyAdmin:"Lobby · zu zara admina", lobby:"Lobby", chooseDeck:"Aukeratu karta-sorta", deckInfoPoker:"Poker kartak · admina hasiko da.", deckInfoEs:"Karta espainiarrak · admina hasiko da.",
  gameCode:"Partidaren kodea", tellCode:"Partekatu kode hau zure lagunekin.", passengers:"Bidaiariak", admin:"Admin", you:"Zu", photoEdit:"✎ Argazkia", changePhoto:"Profileko argazkia aldatu", tapTicket:"Ukitu zure txartela argazkia aldatzeko.",
@@ -570,7 +570,7 @@ eu:{
  suits:{S:"pikak",H:"bihotzak",D:"diamanteak",C:"hirustak"}, suitsEs:{O:"urreak",C:"kopak",E:"ezpatak",B:"bastoiak"}
 },
 gl:{
- langName:"Galego", options:"Opcións", music:"Música", sfx:"Efectos de son", hints:"Pistas na pirámide", language:"Idioma", rules:"Ver as regras", exitMenu:"Saír ao menú principal", openMenu:"Abrir opcións",
+ chooseOne:"Escolle unha opción", langName:"Galego", options:"Opcións", music:"Música", sfx:"Efectos de son", hints:"Pistas na pirámide", language:"Idioma", rules:"Ver as regras", exitMenu:"Saír ao menú principal", openMenu:"Abrir opcións",
  back:"‹ Volver", credit:"xogo creado por", tagline:"Sube ao bus e goza da previa", editProfile:"Editar perfil", edit:"Editar", resume:"Volver á partida",
  create:"Crear partida", join:"Unirse a unha partida xa creada", local:"Xogar nun só móbil",
  warn:"Só para maiores de 18 anos.", tip1:"Bebede con cabeza", tip2:"Os grolos poden ser de calquera bebida", tip3:"Bebe auga entre parada e parada", tip4:"Que ninguén conduza despois", nobodyIt:"Ninguén a ten.", anyoneIt:"Alguén a ten? Toca a túa carta para tirala.",
@@ -579,7 +579,7 @@ gl:{
  errName:"Escribe o teu nome", errAdult:"BustBus é só para maiores de 18 anos",
  deck:"Baralla", poker:"Póker", spanish:"Española", playerName:"O teu nome de xogador", namePh:"Como te chamas",
  createHint:"Serás o admin da partida. Ao continuar xérase un código para que os teus amigos entren no teu lobby.", continueN:"Continuar ▸",
- codeLbl:"Código da partida (4 números)", joinBtn:"Unirse ▸", phJoin:"Unirse", phLocal:"Un só móbil", players:"Xogadores", addPlayer:"+ Engadir xogador", nameShort:"Nome", removePlayer:"Quitar o xogador {n}", startN:"Comezar ▸",
+ codeLbl:"Código da partida (4 números)", joinBtn:"Unirse ▸", phJoin:"Unirse", phLocal:"Un só móbil", players:"Pasaxeiros", addPlayer:"+ Engadir pasaxeiro", nameShort:"Nome", removePlayer:"Quitar o xogador {n}", startN:"Comezar ▸",
  game:"Partida {c}", searching:"Buscando", connecting:"Conectando con quen creou a partida…", waiting:"Agardando…",
  lobbyAdmin:"Lobby · es o admin", lobby:"Lobby", chooseDeck:"Escolle a baralla", deckInfoPoker:"Baralla de póker · comeza o admin.", deckInfoEs:"Baralla española · comeza o admin.",
  gameCode:"Código da partida", tellCode:"Comparte este código cos teus amigos.", passengers:"Pasaxeiros", admin:"Admin", you:"Ti", photoEdit:"✎ Foto", changePhoto:"Cambiar a túa foto de perfil", tapTicket:"Toca o teu billete para cambiar a foto.",
@@ -612,7 +612,7 @@ gl:{
  suits:{S:"picas",H:"corazóns",D:"diamantes",C:"trevos"}, suitsEs:{O:"ouros",C:"copas",E:"espadas",B:"bastos"}
 },
 en:{
- langName:"English", options:"Options", music:"Music", sfx:"Sound effects", hints:"Pyramid hints", language:"Language", rules:"See the rules", exitMenu:"Back to main menu", openMenu:"Open options",
+ chooseOne:"Choose an option", langName:"English", options:"Options", music:"Music", sfx:"Sound effects", hints:"Pyramid hints", language:"Language", rules:"See the rules", exitMenu:"Back to main menu", openMenu:"Open options",
  back:"‹ Back", credit:"game created by", tagline:"Get on the bus and enjoy the pre-party", editProfile:"Edit profile", edit:"Edit", resume:"Back to the game",
  create:"Create game", join:"Join an existing game", local:"Play on one phone",
  warn:"Adults (18+) only.", tip1:"Drink responsibly", tip2:"Sips can be of any drink", tip3:"Have water between stops", tip4:"Nobody drives afterwards", nobodyIt:"Nobody has it.", anyoneIt:"Anyone have it? Tap your card to play it.",
@@ -621,7 +621,7 @@ en:{
  errName:"Type your name", errAdult:"BustBus is for adults (18+) only",
  deck:"Deck", poker:"Poker", spanish:"Spanish", playerName:"Your player name", namePh:"What's your name",
  createHint:"You'll be the game admin. When you continue, a code is created so your friends can join your lobby.", continueN:"Continue ▸",
- codeLbl:"Game code (4 digits)", joinBtn:"Join ▸", phJoin:"Join", phLocal:"One phone", players:"Players", addPlayer:"+ Add player", nameShort:"Name", removePlayer:"Remove player {n}", startN:"Start ▸",
+ codeLbl:"Game code (4 digits)", joinBtn:"Join ▸", phJoin:"Join", phLocal:"One phone", players:"Passengers", addPlayer:"+ Add passenger", nameShort:"Name", removePlayer:"Remove player {n}", startN:"Start ▸",
  game:"Game {c}", searching:"Searching", connecting:"Connecting to the game creator…", waiting:"Waiting…",
  lobbyAdmin:"Lobby · you're the admin", lobby:"Lobby", chooseDeck:"Choose the deck", deckInfoPoker:"Poker deck · the admin starts.", deckInfoEs:"Spanish deck · the admin starts.",
  gameCode:"Game code", tellCode:"Share this code with your friends.", passengers:"Passengers", admin:"Admin", you:"You", photoEdit:"✎ Photo", changePhoto:"Change your profile photo", tapTicket:"Tap your ticket to change your photo.",
@@ -654,7 +654,7 @@ en:{
  suits:{S:"spades",H:"hearts",D:"diamonds",C:"clubs"}, suitsEs:{O:"coins",C:"cups",E:"swords",B:"clubs"}
 },
 fr:{
- langName:"Français", options:"Options", music:"Musique", sfx:"Effets sonores", hints:"Indices dans la pyramide", language:"Langue", rules:"Voir les règles", exitMenu:"Retour au menu principal", openMenu:"Ouvrir les options",
+ chooseOne:"Choisis une option", langName:"Français", options:"Options", music:"Musique", sfx:"Effets sonores", hints:"Indices dans la pyramide", language:"Langue", rules:"Voir les règles", exitMenu:"Retour au menu principal", openMenu:"Ouvrir les options",
  back:"‹ Retour", credit:"jeu créé par", tagline:"Monte dans le bus et profite de l'apéro", editProfile:"Modifier le profil", edit:"Modifier", resume:"Revenir à la partie",
  create:"Créer une partie", join:"Rejoindre une partie existante", local:"Jouer sur un seul téléphone",
  warn:"Réservé aux plus de 18 ans.", tip1:"Buvez avec modération", tip2:"Les gorgées peuvent être de n'importe quelle boisson", tip3:"Bois de l'eau entre deux arrêts", tip4:"Personne ne conduit après", nobodyIt:"Personne ne l'a.", anyoneIt:"Quelqu'un l'a ? Touche ta carte pour la poser.",
@@ -663,7 +663,7 @@ fr:{
  errName:"Écris ton nom", errAdult:"BustBus est réservé aux plus de 18 ans",
  deck:"Jeu de cartes", poker:"Poker", spanish:"Espagnol", playerName:"Ton nom de joueur", namePh:"Comment tu t'appelles",
  createHint:"Tu seras l'admin de la partie. En continuant, un code est créé pour que tes amis rejoignent ton lobby.", continueN:"Continuer ▸",
- codeLbl:"Code de la partie (4 chiffres)", joinBtn:"Rejoindre ▸", phJoin:"Rejoindre", phLocal:"Un seul téléphone", players:"Joueurs", addPlayer:"+ Ajouter un joueur", nameShort:"Nom", removePlayer:"Retirer le joueur {n}", startN:"Commencer ▸",
+ codeLbl:"Code de la partie (4 chiffres)", joinBtn:"Rejoindre ▸", phJoin:"Rejoindre", phLocal:"Un seul téléphone", players:"Passagers", addPlayer:"+ Ajouter un passager", nameShort:"Nom", removePlayer:"Retirer le joueur {n}", startN:"Commencer ▸",
  game:"Partie {c}", searching:"Recherche", connecting:"Connexion à la personne qui a créé la partie…", waiting:"En attente…",
  lobbyAdmin:"Lobby · tu es l'admin", lobby:"Lobby", chooseDeck:"Choisis le jeu de cartes", deckInfoPoker:"Jeu de poker · l'admin lance la partie.", deckInfoEs:"Jeu espagnol · l'admin lance la partie.",
  gameCode:"Code de la partie", tellCode:"Partage ce code avec tes amis.", passengers:"Passagers", admin:"Admin", you:"Toi", photoEdit:"✎ Photo", changePhoto:"Changer ta photo de profil", tapTicket:"Touche ton ticket pour changer ta photo.",
@@ -696,7 +696,7 @@ fr:{
  suits:{S:"pique",H:"cœur",D:"carreau",C:"trèfle"}, suitsEs:{O:"deniers",C:"coupes",E:"épées",B:"bâtons"}
 },
 it:{
- langName:"Italiano", options:"Opzioni", music:"Musica", sfx:"Effetti sonori", hints:"Suggerimenti nella piramide", language:"Lingua", rules:"Vedi le regole", exitMenu:"Torna al menu principale", openMenu:"Apri opzioni",
+ chooseOne:"Scegli un'opzione", langName:"Italiano", options:"Opzioni", music:"Musica", sfx:"Effetti sonori", hints:"Suggerimenti nella piramide", language:"Lingua", rules:"Vedi le regole", exitMenu:"Torna al menu principale", openMenu:"Apri opzioni",
  back:"‹ Indietro", credit:"gioco creato da", tagline:"Sali sul bus e goditi il pre-serata", editProfile:"Modifica profilo", edit:"Modifica", resume:"Torna alla partita",
  create:"Crea partita", join:"Unisciti a una partita", local:"Gioca su un solo telefono",
  warn:"Solo per maggiori di 18 anni.", tip1:"Bevete responsabilmente", tip2:"I sorsi possono essere di qualsiasi bevanda", tip3:"Bevi acqua tra una fermata e l'altra", tip4:"Nessuno guida dopo", nobodyIt:"Nessuno ce l'ha.", anyoneIt:"Qualcuno ce l'ha? Tocca la tua carta per giocarla.",
@@ -705,7 +705,7 @@ it:{
  errName:"Scrivi il tuo nome", errAdult:"BustBus è solo per maggiori di 18 anni",
  deck:"Mazzo", poker:"Poker", spanish:"Spagnolo", playerName:"Il tuo nome di gioco", namePh:"Come ti chiami",
  createHint:"Sarai l'admin della partita. Continuando si genera un codice perché i tuoi amici entrino nella tua lobby.", continueN:"Continua ▸",
- codeLbl:"Codice partita (4 cifre)", joinBtn:"Unisciti ▸", phJoin:"Unisciti", phLocal:"Un solo telefono", players:"Giocatori", addPlayer:"+ Aggiungi giocatore", nameShort:"Nome", removePlayer:"Rimuovi giocatore {n}", startN:"Inizia ▸",
+ codeLbl:"Codice partita (4 cifre)", joinBtn:"Unisciti ▸", phJoin:"Unisciti", phLocal:"Un solo telefono", players:"Passeggeri", addPlayer:"+ Aggiungi passeggero", nameShort:"Nome", removePlayer:"Rimuovi giocatore {n}", startN:"Inizia ▸",
  game:"Partita {c}", searching:"Ricerca", connecting:"Connessione con chi ha creato la partita…", waiting:"In attesa…",
  lobbyAdmin:"Lobby · sei l'admin", lobby:"Lobby", chooseDeck:"Scegli il mazzo", deckInfoPoker:"Mazzo da poker · inizia l'admin.", deckInfoEs:"Mazzo spagnolo · inizia l'admin.",
  gameCode:"Codice partita", tellCode:"Condividi questo codice con i tuoi amici.", passengers:"Passeggeri", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Cambia la tua foto profilo", tapTicket:"Tocca il tuo biglietto per cambiare foto.",
@@ -738,7 +738,7 @@ it:{
  suits:{S:"picche",H:"cuori",D:"quadri",C:"fiori"}, suitsEs:{O:"denari",C:"coppe",E:"spade",B:"bastoni"}
 },
 pt:{
- langName:"Português", options:"Opções", music:"Música", sfx:"Efeitos sonoros", hints:"Dicas na pirâmide", language:"Idioma", rules:"Ver as regras", exitMenu:"Voltar ao menu principal", openMenu:"Abrir opções",
+ chooseOne:"Escolhe uma opção", langName:"Português", options:"Opções", music:"Música", sfx:"Efeitos sonoros", hints:"Dicas na pirâmide", language:"Idioma", rules:"Ver as regras", exitMenu:"Voltar ao menu principal", openMenu:"Abrir opções",
  back:"‹ Voltar", credit:"jogo criado por", tagline:"Sobe no autocarro e aproveita o pré-festa", editProfile:"Editar perfil", edit:"Editar", resume:"Voltar à partida",
  create:"Criar partida", join:"Entrar numa partida já criada", local:"Jogar num só telemóvel",
  warn:"Só para maiores de 18 anos.", tip1:"Bebam com cabeça", tip2:"Os goles podem ser de qualquer bebida", tip3:"Bebe água entre paragens", tip4:"Que ninguém conduza depois", nobodyIt:"Ninguém a tem.", anyoneIt:"Alguém a tem? Toca na tua carta para a jogar.",
@@ -747,7 +747,7 @@ pt:{
  errName:"Escreve o teu nome", errAdult:"O BustBus é só para maiores de 18 anos",
  deck:"Baralho", poker:"Póquer", spanish:"Espanhol", playerName:"O teu nome de jogador", namePh:"Como te chamas",
  createHint:"Vais ser o admin da partida. Ao continuar é gerado um código para os teus amigos entrarem no teu lobby.", continueN:"Continuar ▸",
- codeLbl:"Código da partida (4 números)", joinBtn:"Entrar ▸", phJoin:"Entrar", phLocal:"Um só telemóvel", players:"Jogadores", addPlayer:"+ Adicionar jogador", nameShort:"Nome", removePlayer:"Remover jogador {n}", startN:"Começar ▸",
+ codeLbl:"Código da partida (4 números)", joinBtn:"Entrar ▸", phJoin:"Entrar", phLocal:"Um só telemóvel", players:"Passageiros", addPlayer:"+ Adicionar passageiro", nameShort:"Nome", removePlayer:"Remover jogador {n}", startN:"Começar ▸",
  game:"Partida {c}", searching:"A procurar", connecting:"A ligar a quem criou a partida…", waiting:"À espera…",
  lobbyAdmin:"Lobby · és o admin", lobby:"Lobby", chooseDeck:"Escolhe o baralho", deckInfoPoker:"Baralho de póquer · o admin começa.", deckInfoEs:"Baralho espanhol · o admin começa.",
  gameCode:"Código da partida", tellCode:"Partilha este código com os teus amigos.", passengers:"Passageiros", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Mudar a tua foto de perfil", tapTicket:"Toca no teu bilhete para mudar a foto.",
@@ -780,7 +780,7 @@ pt:{
  suits:{S:"espadas",H:"copas",D:"ouros",C:"paus"}, suitsEs:{O:"ouros",C:"copas",E:"espadas",B:"paus"}
 },
 de:{
- langName:"Deutsch", options:"Optionen", music:"Musik", sfx:"Soundeffekte", hints:"Hinweise in der Pyramide", language:"Sprache", rules:"Regeln ansehen", exitMenu:"Zum Hauptmenü", openMenu:"Optionen öffnen",
+ chooseOne:"Wähle eine Option", langName:"Deutsch", options:"Optionen", music:"Musik", sfx:"Soundeffekte", hints:"Hinweise in der Pyramide", language:"Sprache", rules:"Regeln ansehen", exitMenu:"Zum Hauptmenü", openMenu:"Optionen öffnen",
  back:"‹ Zurück", credit:"Spiel von", tagline:"Steig in den Bus und genieß das Vorglühen", editProfile:"Profil bearbeiten", edit:"Bearbeiten", resume:"Zurück zum Spiel",
  create:"Spiel erstellen", join:"Einem Spiel beitreten", local:"Auf einem Handy spielen",
  warn:"Nur für Erwachsene ab 18.", tip1:"Trinkt verantwortungsvoll", tip2:"Schlucke können jedes Getränk sein", tip3:"Trink Wasser zwischen den Haltestellen", tip4:"Danach fährt niemand Auto", nobodyIt:"Niemand hat sie.", anyoneIt:"Hat sie jemand? Tippe auf deine Karte, um sie zu legen.",
@@ -789,7 +789,7 @@ de:{
  errName:"Gib deinen Namen ein", errAdult:"BustBus ist nur für Erwachsene ab 18",
  deck:"Kartenspiel", poker:"Poker", spanish:"Spanisch", playerName:"Dein Spielername", namePh:"Wie heißt du",
  createHint:"Du bist der Admin des Spiels. Danach wird ein Code erstellt, mit dem deine Freunde in deine Lobby kommen.", continueN:"Weiter ▸",
- codeLbl:"Spielcode (4 Ziffern)", joinBtn:"Beitreten ▸", phJoin:"Beitreten", phLocal:"Ein Handy", players:"Spieler", addPlayer:"+ Spieler hinzufügen", nameShort:"Name", removePlayer:"Spieler {n} entfernen", startN:"Los ▸",
+ codeLbl:"Spielcode (4 Ziffern)", joinBtn:"Beitreten ▸", phJoin:"Beitreten", phLocal:"Ein Handy", players:"Fahrgäste", addPlayer:"+ Fahrgast hinzufügen", nameShort:"Name", removePlayer:"Spieler {n} entfernen", startN:"Los ▸",
  game:"Spiel {c}", searching:"Suche", connecting:"Verbinde mit dem Ersteller des Spiels…", waiting:"Warten…",
  lobbyAdmin:"Lobby · du bist Admin", lobby:"Lobby", chooseDeck:"Wähle das Kartenspiel", deckInfoPoker:"Pokerkarten · der Admin startet.", deckInfoEs:"Spanisches Blatt · der Admin startet.",
  gameCode:"Spielcode", tellCode:"Teile diesen Code mit deinen Freunden.", passengers:"Fahrgäste", admin:"Admin", you:"Du", photoEdit:"✎ Foto", changePhoto:"Profilfoto ändern", tapTicket:"Tippe auf dein Ticket, um dein Foto zu ändern.",
@@ -822,7 +822,7 @@ de:{
  suits:{S:"Pik",H:"Herz",D:"Karo",C:"Kreuz"}, suitsEs:{O:"Münzen",C:"Kelche",E:"Schwerter",B:"Stäbe"}
 },
 zh:{
- langName:"中文", options:"选项", music:"音乐", sfx:"音效", hints:"金字塔提示", language:"语言", rules:"查看规则", exitMenu:"返回主菜单", openMenu:"打开选项",
+ chooseOne:"请选择", langName:"中文", options:"选项", music:"音乐", sfx:"音效", hints:"金字塔提示", language:"语言", rules:"查看规则", exitMenu:"返回主菜单", openMenu:"打开选项",
  back:"‹ 返回", credit:"游戏作者", tagline:"上车，享受派对前的时光", editProfile:"编辑资料", edit:"编辑", resume:"回到游戏",
  create:"创建游戏", join:"加入已创建的游戏", local:"一部手机游戏",
  warn:"仅限18岁以上。", tip1:"理性饮酒", tip2:"可以用任何饮料代替", tip3:"每站之间喝点水", tip4:"之后不要开车", nobodyIt:"没人有这张。", anyoneIt:"有人有这张吗？点击你的牌打出。",
@@ -831,7 +831,7 @@ zh:{
  errName:"请输入你的名字", errAdult:"BustBus 仅限18岁以上",
  deck:"牌组", poker:"扑克", spanish:"西班牙牌", playerName:"你的玩家名", namePh:"你叫什么名字",
  createHint:"你将成为游戏管理员。继续后会生成一个代码，朋友们用它进入你的大厅。", continueN:"继续 ▸",
- codeLbl:"游戏代码（4位数字）", joinBtn:"加入 ▸", phJoin:"加入", phLocal:"一部手机", players:"玩家", addPlayer:"+ 添加玩家", nameShort:"名字", removePlayer:"移除玩家 {n}", startN:"开始 ▸",
+ codeLbl:"游戏代码（4位数字）", joinBtn:"加入 ▸", phJoin:"加入", phLocal:"一部手机", players:"乘客", addPlayer:"+ 添加乘客", nameShort:"名字", removePlayer:"移除玩家 {n}", startN:"开始 ▸",
  game:"游戏 {c}", searching:"正在查找", connecting:"正在连接游戏创建者…", waiting:"等待中…",
  lobbyAdmin:"大厅 · 你是管理员", lobby:"大厅", chooseDeck:"选择牌组", deckInfoPoker:"扑克牌 · 由管理员开始。", deckInfoEs:"西班牙牌 · 由管理员开始。",
  gameCode:"游戏代码", tellCode:"把这个代码分享给你的朋友。", passengers:"乘客", admin:"管理员", you:"你", photoEdit:"✎ 照片", changePhoto:"更换头像", tapTicket:"点击你的车票更换照片。",
@@ -864,7 +864,7 @@ zh:{
  suits:{S:"黑桃",H:"红心",D:"方块",C:"梅花"}, suitsEs:{O:"金币",C:"圣杯",E:"宝剑",B:"权杖"}
 },
 ja:{
- langName:"日本語", options:"オプション", music:"音楽", sfx:"効果音", hints:"ピラミッドのヒント", language:"言語", rules:"ルールを見る", exitMenu:"メインメニューに戻る", openMenu:"オプションを開く",
+ chooseOne:"選んでください", langName:"日本語", options:"オプション", music:"音楽", sfx:"効果音", hints:"ピラミッドのヒント", language:"言語", rules:"ルールを見る", exitMenu:"メインメニューに戻る", openMenu:"オプションを開く",
  back:"‹ 戻る", credit:"ゲーム制作", tagline:"バスに乗って、飲み会前を楽しもう", editProfile:"プロフィールを編集", edit:"編集", resume:"ゲームに戻る",
  create:"ゲームを作成", join:"作成済みのゲームに参加", local:"1台のスマホで遊ぶ",
  warn:"18歳以上限定。", tip1:"節度を持って飲もう", tip2:"一口はどんな飲み物でもOK", tip3:"停留所の合間に水を飲もう", tip4:"その後は誰も運転しないこと", nobodyIt:"誰も持っていない。", anyoneIt:"持っている人は？カードをタップして出そう。",
@@ -873,7 +873,7 @@ ja:{
  errName:"名前を入力してください", errAdult:"BustBus は18歳以上限定です",
  deck:"デッキ", poker:"トランプ", spanish:"スペイン", playerName:"プレイヤー名", namePh:"名前は？",
  createHint:"あなたがゲームの管理者になります。続けるとコードが作成され、友だちはそれでロビーに入れます。", continueN:"続ける ▸",
- codeLbl:"ゲームコード（4桁の数字）", joinBtn:"参加 ▸", phJoin:"参加", phLocal:"スマホ1台", players:"プレイヤー", addPlayer:"+ プレイヤーを追加", nameShort:"名前", removePlayer:"プレイヤー{n}を削除", startN:"スタート ▸",
+ codeLbl:"ゲームコード（4桁の数字）", joinBtn:"参加 ▸", phJoin:"参加", phLocal:"スマホ1台", players:"乗客", addPlayer:"+ 乗客を追加", nameShort:"名前", removePlayer:"プレイヤー{n}を削除", startN:"スタート ▸",
  game:"ゲーム {c}", searching:"検索中", connecting:"作成者に接続しています…", waiting:"待機中…",
  lobbyAdmin:"ロビー · あなたが管理者", lobby:"ロビー", chooseDeck:"デッキを選ぶ", deckInfoPoker:"トランプ · 管理者が開始します。", deckInfoEs:"スペインのカード · 管理者が開始します。",
  gameCode:"ゲームコード", tellCode:"このコードを友だちに共有しよう。", passengers:"乗客", admin:"管理者", you:"あなた", photoEdit:"✎ 写真", changePhoto:"プロフィール写真を変更", tapTicket:"自分のチケットをタップして写真を変更。",
@@ -1143,7 +1143,7 @@ function apply(a, who){
   if(a.t === 'p1'){
     const P = st.p1; if(st.ph !== 'p1' || P.done || !ok(who === P.pi)) return false;
     const opts = [['par','impar'],['mayor','menor'],['dentro','fuera'],['mismo','distinto']][P.r];
-    if(a.v !== 'flip' && !opts.includes(a.v)) return false;
+    if(!opts.includes(a.v)) return false;
     p1Guess(a.v); return true;
   }
   if(a.t === 'reveal'){
@@ -1393,7 +1393,8 @@ function startLocal(){
   if(new Set(names.map(n => n.toLowerCase())).size !== names.length) return toast(t('errDup'));
   store.set('names', ui.names);
   mode = 'local'; musicStart(); keepAwake();
-  const rows = ui.names.map((n,i) => ({n: cleanName(n), av: localAv(i)})).filter(r => r.n);
+  const used = new Set(), rows = ui.names.map(n => ({n: cleanName(n)})).filter(r => r.n);
+  rows.forEach(r => { let k; do { k = rnd(EMOJI.length); } while(used.has(k) && used.size < EMOJI.length); used.add(k); r.av = 'e' + k; });
   st = {n:0, ph:'lobby', dk:ui.deck, big:false, host:'local', pl:rows.map((r,i) => ({id:'l'+i, n:r.n, av:r.av, h:[], d:0})), ev:null};
   H = {cards:[], discard:[], thrown:[]}; preload(st.dk);
   store.set('session', {mode:'local'});
@@ -1551,7 +1552,7 @@ function renderHome(){
     ${busSVG()}<h1 class="title"><span class="logo logo-img" role="img" aria-label="BustBus"></span></h1><p class="tagline" id="tagline">${t('tagline')}</p>
     <div class="menu-btns">
       ${s ? `<button class="resume" data-act="resume">${t('resume')}${s.code ? ' ' + esc(s.code) : ''}</button>` : ''}
-      <button class="big-opt y1" data-act="go" data-v="create">${t('create')}</button>
+      <button class="big-opt y1" data-act="create">${t('create')}</button>
       <button class="big-opt y2" data-act="go" data-v="join">${t('join')}</button>
       <button class="big-opt y3" data-act="go" data-v="local">${t('local')}</button>
     </div>
@@ -1616,7 +1617,7 @@ function renderLocal(){
   const max = MAXP(ui.deck);
   main.innerHTML = `<section class="scr form local-setup">${backBtn()}${deckPicker()}
     <p class="lbl" style="margin:0">${t('players')} · ${ui.names.length}/${max}</p>
-    <div class="names">${ui.names.map((n,i) => `<div class="ticket nrow"><button class="stub rowav" data-act="lav" data-i="${i}" aria-label="${t('changePhoto')}">${avatarHTML(localAv(i), n, 'sm')}</button><input id="ln-${i}" data-i="${i}" value="${esc(n)}" placeholder="${t('nameShort')}" maxlength="14" autocomplete="off">${ui.names.length > 2 ? `<button class="rm" data-act="rmP" data-i="${i}" aria-label="${t('removePlayer', {n: i+1})}">✕</button>` : ''}</div>`).join('')}
+    <div class="names">${ui.names.map((n,i) => `<div class="ticket nrow"><div class="stub">${i+1}</div><input id="ln-${i}" data-i="${i}" value="${esc(n)}" placeholder="${t('nameShort')}" maxlength="14" autocomplete="off">${ui.names.length > 2 ? `<button class="rm" data-act="rmP" data-i="${i}" aria-label="${t('removePlayer', {n: i+1})}">✕</button>` : ''}</div>`).join('')}
       ${ui.names.length < max ? `<button class="addp" data-act="addP">${t('addPlayer')}</button>` : ''}</div></section>`;
   setNext(t('startN'), true, startLocal);
 }
@@ -1663,7 +1664,7 @@ function renderP1(E){
   else bottom = `<p class="wait">${t('choosing', {n: esc(pl.n)})}</p>`;
   if(LOCAL()){
     const prev = P.done ? h.slice(0, -1) : h;
-    const big = P.done ? cardHTML(last, {flip: E.flip === last}) : mine ? `<button class="flipbtn" data-act="p1" data-v="flip" aria-label="${t('flipAria')}">${cardHTML(null, {up:false})}</button>` : cardHTML(null, {up:false});
+    const big = P.done ? cardHTML(last, {flip: E.flip === last}) : cardHTML(null, {up:false});
     main.innerHTML = `<section class="scr p1 loc"><div class="turnline"><h2 class="who">${avOfPlayer(P.pi)}<span>${esc(pl.n)}</span></h2><div class="q">${t(Q.q)}</div></div>
       <div class="bigdeck">${big}</div>
       <div class="prev">${prev.length ? prev.map(c => cardHTML(c)).join('') : `<span class="empty-l">${t('firstCard')}</span>`}</div>
@@ -1671,13 +1672,13 @@ function renderP1(E){
   } else {
     let cards = '';
     h.forEach((c,i) => { const isNew = P.done && i === h.length-1 && E.flip === c; cards += cardHTML(c, {flip:isNew, cls: isNew ? 'new' : ''}); });
-    if(!P.done) cards += mine ? `<button class="flipbtn" data-act="p1" data-v="flip" aria-label="${t('flipAria')}">${cardHTML(null, {up:false})}</button>` : cardHTML(null, {up:false});
+    if(!P.done) cards += cardHTML(null, {up:false});
     for(let i = h.length + (P.done ? 0 : 1); i < 4; i++) cards += '<div class="placeholder"></div>';
     main.innerHTML = `<section class="scr p1"><div class="turnline"><div class="ticket notch tk-name"><div class="stub">${me === P.pi ? t('yourTurn') : t('turnOf')}</div>${avOfPlayer(P.pi)}<b>${esc(pl.n)}</b></div><div class="q">${t(Q.q)}</div></div>
       <div class="hand-big">${cards}</div><div class="result">${bottom}</div></section>`;
   }
   const lastTurn = P.r === 3 && P.pi === n-1, ni = (P.pi + 1) % n;
-  if(!P.done) setNext(mine ? t('chooseOrTap') : t('turnName', {n: pl.n}), false);
+  if(!P.done) setNext(mine ? t('chooseOne') : t('turnName', {n: pl.n}), false);
   else if(can(me === P.pi || amHost())) setNext(lastTurn ? t('buildPyr') : t('nextName', {n: st.pl[ni].n}), true, () => act({t:'next'}));
   else setNext(t('waitFor', {n: pl.n}), false);
 }
@@ -1862,6 +1863,7 @@ document.addEventListener('click', e => {
   else if(a === 'avmenu'){ ui.avMenu = !ui.avMenu; if($('#pfn')) ui.draftName = $('#pfn').value; const m = $('.avmenu'); if(m) m.hidden = !ui.avMenu; b.setAttribute('aria-expanded', ui.avMenu); }
   else if(a === 'go'){ ui.screen = b.dataset.v; if(['create','join'].includes(ui.screen) && !cleanName(ui.name)) ui.name = profile.name; if(ui.screen === 'profile'){ ui.draftAv = null; ui.draftName = undefined; } render(); }
   else if(a === 'resume') resumeSession();
+  else if(a === 'create'){ if(!profile.name) return askName(); ui.name = profile.name; createOnline(); }
   else if(a === 'exit') leaveGame();
   else if(a === 'deck'){ ui.deck = b.dataset.v; store.set('deck', ui.deck); preload(ui.deck); if(ui.names.length > MAXP(ui.deck)) ui.names.length = MAXP(ui.deck); render(); }
   else if(a === 'addP'){ ui.names.push(''); store.set('names', ui.names); render(); const el = document.getElementById('ln-' + (ui.names.length-1)); if(el) el.focus(); }

@@ -242,7 +242,12 @@ h1.title{margin:0;line-height:0}
 .cchip{padding:4px 9px;gap:6px;font-size:13.5px}
 .cchip b{max-width:16ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cchip em{font-style:normal;font-family:var(--f-display);font-size:13px}
-.bigdraw .card{--w:min(34cqw,calc(var(--bw) * 1.5))}
+.bigdraw{--sw:min(34cqw,calc(var(--bw) * 1.5))}
+.stack{position:relative;width:var(--sw);aspect-ratio:338/489;margin:4px}
+.stack .sc{position:absolute;inset:0}
+.stack .card{--w:var(--sw)}
+.stack .sc.top{animation:liftOff 1.2s .7s ease-in forwards}
+@keyframes liftOff{to{transform:translateY(-14px) scale(1.04)}}
 .arrows{display:flex;gap:12px}
 .arrow{width:min(68px,17cqw);height:min(68px,17cqw);border-radius:50%;border:3px solid var(--bus);background:var(--seat);color:var(--bus);font-size:clamp(24px,7cqw,32px);line-height:1;box-shadow:0 4px 0 #0b1226}
 .arrow:active{transform:translateY(3px);box-shadow:0 1px 0 #0b1226;background:#3a3410}
@@ -1755,12 +1760,17 @@ function slotHTML(P, i, opt){
   if(i === 4) cls += ' cp' + (P.cp ? ' on' : '');
   return `<div class="${cls}">${cardHTML(P.sl[i], opt)}<span class="tg" title="${t('sipsIfFail')}">${i+1}</span></div>`;
 }
+function deckStack(top){
+  const backs = [[-7,-5,-4],[6,4,3],[-3,2,-1.5],[2,-2,1]].map(([x,y,r]) => `<div class="sc" style="transform:translate(${x}%,${y}%) rotate(${r}deg)">${cardHTML(null, {up:false})}</div>`).join('');
+  return `<div class="stack">${backs}${top ? `<div class="sc top">${cardHTML(top, {flip:true})}</div>` : ''}</div>`;
+}
 function renderP3Local(E){
   const P = st.p3, L2 = P.last, landing = typeof E.land === 'number';
   setPhase(t('stage3', {n: Math.min(P.pos+1, 9)}));
   const slot = i => { const c = P.sl[i], up = !!P.rv[i]; return slotHTML(P, i, {up, flip: up && !landing && E.flip === c, cls: landing && E.land === i ? 'land' : ''}); };
   const cur = P.sl[Math.min(P.pos, 8)];
-  let mid = `<div class="bigdraw">${L2 ? cardHTML(L2.c, {flip: landing && E.flip === L2.c}) : cardHTML(null, {up:false})}</div>`;
+  const showDrawn = P.s !== 'g' && L2 && landing && E.flip === L2.c;
+  let mid = `<div class="bigdraw">${deckStack(showDrawn ? L2.c : null)}</div>`;
   if(P.s === 'g') mid += `<div class="ask">${t('hlThan', {c: shortArt(cur)})}</div><div class="arrows"><button class="arrow" data-act="vote" data-v="mayor" aria-label="${t('higherAria')}">▲</button><button class="arrow" data-act="vote" data-v="menor" aria-label="${t('lowerAria')}">▼</button></div>`;
   else if(P.s === 'r') mid += `<div class="stamp good">${t('hit')}</div>`;
   else if(P.s === 'w') mid += `<div class="stamp win">${t('endTrip')}</div>`;
@@ -1806,7 +1816,7 @@ function renderP3(E){
   const names = P.rid.map(i => esc(st.pl[i].n)).join(', ');
   main.innerHTML = `<section class="scr p3"><p class="riders">${t('onBus')} <b>${names}</b>${!rider ? ' · ' + t('watching') : ''}</p>
     <div class="bus"><div class="bridge">${slot(4)}</div><div class="col l">${[3,2,1,0].map(slot).join('')}</div>
-      <div class="mid"><div class="pile"><div class="deckstack">${cardHTML(null,{up:false})}<span class="cnt">${P.dc}</span></div>${drawn}</div>${mid}</div>
+      <div class="mid"><div class="pile"><div class="deckstack" style="--sw:calc(var(--bw) * .95)">${deckStack(null)}<span class="cnt">${P.dc}</span></div>${drawn}</div>${mid}</div>
       <div class="col r">${[5,6,7,8].map(slot).join('')}</div></div></section>`;
   if(P.s === 'g'){
     if(multi){ const m = majority(P);

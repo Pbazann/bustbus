@@ -112,9 +112,9 @@ h1.title{margin:0;line-height:0}
 .deck-opt b{font-family:var(--f-display);font-weight:400;font-size:14px}
 .deck-opt small{color:var(--muted);font-size:12px;line-height:1.15}
 .codebox{width:100%;text-align:center;font-family:var(--f-display);font-size:34px;letter-spacing:10px;text-transform:uppercase;padding:10px 0 10px 10px;border:0;border-radius:12px;background:var(--ticket);color:var(--ticket-ink);box-shadow:0 3px 0 var(--ticket-edge)}
-.names{display:flex;flex-direction:column;gap:7px;width:min(100%,300px);min-height:0;overflow-y:auto;padding:2px 8px 6px}
+.names{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,auto);grid-auto-flow:column;gap:7px 10px;width:100%;min-height:0;align-content:start;padding:2px 6px 6px}
 .local-setup{gap:clamp(6px,1.6cqh,12px)}
-.local-setup .names{flex:1;align-self:center}
+.local-setup .names{flex:none}
 .nrow{flex:none;min-width:0}
 .names .ticket input{font-size:15.5px;padding:8px 8px}
 .names .stub{padding:0 9px;font-size:13px;min-width:34px}
@@ -126,7 +126,7 @@ h1.title{margin:0;line-height:0}
 .bigcode{flex-direction:column;padding:10px 30px 12px;transform:rotate(-2deg)}
 .bigcode small{font-family:var(--f-cond);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;opacity:.7}
 .bigcode b{font-family:var(--f-display);font-weight:400;font-size:clamp(40px,12cqw,56px);letter-spacing:8px;line-height:1.05}
-.plist{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;overflow:hidden}
+.plist{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,auto);grid-auto-flow:column;gap:8px 10px;width:100%;padding-top:8px}
 .pchip{padding:9px 10px;font-weight:700;font-size:15.5px;min-width:0;justify-content:space-between;gap:6px}
 .pchip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pchip em{font-style:normal;font-family:var(--f-cond);font-size:12px;letter-spacing:.8px;text-transform:uppercase;opacity:.65;flex:none}
@@ -235,8 +235,9 @@ h1.title{margin:0;line-height:0}
 .pbtn:active{transform:scale(.96)}
 .p2.local .pyr{--pw:min(22cqw,13.5cqh)}
 .ann{display:flex;flex-direction:column;gap:2px;margin-top:2px}
-.ann span{font-family:var(--f-display);font-size:clamp(15px,4.6cqw,19px);color:var(--stop-soft);animation:stamp .35s .55s both}
-.counts{flex:none;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.ann span{font-family:var(--f-display);font-size:clamp(15px,4.6cqw,19px);color:var(--stop-soft);animation:annIn .35s .55s both}
+@keyframes annIn{from{opacity:0;transform:scale(1.4)}to{opacity:1;transform:none}}
+.counts{flex:none;display:grid;gap:5px;justify-content:center}
 .cchip{padding:4px 9px;gap:6px;font-size:13.5px}
 .cchip b{max-width:16ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cchip em{font-style:normal;font-family:var(--f-display);font-size:13px}
@@ -331,6 +332,18 @@ h1.title{margin:0;line-height:0}
 .cchip.mine{background:#ffd85c;box-shadow:0 3px 0 #c99a12}
 .p2 .p2info:empty{display:none}
 
+
+.avc{position:relative;display:inline-grid;flex:none}
+.crown{position:absolute;left:50%;top:-11px;width:18px;height:12px;transform:translateX(-50%) rotate(-8deg);z-index:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
+.pchip{padding:9px 10px;gap:8px}
+.rowav{border:0;background:none;cursor:pointer;padding:0 6px;border-right:2px dashed rgba(43,34,54,.35);opacity:1}
+.nrow input{padding:8px 4px!important;font-size:15px!important}
+.nrow .rm{width:28px}
+.iconhead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.randbtn{width:auto;padding:7px 12px;font-size:14px}
+.avopts button.small{flex:1}
+.cchip{justify-content:center;min-width:0}
+
 /* ---------- Final ---------- */
 .end{gap:1.5cqh;align-items:center;text-align:center}
 .rank{display:flex;flex-direction:column;gap:clamp(4px,1cqh,8px);width:100%;min-height:0}
@@ -395,7 +408,6 @@ h1.title{margin:0;line-height:0}
   <div class="drawer-h" id="tOptions">Opciones</div>
   <button class="drow" id="optMusic" aria-pressed="true"><span id="tMusic">Música</span><span class="sw"></span></button>
   <button class="drow" id="optSfx" aria-pressed="true"><span id="tSfx">Efectos de sonido</span><span class="sw"></span></button>
-  <button class="drow" id="optHints" aria-pressed="false"><span id="tHints">Pistas en la pirámide</span><span class="sw"></span></button>
   <button class="drow" id="optLang"><span id="tLang">Idioma</span><span id="tLangCur" class="lcur">Español ›</span></button>
   <div class="sep"></div>
   <button class="drow" id="optRules"><span id="tRules">Ver reglas</span><span>›</span></button>
@@ -426,7 +438,7 @@ let mode = null;        // 'local' | 'host' | 'guest'
 let st = null;          // estado compartido de la partida
 let H = null;           // privado del anfitrión: mazo y descartes
 let code = null, R = null, seenActs = {}, myQ = [], mySeq = 0;
-const ui = { screen:'home', deck: store.get('deck','poker'), name: (store.get('profile', {}) || {}).name || store.get('name',''), names: store.get('names',['','','']), hints: store.get('hints', false), joinCode:'' };
+const ui = { avs: store.get('avs', []), screen:'home', deck: store.get('deck','poker'), name: (store.get('profile', {}) || {}).name || store.get('name',''), names: store.get('names',['','','']), hints: store.get('hints', false), joinCode:'' };
 if(!Array.isArray(ui.names) || ui.names.length < 2) ui.names = ['','',''];
 let seenEv = 0, bannerT = null;
 
@@ -444,11 +456,11 @@ es:{
  codeLbl:"Código de partida (4 números)", joinBtn:"Unirse ▸", phJoin:"Unirse", phLocal:"Un solo móvil", players:"Jugadores", addPlayer:"+ Añadir jugador", nameShort:"Nombre", removePlayer:"Quitar jugador {n}", startN:"Empezar ▸",
  game:"Partida {c}", searching:"Buscando", connecting:"Conectando con quien ha creado la partida…", waiting:"Esperando…",
  lobbyAdmin:"Lobby · eres el admin", lobby:"Lobby", chooseDeck:"Escoge la baraja", deckInfoPoker:"Baraja de póker · empieza el admin.", deckInfoEs:"Baraja española · empieza el admin.",
- gameCode:"Código de partida", tellCode:"Diles este código para que entren con «{j}».", passengers:"Pasajeros", admin:"Admin", you:"Tú", photoEdit:"✎ Foto", changePhoto:"Cambiar tu foto de perfil", tapTicket:"Toca tu billete para cambiar tu foto.",
+ gameCode:"Código de partida", tellCode:"Comparte este código con tus amigos.", passengers:"Pasajeros", admin:"Admin", you:"Tú", photoEdit:"✎ Foto", changePhoto:"Cambiar tu foto de perfil", tapTicket:"Toca tu billete para cambiar tu foto.",
  waitPlayers:"Esperando jugadores…", startWith:"Iniciar con {n} ▸", waitAdmin:"Esperando al admin", creating:"Creando partida…", searchingGame:"Buscando partida…",
  errCode:"El código son 4 números", notFound:"No encuentro la partida {c}. Revisa el código", errConn:"No se pudo conectar. Revisa tu conexión a internet e inténtalo otra vez", errSync:"No se pudo sincronizar la partida", lostConn:"Se ha perdido la conexión", hostGone:"El anfitrión se ha desconectado. Esperando a que vuelva…",
  errMin2:"Hacen falta al menos 2 jugadores", errMax:"Con esta baraja caben {n} jugadores", errDup:"Hay dos nombres iguales", deckEmpty:"Mazo vacío: se barajan los descartes",
- yourTicket:"Tu billete", name:"Nombre", orIcon:"O elige un icono", gallery:"Galería", camera:"Cámara", yourPhoto:"Tu foto", close:"Cerrar", errImg:"Elige una imagen", errPhoto:"No se pudo usar esa foto", errReadPhoto:"No se pudo leer la foto", saveN:"Guardar ▸",
+ yourTicket:"Tu billete", name:"Nombre", orIcon:"Elige un icono", randomIcon:"Icono aleatorio", gallery:"Galería", camera:"Cámara", yourPhoto:"Tu foto", close:"Cerrar", errImg:"Elige una imagen", errPhoto:"No se pudo usar esa foto", errReadPhoto:"No se pudo leer la foto", saveN:"Guardar ▸",
  stage1:"Parada 1 · Carta {n} de 4", q0:"¿Par o impar?", q1:"¿Arriba o abajo?", q2:"¿Dentro o fuera?", q3:"¿Mismo palo o diferente?",
  o_par:"Par", o_impar:"Impar", o_mayor:"Arriba", o_menor:"Abajo", o_dentro:"Dentro", o_fuera:"Fuera", o_mismo:"Mismo palo", o_distinto:"Diferente",
  even:"par", odd:"impar", whyParity:"Es {p} ({v}).", whyTie1:"Mismo número que la primera.", whyHigher:"Mayor que {c}.", whyLower:"Menor que {c}.", whyTie2:"Mismo número que uno de los extremos.", whyIn:"Cae dentro ({a}–{b}).", whyOut:"Cae fuera ({a}–{b}).", whySame:"Repite {s}.", whyNew:"Es un palo nuevo.",
@@ -486,11 +498,11 @@ ca:{
  codeLbl:"Codi de partida (4 números)", joinBtn:"Unir-se ▸", phJoin:"Unir-se", phLocal:"Un sol mòbil", players:"Jugadors", addPlayer:"+ Afegir jugador", nameShort:"Nom", removePlayer:"Treure el jugador {n}", startN:"Començar ▸",
  game:"Partida {c}", searching:"Buscant", connecting:"Connectant amb qui ha creat la partida…", waiting:"Esperant…",
  lobbyAdmin:"Lobby · ets l'admin", lobby:"Lobby", chooseDeck:"Tria la baralla", deckInfoPoker:"Baralla de pòquer · comença l'admin.", deckInfoEs:"Baralla espanyola · comença l'admin.",
- gameCode:"Codi de partida", tellCode:"Digues-los aquest codi perquè entrin amb «{j}».", passengers:"Passatgers", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Canviar la foto de perfil", tapTicket:"Toca el teu bitllet per canviar la foto.",
+ gameCode:"Codi de partida", tellCode:"Comparteix aquest codi amb els teus amics.", passengers:"Passatgers", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Canviar la foto de perfil", tapTicket:"Toca el teu bitllet per canviar la foto.",
  waitPlayers:"Esperant jugadors…", startWith:"Començar amb {n} ▸", waitAdmin:"Esperant l'admin", creating:"Creant la partida…", searchingGame:"Buscant la partida…",
  errCode:"El codi són 4 números", notFound:"No trobo la partida {c}. Revisa el codi", errConn:"No s'ha pogut connectar. Revisa la connexió a internet i torna-ho a provar", errSync:"No s'ha pogut sincronitzar la partida", lostConn:"S'ha perdut la connexió", hostGone:"L'amfitrió s'ha desconnectat. Esperant que torni…",
  errMin2:"Calen almenys 2 jugadors", errMax:"Amb aquesta baralla hi caben {n} jugadors", errDup:"Hi ha dos noms iguals", deckEmpty:"Munt buit: es barregen les descartades",
- yourTicket:"El teu bitllet", name:"Nom", orIcon:"O tria una icona", gallery:"Galeria", camera:"Càmera", yourPhoto:"La teva foto", close:"Tancar", errImg:"Tria una imatge", errPhoto:"No s'ha pogut fer servir aquesta foto", errReadPhoto:"No s'ha pogut llegir la foto", saveN:"Desar ▸",
+ yourTicket:"El teu bitllet", name:"Nom", orIcon:"Tria una icona", randomIcon:"Icona aleatòria", gallery:"Galeria", camera:"Càmera", yourPhoto:"La teva foto", close:"Tancar", errImg:"Tria una imatge", errPhoto:"No s'ha pogut fer servir aquesta foto", errReadPhoto:"No s'ha pogut llegir la foto", saveN:"Desar ▸",
  stage1:"Parada 1 · Carta {n} de 4", q0:"Parell o senar?", q1:"Amunt o avall?", q2:"Dins o fora?", q3:"Mateix pal o diferent?",
  o_par:"Parell", o_impar:"Senar", o_mayor:"Amunt", o_menor:"Avall", o_dentro:"Dins", o_fuera:"Fora", o_mismo:"Mateix pal", o_distinto:"Diferent",
  even:"parell", odd:"senar", whyParity:"És {p} ({v}).", whyTie1:"Mateix número que la primera.", whyHigher:"Més alta que {c}.", whyLower:"Més baixa que {c}.", whyTie2:"Mateix número que un dels extrems.", whyIn:"Cau dins ({a}–{b}).", whyOut:"Cau fora ({a}–{b}).", whySame:"Repeteix {s}.", whyNew:"És un pal nou.",
@@ -528,11 +540,11 @@ eu:{
  codeLbl:"Partidaren kodea (4 zenbaki)", joinBtn:"Batu ▸", phJoin:"Batu", phLocal:"Mugikor bakarra", players:"Jokalariak", addPlayer:"+ Jokalaria gehitu", nameShort:"Izena", removePlayer:"{n}. jokalaria kendu", startN:"Hasi ▸",
  game:"{c} partida", searching:"Bilatzen", connecting:"Partida sortu duenarekin konektatzen…", waiting:"Zain…",
  lobbyAdmin:"Lobby · zu zara admina", lobby:"Lobby", chooseDeck:"Aukeratu karta-sorta", deckInfoPoker:"Poker kartak · admina hasiko da.", deckInfoEs:"Karta espainiarrak · admina hasiko da.",
- gameCode:"Partidaren kodea", tellCode:"Esan kode hau «{j}» erabiliz sar daitezen.", passengers:"Bidaiariak", admin:"Admin", you:"Zu", photoEdit:"✎ Argazkia", changePhoto:"Profileko argazkia aldatu", tapTicket:"Ukitu zure txartela argazkia aldatzeko.",
+ gameCode:"Partidaren kodea", tellCode:"Partekatu kode hau zure lagunekin.", passengers:"Bidaiariak", admin:"Admin", you:"Zu", photoEdit:"✎ Argazkia", changePhoto:"Profileko argazkia aldatu", tapTicket:"Ukitu zure txartela argazkia aldatzeko.",
  waitPlayers:"Jokalarien zain…", startWith:"Hasi {n}rekin ▸", waitAdmin:"Adminaren zain", creating:"Partida sortzen…", searchingGame:"Partida bilatzen…",
  errCode:"Kodea 4 zenbaki dira", notFound:"Ez dut {c} partida aurkitzen. Begiratu kodea", errConn:"Ezin izan da konektatu. Begiratu interneteko konexioa eta saiatu berriro", errSync:"Ezin izan da partida sinkronizatu", lostConn:"Konexioa galdu da", hostGone:"Anfitrioia deskonektatu da. Itzuli arte zain…",
  errMin2:"Gutxienez 2 jokalari behar dira", errMax:"Karta-sorta honekin {n} jokalari sartzen dira", errDup:"Bi izen berdin daude", deckEmpty:"Sorta hutsik: baztertutakoak nahasten dira",
- yourTicket:"Zure txartela", name:"Izena", orIcon:"Edo aukeratu ikono bat", gallery:"Galeria", camera:"Kamera", yourPhoto:"Zure argazkia", close:"Itxi", errImg:"Aukeratu irudi bat", errPhoto:"Ezin izan da argazki hori erabili", errReadPhoto:"Ezin izan da argazkia irakurri", saveN:"Gorde ▸",
+ yourTicket:"Zure txartela", name:"Izena", orIcon:"Aukeratu ikono bat", randomIcon:"Ausazko ikonoa", gallery:"Galeria", camera:"Kamera", yourPhoto:"Zure argazkia", close:"Itxi", errImg:"Aukeratu irudi bat", errPhoto:"Ezin izan da argazki hori erabili", errReadPhoto:"Ezin izan da argazkia irakurri", saveN:"Gorde ▸",
  stage1:"1. geltokia · {n}/4 karta", q0:"Bikoitia ala bakoitia?", q1:"Gora ala behera?", q2:"Barruan ala kanpoan?", q3:"Palo bera ala desberdina?",
  o_par:"Bikoitia", o_impar:"Bakoitia", o_mayor:"Gora", o_menor:"Behera", o_dentro:"Barruan", o_fuera:"Kanpoan", o_mismo:"Palo bera", o_distinto:"Desberdina",
  even:"bikoitia", odd:"bakoitia", whyParity:"{p} da ({v}).", whyTie1:"Lehenengoaren zenbaki bera.", whyHigher:"{c} baino handiagoa.", whyLower:"{c} baino txikiagoa.", whyTie2:"Muturretako baten zenbaki bera.", whyIn:"Barruan dago ({a}–{b}).", whyOut:"Kanpoan dago ({a}–{b}).", whySame:"{s} errepikatzen du.", whyNew:"Palo berria da.",
@@ -570,11 +582,11 @@ gl:{
  codeLbl:"Código da partida (4 números)", joinBtn:"Unirse ▸", phJoin:"Unirse", phLocal:"Un só móbil", players:"Xogadores", addPlayer:"+ Engadir xogador", nameShort:"Nome", removePlayer:"Quitar o xogador {n}", startN:"Comezar ▸",
  game:"Partida {c}", searching:"Buscando", connecting:"Conectando con quen creou a partida…", waiting:"Agardando…",
  lobbyAdmin:"Lobby · es o admin", lobby:"Lobby", chooseDeck:"Escolle a baralla", deckInfoPoker:"Baralla de póker · comeza o admin.", deckInfoEs:"Baralla española · comeza o admin.",
- gameCode:"Código da partida", tellCode:"Dilles este código para que entren con «{j}».", passengers:"Pasaxeiros", admin:"Admin", you:"Ti", photoEdit:"✎ Foto", changePhoto:"Cambiar a túa foto de perfil", tapTicket:"Toca o teu billete para cambiar a foto.",
+ gameCode:"Código da partida", tellCode:"Comparte este código cos teus amigos.", passengers:"Pasaxeiros", admin:"Admin", you:"Ti", photoEdit:"✎ Foto", changePhoto:"Cambiar a túa foto de perfil", tapTicket:"Toca o teu billete para cambiar a foto.",
  waitPlayers:"Agardando xogadores…", startWith:"Comezar con {n} ▸", waitAdmin:"Agardando polo admin", creating:"Creando a partida…", searchingGame:"Buscando a partida…",
  errCode:"O código son 4 números", notFound:"Non atopo a partida {c}. Revisa o código", errConn:"Non se puido conectar. Revisa a conexión a internet e téntao de novo", errSync:"Non se puido sincronizar a partida", lostConn:"Perdeuse a conexión", hostGone:"O anfitrión desconectouse. Agardando a que volva…",
  errMin2:"Fan falta polo menos 2 xogadores", errMax:"Con esta baralla caben {n} xogadores", errDup:"Hai dous nomes iguais", deckEmpty:"Mazo baleiro: barállanse os descartes",
- yourTicket:"O teu billete", name:"Nome", orIcon:"Ou escolle unha icona", gallery:"Galería", camera:"Cámara", yourPhoto:"A túa foto", close:"Pechar", errImg:"Escolle unha imaxe", errPhoto:"Non se puido usar esa foto", errReadPhoto:"Non se puido ler a foto", saveN:"Gardar ▸",
+ yourTicket:"O teu billete", name:"Nome", orIcon:"Escolle unha icona", randomIcon:"Icona aleatoria", gallery:"Galería", camera:"Cámara", yourPhoto:"A túa foto", close:"Pechar", errImg:"Escolle unha imaxe", errPhoto:"Non se puido usar esa foto", errReadPhoto:"Non se puido ler a foto", saveN:"Gardar ▸",
  stage1:"Parada 1 · Carta {n} de 4", q0:"Par ou impar?", q1:"Arriba ou abaixo?", q2:"Dentro ou fóra?", q3:"Mesmo pau ou diferente?",
  o_par:"Par", o_impar:"Impar", o_mayor:"Arriba", o_menor:"Abaixo", o_dentro:"Dentro", o_fuera:"Fóra", o_mismo:"Mesmo pau", o_distinto:"Diferente",
  even:"par", odd:"impar", whyParity:"É {p} ({v}).", whyTie1:"Mesmo número ca a primeira.", whyHigher:"Maior ca {c}.", whyLower:"Menor ca {c}.", whyTie2:"Mesmo número ca un dos extremos.", whyIn:"Cae dentro ({a}–{b}).", whyOut:"Cae fóra ({a}–{b}).", whySame:"Repite {s}.", whyNew:"É un pau novo.",
@@ -612,11 +624,11 @@ en:{
  codeLbl:"Game code (4 digits)", joinBtn:"Join ▸", phJoin:"Join", phLocal:"One phone", players:"Players", addPlayer:"+ Add player", nameShort:"Name", removePlayer:"Remove player {n}", startN:"Start ▸",
  game:"Game {c}", searching:"Searching", connecting:"Connecting to the game creator…", waiting:"Waiting…",
  lobbyAdmin:"Lobby · you're the admin", lobby:"Lobby", chooseDeck:"Choose the deck", deckInfoPoker:"Poker deck · the admin starts.", deckInfoEs:"Spanish deck · the admin starts.",
- gameCode:"Game code", tellCode:"Give them this code to join with «{j}».", passengers:"Passengers", admin:"Admin", you:"You", photoEdit:"✎ Photo", changePhoto:"Change your profile photo", tapTicket:"Tap your ticket to change your photo.",
+ gameCode:"Game code", tellCode:"Share this code with your friends.", passengers:"Passengers", admin:"Admin", you:"You", photoEdit:"✎ Photo", changePhoto:"Change your profile photo", tapTicket:"Tap your ticket to change your photo.",
  waitPlayers:"Waiting for players…", startWith:"Start with {n} ▸", waitAdmin:"Waiting for the admin", creating:"Creating game…", searchingGame:"Looking for the game…",
  errCode:"The code is 4 digits", notFound:"Can't find game {c}. Check the code", errConn:"Couldn't connect. Check your internet connection and try again", errSync:"Couldn't sync the game", lostConn:"Connection lost", hostGone:"The host disconnected. Waiting for them to come back…",
  errMin2:"You need at least 2 players", errMax:"This deck fits {n} players", errDup:"Two names are the same", deckEmpty:"Deck empty: shuffling the discards",
- yourTicket:"Your ticket", name:"Name", orIcon:"Or pick an icon", gallery:"Gallery", camera:"Camera", yourPhoto:"Your photo", close:"Close", errImg:"Pick an image", errPhoto:"Couldn't use that photo", errReadPhoto:"Couldn't read the photo", saveN:"Save ▸",
+ yourTicket:"Your ticket", name:"Name", orIcon:"Pick an icon", randomIcon:"Random icon", gallery:"Gallery", camera:"Camera", yourPhoto:"Your photo", close:"Close", errImg:"Pick an image", errPhoto:"Couldn't use that photo", errReadPhoto:"Couldn't read the photo", saveN:"Save ▸",
  stage1:"Stop 1 · Card {n} of 4", q0:"Even or odd?", q1:"Higher or lower?", q2:"Inside or outside?", q3:"Same suit or different?",
  o_par:"Even", o_impar:"Odd", o_mayor:"Higher", o_menor:"Lower", o_dentro:"Inside", o_fuera:"Outside", o_mismo:"Same suit", o_distinto:"Different",
  even:"even", odd:"odd", whyParity:"It's {p} ({v}).", whyTie1:"Same number as the first one.", whyHigher:"Higher than {c}.", whyLower:"Lower than {c}.", whyTie2:"Same number as one of the ends.", whyIn:"It's inside ({a}–{b}).", whyOut:"It's outside ({a}–{b}).", whySame:"Repeats {s}.", whyNew:"It's a new suit.",
@@ -654,11 +666,11 @@ fr:{
  codeLbl:"Code de la partie (4 chiffres)", joinBtn:"Rejoindre ▸", phJoin:"Rejoindre", phLocal:"Un seul téléphone", players:"Joueurs", addPlayer:"+ Ajouter un joueur", nameShort:"Nom", removePlayer:"Retirer le joueur {n}", startN:"Commencer ▸",
  game:"Partie {c}", searching:"Recherche", connecting:"Connexion à la personne qui a créé la partie…", waiting:"En attente…",
  lobbyAdmin:"Lobby · tu es l'admin", lobby:"Lobby", chooseDeck:"Choisis le jeu de cartes", deckInfoPoker:"Jeu de poker · l'admin lance la partie.", deckInfoEs:"Jeu espagnol · l'admin lance la partie.",
- gameCode:"Code de la partie", tellCode:"Donne-leur ce code pour entrer avec « {j} ».", passengers:"Passagers", admin:"Admin", you:"Toi", photoEdit:"✎ Photo", changePhoto:"Changer ta photo de profil", tapTicket:"Touche ton ticket pour changer ta photo.",
+ gameCode:"Code de la partie", tellCode:"Partage ce code avec tes amis.", passengers:"Passagers", admin:"Admin", you:"Toi", photoEdit:"✎ Photo", changePhoto:"Changer ta photo de profil", tapTicket:"Touche ton ticket pour changer ta photo.",
  waitPlayers:"En attente de joueurs…", startWith:"Lancer à {n} ▸", waitAdmin:"En attente de l'admin", creating:"Création de la partie…", searchingGame:"Recherche de la partie…",
  errCode:"Le code fait 4 chiffres", notFound:"Partie {c} introuvable. Vérifie le code", errConn:"Connexion impossible. Vérifie ta connexion internet et réessaie", errSync:"Impossible de synchroniser la partie", lostConn:"Connexion perdue", hostGone:"L'hôte s'est déconnecté. En attente de son retour…",
  errMin2:"Il faut au moins 2 joueurs", errMax:"Ce jeu permet {n} joueurs", errDup:"Deux noms sont identiques", deckEmpty:"Pioche vide : on mélange la défausse",
- yourTicket:"Ton ticket", name:"Nom", orIcon:"Ou choisis une icône", gallery:"Galerie", camera:"Appareil photo", yourPhoto:"Ta photo", close:"Fermer", errImg:"Choisis une image", errPhoto:"Impossible d'utiliser cette photo", errReadPhoto:"Impossible de lire la photo", saveN:"Enregistrer ▸",
+ yourTicket:"Ton ticket", name:"Nom", orIcon:"Choisis une icône", randomIcon:"Icône aléatoire", gallery:"Galerie", camera:"Appareil photo", yourPhoto:"Ta photo", close:"Fermer", errImg:"Choisis une image", errPhoto:"Impossible d'utiliser cette photo", errReadPhoto:"Impossible de lire la photo", saveN:"Enregistrer ▸",
  stage1:"Arrêt 1 · Carte {n} sur 4", q0:"Pair ou impair ?", q1:"Plus haut ou plus bas ?", q2:"Dedans ou dehors ?", q3:"Même couleur ou différente ?",
  o_par:"Pair", o_impair:"Impair", o_impar:"Impair", o_mayor:"Plus haut", o_menor:"Plus bas", o_dentro:"Dedans", o_fuera:"Dehors", o_mismo:"Même couleur", o_distinto:"Différente",
  even:"pair", odd:"impair", whyParity:"C'est {p} ({v}).", whyTie1:"Même valeur que la première.", whyHigher:"Plus haut que {c}.", whyLower:"Plus bas que {c}.", whyTie2:"Même valeur qu'une des bornes.", whyIn:"Dedans ({a}–{b}).", whyOut:"Dehors ({a}–{b}).", whySame:"Encore du {s}.", whyNew:"C'est une nouvelle couleur.",
@@ -696,11 +708,11 @@ it:{
  codeLbl:"Codice partita (4 cifre)", joinBtn:"Unisciti ▸", phJoin:"Unisciti", phLocal:"Un solo telefono", players:"Giocatori", addPlayer:"+ Aggiungi giocatore", nameShort:"Nome", removePlayer:"Rimuovi giocatore {n}", startN:"Inizia ▸",
  game:"Partita {c}", searching:"Ricerca", connecting:"Connessione con chi ha creato la partita…", waiting:"In attesa…",
  lobbyAdmin:"Lobby · sei l'admin", lobby:"Lobby", chooseDeck:"Scegli il mazzo", deckInfoPoker:"Mazzo da poker · inizia l'admin.", deckInfoEs:"Mazzo spagnolo · inizia l'admin.",
- gameCode:"Codice partita", tellCode:"Di' loro questo codice per entrare con «{j}».", passengers:"Passeggeri", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Cambia la tua foto profilo", tapTicket:"Tocca il tuo biglietto per cambiare foto.",
+ gameCode:"Codice partita", tellCode:"Condividi questo codice con i tuoi amici.", passengers:"Passeggeri", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Cambia la tua foto profilo", tapTicket:"Tocca il tuo biglietto per cambiare foto.",
  waitPlayers:"In attesa di giocatori…", startWith:"Inizia in {n} ▸", waitAdmin:"In attesa dell'admin", creating:"Creazione della partita…", searchingGame:"Ricerca della partita…",
  errCode:"Il codice è di 4 cifre", notFound:"Non trovo la partita {c}. Controlla il codice", errConn:"Connessione non riuscita. Controlla internet e riprova", errSync:"Impossibile sincronizzare la partita", lostConn:"Connessione persa", hostGone:"L'host si è disconnesso. In attesa che torni…",
  errMin2:"Servono almeno 2 giocatori", errMax:"Con questo mazzo si gioca in {n}", errDup:"Ci sono due nomi uguali", deckEmpty:"Mazzo vuoto: si mescolano gli scarti",
- yourTicket:"Il tuo biglietto", name:"Nome", orIcon:"Oppure scegli un'icona", gallery:"Galleria", camera:"Fotocamera", yourPhoto:"La tua foto", close:"Chiudi", errImg:"Scegli un'immagine", errPhoto:"Impossibile usare questa foto", errReadPhoto:"Impossibile leggere la foto", saveN:"Salva ▸",
+ yourTicket:"Il tuo biglietto", name:"Nome", orIcon:"Scegli un'icona", randomIcon:"Icona casuale", gallery:"Galleria", camera:"Fotocamera", yourPhoto:"La tua foto", close:"Chiudi", errImg:"Scegli un'immagine", errPhoto:"Impossibile usare questa foto", errReadPhoto:"Impossibile leggere la foto", saveN:"Salva ▸",
  stage1:"Fermata 1 · Carta {n} di 4", q0:"Pari o dispari?", q1:"Su o giù?", q2:"Dentro o fuori?", q3:"Stesso seme o diverso?",
  o_par:"Pari", o_impar:"Dispari", o_mayor:"Su", o_menor:"Giù", o_dentro:"Dentro", o_fuera:"Fuori", o_mismo:"Stesso seme", o_distinto:"Diverso",
  even:"pari", odd:"dispari", whyParity:"È {p} ({v}).", whyTie1:"Stesso numero della prima.", whyHigher:"Più alta di {c}.", whyLower:"Più bassa di {c}.", whyTie2:"Stesso numero di uno degli estremi.", whyIn:"È dentro ({a}–{b}).", whyOut:"È fuori ({a}–{b}).", whySame:"Ripete {s}.", whyNew:"È un seme nuovo.",
@@ -738,11 +750,11 @@ pt:{
  codeLbl:"Código da partida (4 números)", joinBtn:"Entrar ▸", phJoin:"Entrar", phLocal:"Um só telemóvel", players:"Jogadores", addPlayer:"+ Adicionar jogador", nameShort:"Nome", removePlayer:"Remover jogador {n}", startN:"Começar ▸",
  game:"Partida {c}", searching:"A procurar", connecting:"A ligar a quem criou a partida…", waiting:"À espera…",
  lobbyAdmin:"Lobby · és o admin", lobby:"Lobby", chooseDeck:"Escolhe o baralho", deckInfoPoker:"Baralho de póquer · o admin começa.", deckInfoEs:"Baralho espanhol · o admin começa.",
- gameCode:"Código da partida", tellCode:"Diz-lhes este código para entrarem com «{j}».", passengers:"Passageiros", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Mudar a tua foto de perfil", tapTicket:"Toca no teu bilhete para mudar a foto.",
+ gameCode:"Código da partida", tellCode:"Partilha este código com os teus amigos.", passengers:"Passageiros", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Mudar a tua foto de perfil", tapTicket:"Toca no teu bilhete para mudar a foto.",
  waitPlayers:"À espera de jogadores…", startWith:"Começar com {n} ▸", waitAdmin:"À espera do admin", creating:"A criar a partida…", searchingGame:"A procurar a partida…",
  errCode:"O código são 4 números", notFound:"Não encontro a partida {c}. Verifica o código", errConn:"Não foi possível ligar. Verifica a ligação à internet e tenta outra vez", errSync:"Não foi possível sincronizar a partida", lostConn:"A ligação perdeu-se", hostGone:"O anfitrião desligou-se. À espera que volte…",
  errMin2:"São precisos pelo menos 2 jogadores", errMax:"Com este baralho cabem {n} jogadores", errDup:"Há dois nomes iguais", deckEmpty:"Baralho vazio: baralham-se as descartadas",
- yourTicket:"O teu bilhete", name:"Nome", orIcon:"Ou escolhe um ícone", gallery:"Galeria", camera:"Câmara", yourPhoto:"A tua foto", close:"Fechar", errImg:"Escolhe uma imagem", errPhoto:"Não foi possível usar essa foto", errReadPhoto:"Não foi possível ler a foto", saveN:"Guardar ▸",
+ yourTicket:"O teu bilhete", name:"Nome", orIcon:"Escolhe um ícone", randomIcon:"Ícone aleatório", gallery:"Galeria", camera:"Câmara", yourPhoto:"A tua foto", close:"Fechar", errImg:"Escolhe uma imagem", errPhoto:"Não foi possível usar essa foto", errReadPhoto:"Não foi possível ler a foto", saveN:"Guardar ▸",
  stage1:"Paragem 1 · Carta {n} de 4", q0:"Par ou ímpar?", q1:"Acima ou abaixo?", q2:"Dentro ou fora?", q3:"Mesmo naipe ou diferente?",
  o_par:"Par", o_impar:"Ímpar", o_mayor:"Acima", o_menor:"Abaixo", o_dentro:"Dentro", o_fuera:"Fora", o_mismo:"Mesmo naipe", o_distinto:"Diferente",
  even:"par", odd:"ímpar", whyParity:"É {p} ({v}).", whyTie1:"Mesmo número que a primeira.", whyHigher:"Maior que {c}.", whyLower:"Menor que {c}.", whyTie2:"Mesmo número que um dos extremos.", whyIn:"Cai dentro ({a}–{b}).", whyOut:"Cai fora ({a}–{b}).", whySame:"Repete {s}.", whyNew:"É um naipe novo.",
@@ -780,11 +792,11 @@ de:{
  codeLbl:"Spielcode (4 Ziffern)", joinBtn:"Beitreten ▸", phJoin:"Beitreten", phLocal:"Ein Handy", players:"Spieler", addPlayer:"+ Spieler hinzufügen", nameShort:"Name", removePlayer:"Spieler {n} entfernen", startN:"Los ▸",
  game:"Spiel {c}", searching:"Suche", connecting:"Verbinde mit dem Ersteller des Spiels…", waiting:"Warten…",
  lobbyAdmin:"Lobby · du bist Admin", lobby:"Lobby", chooseDeck:"Wähle das Kartenspiel", deckInfoPoker:"Pokerkarten · der Admin startet.", deckInfoEs:"Spanisches Blatt · der Admin startet.",
- gameCode:"Spielcode", tellCode:"Gib ihnen diesen Code für «{j}».", passengers:"Fahrgäste", admin:"Admin", you:"Du", photoEdit:"✎ Foto", changePhoto:"Profilfoto ändern", tapTicket:"Tippe auf dein Ticket, um dein Foto zu ändern.",
+ gameCode:"Spielcode", tellCode:"Teile diesen Code mit deinen Freunden.", passengers:"Fahrgäste", admin:"Admin", you:"Du", photoEdit:"✎ Foto", changePhoto:"Profilfoto ändern", tapTicket:"Tippe auf dein Ticket, um dein Foto zu ändern.",
  waitPlayers:"Warte auf Spieler…", startWith:"Mit {n} starten ▸", waitAdmin:"Warte auf den Admin", creating:"Spiel wird erstellt…", searchingGame:"Spiel wird gesucht…",
  errCode:"Der Code hat 4 Ziffern", notFound:"Spiel {c} nicht gefunden. Prüfe den Code", errConn:"Verbindung fehlgeschlagen. Prüfe deine Internetverbindung und versuch es nochmal", errSync:"Spiel konnte nicht synchronisiert werden", lostConn:"Verbindung verloren", hostGone:"Der Host ist offline. Warte, bis er zurückkommt…",
  errMin2:"Es braucht mindestens 2 Spieler", errMax:"Mit diesem Blatt passen {n} Spieler", errDup:"Zwei Namen sind gleich", deckEmpty:"Stapel leer: Ablage wird gemischt",
- yourTicket:"Dein Ticket", name:"Name", orIcon:"Oder wähle ein Symbol", gallery:"Galerie", camera:"Kamera", yourPhoto:"Dein Foto", close:"Schließen", errImg:"Wähle ein Bild", errPhoto:"Dieses Foto geht nicht", errReadPhoto:"Foto konnte nicht gelesen werden", saveN:"Speichern ▸",
+ yourTicket:"Dein Ticket", name:"Name", orIcon:"Wähle ein Symbol", randomIcon:"Zufälliges Symbol", gallery:"Galerie", camera:"Kamera", yourPhoto:"Dein Foto", close:"Schließen", errImg:"Wähle ein Bild", errPhoto:"Dieses Foto geht nicht", errReadPhoto:"Foto konnte nicht gelesen werden", saveN:"Speichern ▸",
  stage1:"Haltestelle 1 · Karte {n} von 4", q0:"Gerade oder ungerade?", q1:"Höher oder tiefer?", q2:"Drinnen oder draußen?", q3:"Gleiche Farbe oder andere?",
  o_par:"Gerade", o_impar:"Ungerade", o_mayor:"Höher", o_menor:"Tiefer", o_dentro:"Drinnen", o_fuera:"Draußen", o_mismo:"Gleiche Farbe", o_distinto:"Andere",
  even:"gerade", odd:"ungerade", whyParity:"Sie ist {p} ({v}).", whyTie1:"Gleiche Zahl wie die erste.", whyHigher:"Höher als {c}.", whyLower:"Tiefer als {c}.", whyTie2:"Gleiche Zahl wie eine der Grenzen.", whyIn:"Liegt drinnen ({a}–{b}).", whyOut:"Liegt draußen ({a}–{b}).", whySame:"Wieder {s}.", whyNew:"Eine neue Farbe.",
@@ -822,11 +834,11 @@ zh:{
  codeLbl:"游戏代码（4位数字）", joinBtn:"加入 ▸", phJoin:"加入", phLocal:"一部手机", players:"玩家", addPlayer:"+ 添加玩家", nameShort:"名字", removePlayer:"移除玩家 {n}", startN:"开始 ▸",
  game:"游戏 {c}", searching:"正在查找", connecting:"正在连接游戏创建者…", waiting:"等待中…",
  lobbyAdmin:"大厅 · 你是管理员", lobby:"大厅", chooseDeck:"选择牌组", deckInfoPoker:"扑克牌 · 由管理员开始。", deckInfoEs:"西班牙牌 · 由管理员开始。",
- gameCode:"游戏代码", tellCode:"把这个代码告诉他们，用「{j}」加入。", passengers:"乘客", admin:"管理员", you:"你", photoEdit:"✎ 照片", changePhoto:"更换头像", tapTicket:"点击你的车票更换照片。",
+ gameCode:"游戏代码", tellCode:"把这个代码分享给你的朋友。", passengers:"乘客", admin:"管理员", you:"你", photoEdit:"✎ 照片", changePhoto:"更换头像", tapTicket:"点击你的车票更换照片。",
  waitPlayers:"等待玩家…", startWith:"{n}人开始 ▸", waitAdmin:"等待管理员", creating:"正在创建游戏…", searchingGame:"正在查找游戏…",
  errCode:"代码是4位数字", notFound:"找不到游戏 {c}，请检查代码", errConn:"无法连接，请检查网络后重试", errSync:"无法同步游戏", lostConn:"连接已断开", hostGone:"主持人已断开，等待其回来…",
  errMin2:"至少需要2名玩家", errMax:"此牌组最多 {n} 名玩家", errDup:"有两个名字相同", deckEmpty:"牌堆空了：洗入弃牌",
- yourTicket:"你的车票", name:"名字", orIcon:"或选择一个图标", gallery:"相册", camera:"相机", yourPhoto:"你的照片", close:"关闭", errImg:"请选择图片", errPhoto:"无法使用这张照片", errReadPhoto:"无法读取照片", saveN:"保存 ▸",
+ yourTicket:"你的车票", name:"名字", orIcon:"选择一个图标", randomIcon:"随机图标", gallery:"相册", camera:"相机", yourPhoto:"你的照片", close:"关闭", errImg:"请选择图片", errPhoto:"无法使用这张照片", errReadPhoto:"无法读取照片", saveN:"保存 ▸",
  stage1:"第1站 · 第{n}/4张", q0:"单还是双？", q1:"大还是小？", q2:"里面还是外面？", q3:"同花色还是不同？",
  o_par:"双", o_impar:"单", o_mayor:"大", o_menor:"小", o_dentro:"里面", o_fuera:"外面", o_mismo:"同花色", o_distinto:"不同",
  even:"双数", odd:"单数", whyParity:"是{p}（{v}）。", whyTie1:"与第一张点数相同。", whyHigher:"比{c}大。", whyLower:"比{c}小。", whyTie2:"与一端点数相同。", whyIn:"在范围内（{a}–{b}）。", whyOut:"在范围外（{a}–{b}）。", whySame:"又是{s}。", whyNew:"是新花色。",
@@ -864,11 +876,11 @@ ja:{
  codeLbl:"ゲームコード（4桁の数字）", joinBtn:"参加 ▸", phJoin:"参加", phLocal:"スマホ1台", players:"プレイヤー", addPlayer:"+ プレイヤーを追加", nameShort:"名前", removePlayer:"プレイヤー{n}を削除", startN:"スタート ▸",
  game:"ゲーム {c}", searching:"検索中", connecting:"作成者に接続しています…", waiting:"待機中…",
  lobbyAdmin:"ロビー · あなたが管理者", lobby:"ロビー", chooseDeck:"デッキを選ぶ", deckInfoPoker:"トランプ · 管理者が開始します。", deckInfoEs:"スペインのカード · 管理者が開始します。",
- gameCode:"ゲームコード", tellCode:"このコードを伝えて「{j}」から参加してもらおう。", passengers:"乗客", admin:"管理者", you:"あなた", photoEdit:"✎ 写真", changePhoto:"プロフィール写真を変更", tapTicket:"自分のチケットをタップして写真を変更。",
+ gameCode:"ゲームコード", tellCode:"このコードを友だちに共有しよう。", passengers:"乗客", admin:"管理者", you:"あなた", photoEdit:"✎ 写真", changePhoto:"プロフィール写真を変更", tapTicket:"自分のチケットをタップして写真を変更。",
  waitPlayers:"プレイヤーを待っています…", startWith:"{n}人で開始 ▸", waitAdmin:"管理者を待っています", creating:"ゲームを作成中…", searchingGame:"ゲームを検索中…",
  errCode:"コードは4桁の数字です", notFound:"ゲーム{c}が見つかりません。コードを確認してください", errConn:"接続できません。インターネット接続を確認して再試行してください", errSync:"ゲームを同期できません", lostConn:"接続が切れました", hostGone:"ホストが切断しました。戻るのを待っています…",
  errMin2:"2人以上必要です", errMax:"このデッキは{n}人までです", errDup:"同じ名前が2つあります", deckEmpty:"山札が空：捨て札をシャッフルします",
- yourTicket:"あなたのチケット", name:"名前", orIcon:"またはアイコンを選択", gallery:"ギャラリー", camera:"カメラ", yourPhoto:"あなたの写真", close:"閉じる", errImg:"画像を選んでください", errPhoto:"その写真は使えません", errReadPhoto:"写真を読み込めません", saveN:"保存 ▸",
+ yourTicket:"あなたのチケット", name:"名前", orIcon:"アイコンを選ぶ", randomIcon:"ランダムなアイコン", gallery:"ギャラリー", camera:"カメラ", yourPhoto:"あなたの写真", close:"閉じる", errImg:"画像を選んでください", errPhoto:"その写真は使えません", errReadPhoto:"写真を読み込めません", saveN:"保存 ▸",
  stage1:"停留所1 · {n}/4枚目", q0:"偶数？奇数？", q1:"上？下？", q2:"内側？外側？", q3:"同じマーク？違う？",
  o_par:"偶数", o_impar:"奇数", o_mayor:"上", o_menor:"下", o_dentro:"内側", o_fuera:"外側", o_mismo:"同じマーク", o_distinto:"違う",
  even:"偶数", odd:"奇数", whyParity:"{p}です（{v}）。", whyTie1:"1枚目と同じ数字。", whyHigher:"{c}より上。", whyLower:"{c}より下。", whyTie2:"端の数字と同じ。", whyIn:"内側（{a}–{b}）。", whyOut:"外側（{a}–{b}）。", whySame:"また{s}。", whyNew:"新しいマーク。",
@@ -906,7 +918,7 @@ const cardsN = n => t(n === 1 ? 'card1' : 'cardN', {n});
 const failsN = n => t(n === 1 ? 'fail1' : 'failN', {n});
 /* ================= Baraja ================= */
 const SUITS = { poker:['S','H','D','C'], es:['O','C','E','B'] };
-const MAXP = dk => dk === 'poker' ? 8 : 7;
+const MAXP = dk => 10;
 function rnd(n){ try{ const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; }catch(e){ return Math.floor(Math.random()*n); } }
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j = rnd(i+1); [a[i],a[j]] = [a[j],a[i]]; } return a; }
 function newDeck(dk, big){
@@ -1381,7 +1393,8 @@ function startLocal(){
   if(new Set(names.map(n => n.toLowerCase())).size !== names.length) return toast(t('errDup'));
   store.set('names', ui.names);
   mode = 'local'; musicStart(); keepAwake();
-  st = {n:0, ph:'lobby', dk:ui.deck, big:false, host:'local', pl:names.map((n,i) => ({id:'l'+i, n, h:[], d:0})), ev:null};
+  const rows = ui.names.map((n,i) => ({n: cleanName(n), av: localAv(i)})).filter(r => r.n);
+  st = {n:0, ph:'lobby', dk:ui.deck, big:false, host:'local', pl:rows.map((r,i) => ({id:'l'+i, n:r.n, av:r.av, h:[], d:0})), ev:null};
   H = {cards:[], discard:[], thrown:[]}; preload(st.dk);
   store.set('session', {mode:'local'});
   apply({t:'start'}, -1); commit();
@@ -1414,7 +1427,7 @@ function avatarHTML(av, name, cls){
 }
 function avOfPlayer(i){
   const p = st.pl[i]; if(!p) return avatarHTML(null, '?');
-  if(mode === 'local') return avatarHTML(p.n.toLowerCase() === (profile.name || '').toLowerCase() ? profile.av : null, p.n);
+  if(mode === 'local') return avatarHTML(p.av || (p.n.toLowerCase() === (profile.name || '').toLowerCase() ? profile.av : null), p.n);
   return avatarHTML(p.id === ME ? profile.av : AV[p.id], p.n);
 }
 function readPhoto(file, cb){
@@ -1436,17 +1449,24 @@ function readPhoto(file, cb){
   };
   fr.readAsDataURL(file);
 }
+const randAv = () => 'e' + rnd(EMOJI.length);
+function localAv(i){
+  if(!validAv(ui.avs[i])){ ui.avs[i] = i === 0 ? profile.av : randAv(); store.set('avs', ui.avs); }
+  return ui.avs[i];
+}
+let pickCb = null;
 function setMyAvatar(av){
   profile.av = av; store.set('profile', profile);
   modal.hidden = true; if(R) sendPresence(); render();
 }
-function openAvatarPicker(){
+function openAvatarPicker(cb, current, title){
+  pickCb = cb || setMyAvatar; current = current || profile.av;
   const icons = PRESETS.map((p,i) => 'p' + i).concat(EMOJI.map((e,i) => 'e' + i));
-  openModal(`<h3>${t('yourPhoto')}</h3>
-    <div class="avopts"><label class="secondary small">${t('gallery')}<input type="file" id="mGal" accept="image/*" hidden></label><label class="secondary small">${t('camera')}<input type="file" id="mCam" accept="image/*" capture="user" hidden></label></div>
-    <div class="avgrid modalgrid">${icons.map(v => `<button class="avpick" data-act="setav" data-v="${v}" aria-pressed="${profile.av === v}">${avatarHTML(v, '')}</button>`).join('')}</div>`,
+  openModal(`<h3>${title || t('yourPhoto')}</h3>
+    <div class="avopts"><label class="secondary small">${t('gallery')}<input type="file" id="mGal" accept="image/*" hidden></label><label class="secondary small">${t('camera')}<input type="file" id="mCam" accept="image/*" capture="user" hidden></label><button class="secondary small" data-act="setav" data-v="random">🎲 ${t('randomIcon')}</button></div>
+    <div class="avgrid modalgrid">${icons.map(v => `<button class="avpick" data-act="setav" data-v="${v}" aria-pressed="${current === v}">${avatarHTML(v, '')}</button>`).join('')}</div>`,
     `<div class="mact"><button data-m="close">${t('close')}</button></div>`);
-  const onFile = e => readPhoto(e.target.files && e.target.files[0], setMyAvatar);
+  const onFile = e => readPhoto(e.target.files && e.target.files[0], v => pickCb(v));
   $('#mGal').addEventListener('change', onFile); $('#mCam').addEventListener('change', onFile);
 }
 function renderProfile(){
@@ -1462,7 +1482,7 @@ function renderProfile(){
         </div></div>
       <div class="nmwrap"><label class="tk-l" for="pfn">${t('name')}</label><input id="pfn" value="${esc(nm)}" placeholder="${t('namePh')}" maxlength="14" autocomplete="off"></div>
     </div>
-    <p class="lbl" style="margin:0">${t('orIcon')}</p>
+    <div class="iconhead"><p class="lbl" style="margin:0">${t('orIcon')}</p><button class="secondary small randbtn" data-act="randav">🎲 ${t('randomIcon')}</button></div>
     <div class="avgrid">${icons.map(v => `<button class="avpick" data-act="pickav" data-v="${v}" aria-pressed="${av === v}">${avatarHTML(v, '')}</button>`).join('')}</div></section>`;
   const onFile = e => { ui.avMenu = false; readPhoto(e.target.files && e.target.files[0]); };
   $('#phGal').addEventListener('change', onFile); $('#phCam').addEventListener('change', onFile);
@@ -1596,7 +1616,7 @@ function renderLocal(){
   const max = MAXP(ui.deck);
   main.innerHTML = `<section class="scr form local-setup">${backBtn()}${deckPicker()}
     <p class="lbl" style="margin:0">${t('players')} · ${ui.names.length}/${max}</p>
-    <div class="names">${ui.names.map((n,i) => `<div class="ticket nrow"><div class="stub">${i+1}</div><input id="ln-${i}" data-i="${i}" value="${esc(n)}" placeholder="${t('nameShort')}" maxlength="14" autocomplete="off">${ui.names.length > 2 ? `<button class="rm" data-act="rmP" data-i="${i}" aria-label="${t('removePlayer', {n: i+1})}">✕</button>` : ''}</div>`).join('')}
+    <div class="names">${ui.names.map((n,i) => `<div class="ticket nrow"><button class="stub rowav" data-act="lav" data-i="${i}" aria-label="${t('changePhoto')}">${avatarHTML(localAv(i), n, 'sm')}</button><input id="ln-${i}" data-i="${i}" value="${esc(n)}" placeholder="${t('nameShort')}" maxlength="14" autocomplete="off">${ui.names.length > 2 ? `<button class="rm" data-act="rmP" data-i="${i}" aria-label="${t('removePlayer', {n: i+1})}">✕</button>` : ''}</div>`).join('')}
       ${ui.names.length < max ? `<button class="addp" data-act="addP">${t('addPlayer')}</button>` : ''}</div></section>`;
   setNext(t('startN'), true, startLocal);
 }
@@ -1605,6 +1625,7 @@ function renderWaiting(){
   main.innerHTML = `<section class="scr lobby" style="justify-content:center"><div class="ticket notch bigcode"><small>${t('searching')}</small><b>${esc(code)}</b></div><p class="hint">${t('connecting')}</p></section>`;
   setNext(t('waiting'), false);
 }
+const CROWN = '<svg class="crown" viewBox="0 0 24 16" aria-label="Admin"><path d="M2 14L1 4l6 4 5-7 5 7 6-4-1 10z" fill="#ffc21a" stroke="#8a5d00" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="10" r="1.6" fill="#e8322b"/></svg>';
 function renderLobby(){
   setPhase(mode === 'host' ? t('lobbyAdmin') : t('lobby'));
   const me = myIdx(), host = mode === 'host';
@@ -1612,11 +1633,13 @@ function renderLobby(){
     ? `<p class="lbl" style="margin:0 0 -4px">${t('chooseDeck')}</p><div class="deckseg" role="group" aria-label="${t('chooseDeck')}"><button data-act="lobbydeck" data-v="poker" aria-pressed="${st.dk === 'poker'}">${t('poker')}</button><button data-act="lobbydeck" data-v="es" aria-pressed="${st.dk === 'es'}">${t('spanish')}</button></div>`
     : `<p class="hint">${st.dk === 'poker' ? t('deckInfoPoker') : t('deckInfoEs')}</p>`;
   main.innerHTML = `<section class="scr lobby"><div class="ticket notch bigcode"><small>${t('gameCode')}</small><b>${esc(code)}</b></div>
-    ${host ? `<p class="hint">${t('tellCode', {j: t('join')})}</p>` : ''}${deckRow}
+    ${host ? `<p class="hint">${t('tellCode')}</p>` : ''}${deckRow}
     <p class="lbl" style="margin:0">${t('passengers')} · ${st.pl.length}/${MAXP(st.dk)}</p>
-    <div class="plist">${st.pl.map((p,i) => i === me
-      ? `<button class="ticket pchip me" data-act="lobbyav" aria-label="${t('changePhoto')}">${avOfPlayer(i)}<span>${esc(p.n)}</span><em>${p.id === st.host ? t('admin') + ' · ' : ''}${t('photoEdit')}</em></button>`
-      : `<div class="ticket pchip">${avOfPlayer(i)}<span>${esc(p.n)}</span>${p.id === st.host ? `<em>${t('admin')}</em>` : ''}</div>`).join('')}</div>
+    <div class="plist">${st.pl.map((p,i) => {
+      const av = `<span class="avc">${p.id === st.host ? CROWN : ''}${avOfPlayer(i)}</span>`;
+      return i === me
+        ? `<button class="ticket pchip me" data-act="lobbyav" aria-label="${t('changePhoto')}">${av}<span>${esc(p.n)}</span></button>`
+        : `<div class="ticket pchip">${av}<span>${esc(p.n)}</span></div>`; }).join('')}</div>
     <p class="hint" style="font-size:13px">${t('tapTicket')}</p></section>`;
   if(host) setNext(st.pl.length < 2 ? t('waitPlayers') : t('startWith', {n: st.pl.length}), st.pl.length >= 2, () => act({t:'start'}));
   else setNext(t('waitAdmin'), false);
@@ -1686,9 +1709,9 @@ function renderP2(E){
         : `<div class="sm">${t('anyoneIt')}</div>`;
     }
   }
-  const counts = `<div class="counts">${st.pl.map((p,i) => `<span class="ticket cchip ${i === me ? 'mine' : ''}"><b>${esc(p.n)}</b><em>${p.h.length}</em></span>`).join('')}</div>`;
+  const counts = `<div class="counts" style="grid-template-columns:repeat(${Math.min(st.pl.length, 5)},auto)">${st.pl.map((p,i) => `<span class="ticket cchip ${i === me ? 'mine' : ''}"><b>${esc(p.n)}</b><em>${p.h.length}</em></span>`).join('')}</div>`;
   if(!L && me >= 0){
-    const h = st.pl[me].h, hl = c => ui.hints && cur && val(c) === val(cur) ? 'match' : '';
+    const h = st.pl[me].h, hl = c => '';
     bottom = `<div class="myhand"><div class="cs">${h.length ? h.map((c,ci) => `<button data-act="throw" data-p="${me}" data-c="${ci}" class="${hl(c)}" aria-label="${t('throwAria', {c: esc(cardName(c))})}">${cardHTML(c)}</button>`).join('') : `<span class="wait" style="align-self:center">${t('freeAll')}</span>`}</div></div>`;
   }
   main.innerHTML = `<section class="scr p2 ${L ? 'local' : ''}"><div class="p2info">${info}</div><div class="pyr">${rows}</div>${counts}${bottom}</section>`;
@@ -1830,9 +1853,11 @@ document.addEventListener('click', e => {
   else if(a === 'cont') act({t:'next'});
   else if(a === 'peek') showPeek(b.dataset.c, 2500);
   else if(a === 'lobbydeck') act({t:'deck', v:b.dataset.v});
-  else if(a === 'lobbyav') openAvatarPicker();
+  else if(a === 'lobbyav') openAvatarPicker(setMyAvatar, profile.av);
   else if(a === 'lang') setLang(b.dataset.v);
-  else if(a === 'setav') setMyAvatar(b.dataset.v);
+  else if(a === 'setav'){ const v = b.dataset.v === 'random' ? randAv() : b.dataset.v; (pickCb || setMyAvatar)(v); }
+  else if(a === 'randav'){ ui.draftAv = randAv(); if($('#pfn')) ui.draftName = $('#pfn').value; render(); }
+  else if(a === 'lav'){ const i = +b.dataset.i; openAvatarPicker(v => { ui.avs[i] = v; store.set('avs', ui.avs); modal.hidden = true; render(); }, localAv(i), ui.names[i] || t('yourPhoto')); }
   else if(a === 'pickav'){ ui.draftAv = b.dataset.v; ui.avMenu = false; if($('#pfn')) ui.draftName = $('#pfn').value; const g = $('.avgrid'), sc = g ? g.scrollTop : 0; render(); const g2 = $('.avgrid'); if(g2) g2.scrollTop = sc; }
   else if(a === 'avmenu'){ ui.avMenu = !ui.avMenu; if($('#pfn')) ui.draftName = $('#pfn').value; const m = $('.avmenu'); if(m) m.hidden = !ui.avMenu; b.setAttribute('aria-expanded', ui.avMenu); }
   else if(a === 'go'){ ui.screen = b.dataset.v; if(['create','join'].includes(ui.screen) && !cleanName(ui.name)) ui.name = profile.name; if(ui.screen === 'profile'){ ui.draftAv = null; ui.draftName = undefined; } render(); }
@@ -1840,7 +1865,7 @@ document.addEventListener('click', e => {
   else if(a === 'exit') leaveGame();
   else if(a === 'deck'){ ui.deck = b.dataset.v; store.set('deck', ui.deck); preload(ui.deck); if(ui.names.length > MAXP(ui.deck)) ui.names.length = MAXP(ui.deck); render(); }
   else if(a === 'addP'){ ui.names.push(''); store.set('names', ui.names); render(); const el = document.getElementById('ln-' + (ui.names.length-1)); if(el) el.focus(); }
-  else if(a === 'rmP'){ ui.names.splice(+b.dataset.i, 1); store.set('names', ui.names); render(); }
+  else if(a === 'rmP'){ ui.names.splice(+b.dataset.i, 1); ui.avs.splice(+b.dataset.i, 1); store.set('names', ui.names); store.set('avs', ui.avs); render(); }
 });
 main.addEventListener('input', e => {
   const t = e.target;
@@ -1863,7 +1888,6 @@ const drawer = $('#drawer'), scrim = $('#scrim'), burger = $('#burger');
 function syncMenu(){
   $('#optMusic').setAttribute('aria-pressed', A.musicOn);
   $('#optSfx').setAttribute('aria-pressed', A.sfxOn);
-  $('#optHints').setAttribute('aria-pressed', ui.hints);
   $('#optExit').hidden = !st && ui.screen === 'home';
 }
 function openMenu(o){ drawer.hidden = !o; scrim.hidden = !o; burger.setAttribute('aria-expanded', o); if(o) syncMenu(); }
@@ -1871,7 +1895,6 @@ burger.addEventListener('click', () => openMenu(drawer.hidden));
 scrim.addEventListener('click', () => openMenu(false));
 $('#optMusic').addEventListener('click', () => { if(!A.ac) musicStart(); setMusic(!A.musicOn, mode === 'guest' ? 'music.guest' : 'music'); });
 $('#optSfx').addEventListener('click', () => { audioInit(); setSfx(!A.sfxOn); });
-$('#optHints').addEventListener('click', () => { ui.hints = !ui.hints; store.set('hints', ui.hints); syncMenu(); if(st && st.ph === 'p2') render(); });
 $('#optRules').addEventListener('click', () => { openMenu(false); showRules(); });
 $('#peek').addEventListener('click', hidePeek);
 $('#optLang').addEventListener('click', () => { openMenu(false); showLangs(); });
@@ -1899,7 +1922,7 @@ function applyStatic(){
   $('#burger').setAttribute('aria-label', t('openMenu'));
   $('#drawer').setAttribute('aria-label', t('options'));
   $('#tOptions').textContent = t('options'); $('#tMusic').textContent = t('music'); $('#tSfx').textContent = t('sfx');
-  $('#tHints').textContent = t('hints'); $('#tLang').textContent = t('language'); $('#tLangCur').textContent = I18N[LANG].langName + ' ›';
+  $('#tLang').textContent = t('language'); $('#tLangCur').textContent = I18N[LANG].langName + ' ›';
   $('#tRules').textContent = t('rules'); $('#tExit').textContent = t('exitMenu');
 }
 const modal = $('#modal');

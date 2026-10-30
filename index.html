@@ -126,9 +126,9 @@ h1.title{margin:0;line-height:0}
 .bigcode{flex-direction:column;padding:10px 30px 12px;transform:rotate(-2deg)}
 .bigcode small{font-family:var(--f-cond);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;opacity:.7}
 .bigcode b{font-family:var(--f-display);font-weight:400;font-size:clamp(40px,12cqw,56px);letter-spacing:8px;line-height:1.05}
-.plist{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,auto);grid-auto-flow:column;gap:8px 10px;width:100%;padding-top:8px}
+.plist{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,auto);grid-auto-flow:column;gap:8px 10px;width:100%;padding-top:8px;margin-top:clamp(6px,2.5cqh,22px)}
 .pchip{padding:9px 10px;font-weight:700;font-size:15.5px;min-width:0;justify-content:space-between;gap:6px}
-.pchip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pchip .pn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pchip em{font-style:normal;font-family:var(--f-cond);font-size:12px;letter-spacing:.8px;text-transform:uppercase;opacity:.65;flex:none}
 .pchip.me{background:#ffd85c;box-shadow:0 3px 0 #c99a12}
 
@@ -285,7 +285,9 @@ h1.title{margin:0;line-height:0}
 .p1.loc .who span{overflow:hidden;text-overflow:ellipsis}
 .rrow .av{margin-left:10px}
 .pchip{justify-content:flex-start}
-.pchip span{flex:1;min-width:0}
+.pchip .pn{flex:1;min-width:0;text-align:left}
+.pchip .avc{overflow:visible;flex:none}
+.pchip .av{--avs:30px}
 .stub .av{--avs:26px}
 .deckseg{display:flex;background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:3px;gap:3px}
 .deckseg button{border:0;background:transparent;border-radius:9px;padding:8px 18px;font-weight:700}
@@ -1616,7 +1618,7 @@ function renderLocal(){
   setPhase(t('phLocal'));
   const max = MAXP(ui.deck);
   main.innerHTML = `<section class="scr form local-setup">${backBtn()}${deckPicker()}
-    <p class="lbl" style="margin:0">${t('players')} · ${ui.names.length}/${max}</p>
+    <p class="lbl" style="margin:clamp(6px,2.5cqh,20px) 0 0">${t('players')} · ${ui.names.length}/${max}</p>
     <div class="names">${ui.names.map((n,i) => `<div class="ticket nrow"><div class="stub">${i+1}</div><input id="ln-${i}" data-i="${i}" value="${esc(n)}" placeholder="${t('nameShort')}" maxlength="14" autocomplete="off">${ui.names.length > 2 ? `<button class="rm" data-act="rmP" data-i="${i}" aria-label="${t('removePlayer', {n: i+1})}">✕</button>` : ''}</div>`).join('')}
       ${ui.names.length < max ? `<button class="addp" data-act="addP">${t('addPlayer')}</button>` : ''}</div></section>`;
   setNext(t('startN'), true, startLocal);
@@ -1635,13 +1637,13 @@ function renderLobby(){
     : `<p class="hint">${st.dk === 'poker' ? t('deckInfoPoker') : t('deckInfoEs')}</p>`;
   main.innerHTML = `<section class="scr lobby"><div class="ticket notch bigcode"><small>${t('gameCode')}</small><b>${esc(code)}</b></div>
     ${host ? `<p class="hint">${t('tellCode')}</p>` : ''}${deckRow}
-    <p class="lbl" style="margin:0">${t('passengers')} · ${st.pl.length}/${MAXP(st.dk)}</p>
     <div class="plist">${st.pl.map((p,i) => {
       const av = `<span class="avc">${p.id === st.host ? CROWN : ''}${avOfPlayer(i)}</span>`;
       return i === me
-        ? `<button class="ticket pchip me" data-act="lobbyav" aria-label="${t('changePhoto')}">${av}<span>${esc(p.n)}</span></button>`
-        : `<div class="ticket pchip">${av}<span>${esc(p.n)}</span></div>`; }).join('')}</div>
-    <p class="hint" style="font-size:13px">${t('tapTicket')}</p></section>`;
+        ? `<button class="ticket pchip me" data-act="lobbyav" aria-label="${t('changePhoto')}">${av}<span class="pn">${esc(p.n)}</span></button>`
+        : `<div class="ticket pchip">${av}<span class="pn">${esc(p.n)}</span></div>`; }).join('')}</div>
+    <p class="hint" style="font-size:13px">${t('tapTicket')}</p>
+    <p class="lbl" style="margin:auto 0 0">${t('passengers')} · ${st.pl.length}/${MAXP(st.dk)}</p></section>`;
   if(host) setNext(st.pl.length < 2 ? t('waitPlayers') : t('startWith', {n: st.pl.length}), st.pl.length >= 2, () => act({t:'start'}));
   else setNext(t('waitAdmin'), false);
 }

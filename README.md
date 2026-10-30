@@ -1,29 +1,37 @@
 # BustBus
 
-El juego del autobús para la previa. Se juega en un solo móvil o cada uno con el suyo, uniéndose con un código de partida.
+**Sube al bus y disfruta de la previa.**
 
-Solo para mayores de 18 años. Bebed con cabeza: los tragos pueden ser de cualquier bebida.
+BustBus es el clásico juego de cartas del autobús, para jugar en la previa sin baraja y sin mesa: solo hace falta el móvil.
 
-## Publicar en GitHub Pages
+👉 **Jugar ahora:** [pbazann.github.io/bustbus](https://pbazann.github.io/bustbus/)
 
-1. Crea una cuenta en [github.com](https://github.com) (es gratis).
-2. Pulsa **New repository**, ponle de nombre `bustbus`, déjalo en **Public** y pulsa **Create repository**.
-3. En la página del repositorio vacío, pulsa **uploading an existing file**.
-4. Arrastra **todo el contenido** de esta carpeta: `index.html`, `sw.js`, `manifest.webmanifest`, `CREDITOS.md`, `README.md` y las carpetas `cartas` e `img`. Pulsa **Commit changes**.
-5. Ve a **Settings → Pages**. En **Source** elige **Deploy from a branch**, rama **main** y carpeta **/ (root)**. Pulsa **Save**.
-6. En uno o dos minutos la web estará en `https://TU-USUARIO.github.io/bustbus/`.
+## Cómo se juega
 
-Para actualizarla, sube de nuevo los archivos cambiados al repositorio. Los cambios aparecen en un par de minutos.
+La partida tiene tres paradas:
 
-## Instalarla como app en el móvil
+1. **Las cuatro preguntas.** Cada jugador recibe cuatro cartas, una por ronda, y antes de cada una tiene que adivinar: ¿par o impar?, ¿arriba o abajo?, ¿dentro o fuera? y ¿mismo palo o diferente? Si fallas, bebes.
+2. **La pirámide.** Se destapan diez cartas en forma de pirámide. Si tienes una carta con el mismo número, te la quitas de encima y mandas tragos: más cuanto más alta esté la carta.
+3. **El autobús.** Quien acabe con más cartas sube al bus: nueve cartas en forma de ∩ que hay que recorrer adivinando si la siguiente será más alta o más baja. Cada fallo cuesta tantos tragos como cartas llevabas, y si pasas el puente tienes un checkpoint.
+
+## Modos de juego
+
+- **Un solo móvil:** escribís los nombres y os vais pasando el teléfono.
+- **Online con código:** una persona crea la partida y los demás se unen con un código de cuatro letras desde su propio móvil. Todas las pantallas van sincronizadas y cada uno juega su turno.
+
+Se puede jugar con **baraja de póker** o **baraja española**, y cada jugador puede ponerse un nombre y una foto o icono de perfil.
+
+## Instalarla como app
+
+BustBus funciona en el navegador de cualquier móvil, iPhone o Android. Para tenerla como una app más:
 
 - **iPhone (Safari):** botón Compartir → **Añadir a pantalla de inicio**.
-- **Android (Chrome):** menú ⋮ → **Instalar aplicación** o **Añadir a pantalla de inicio**.
+- **Android (Chrome):** menú ⋮ → **Instalar aplicación**.
 
-## Cómo funciona el modo online
+## Juego responsable
 
-Cada móvil se conecta a un servidor MQTT público y gratuito (EMQX; si falla, HiveMQ). No hace falta cuenta ni servidor propio. El móvil que crea la partida hace de árbitro: guarda la baraja y decide qué pasa; los demás envían sus jugadas.
+BustBus es solo para mayores de 18 años. Los tragos pueden ser de cualquier bebida, también sin alcohol. Bebed agua entre parada y parada y que nadie conduzca después.
 
-Los servidores públicos no tienen garantía de funcionamiento y cualquiera que conozca el código podría leer los nombres de la partida. Para una versión comercial conviene cambiarlos por un servicio propio (Firebase, Supabase o similar).
+## Créditos
 
-Ver `CREDITOS.md` para las licencias de las cartas.
+Creado por [Pbazann](https://github.com/Pbazann). Las ilustraciones de las cartas son de sus autores originales; consulta [CREDITOS.md](CREDITOS.md) para ver las licencias.

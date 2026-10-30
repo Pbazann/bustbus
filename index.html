@@ -1715,7 +1715,7 @@ function renderP2(E){
   const rows = [3,2,1,0].map((rr,k) => `<div class="pyr-row" style="z-index:${k+1}">${ROWS[rr].map(i => {
     const c = P.py[i], up = !!P.rv[i];
     const face = cardHTML(c, {up, flip: up && E.flip === c});
-    const inner = L && !up ? `<button class="pbtn" data-act="reveal" data-i="${i}" aria-label="${t('revealAria')}">${face}</button>` : up ? `<button class="pbtn" data-act="peek" data-c="${c}" aria-label="${esc(cardName(c))}">${face}</button>` : face;
+    const inner = L && !up ? `<button class="pbtn" data-act="reveal" data-i="${i}" aria-label="${t('revealAria')}">${face}</button>` : face;
     return `<div class="pc ${i === P.rev ? 'cur' : ''}">${inner}${P.piles[i] ? `<span class="bdg">+${P.piles[i]}</span>` : ''}</div>`;
   }).join('')}</div>`).join('');
   let info = '', bottom = '';
@@ -1740,7 +1740,6 @@ function renderP2(E){
     bottom = `<div class="myhand"><div class="cs">${h.length ? h.map((c,ci) => `<button data-act="throw" data-p="${me}" data-c="${ci}" class="${hl(c)}" aria-label="${t('throwAria', {c: esc(cardName(c))})}">${cardHTML(c)}</button>`).join('') : `<span class="wait" style="align-self:center">${t('freeAll')}</span>`}</div></div>`;
   }
   main.innerHTML = `<section class="scr p2 ${L ? 'local' : ''}"><div class="p2info">${info}</div><div class="pyr">${rows}</div>${counts}${bottom}</section>`;
-  if(E.flip && P.rev >= 0 && E.flip === P.py[P.rev]) setTimeout(() => showPeek(E.flip, 1500), 450);
   const hostName = (st.pl[idxOf(st.host)] || {}).n || t('admin');
   if(L){ if(P.cnt < 10){ nextBtn.hidden = true; nextFn = null; } else setNext(t('toBus'), true, () => act({t:'next'})); }
   else if(P.pend) setNext(t('choosingWho'), false);
@@ -1789,7 +1788,7 @@ function slotHTML(P, i, opt){
   let cls = 'slot'; if(i === P.pos && P.s === 'g') cls += ' cur'; if(i < P.pos || P.s === 'w') cls += ' done';
   if(i === 4) cls += ' cp' + (P.cp ? ' on' : '');
   const under = P.un && P.un[i] ? `<div class="under">${cardHTML(P.un[i])}</div>` : '';
-  const face = cardHTML(P.sl[i], opt), top = opt.up ? `<button class="pbtn ontop" data-act="peek" data-c="${P.sl[i]}" aria-label="${esc(cardName(P.sl[i]))}">${face}</button>` : `<div class="ontop">${face}</div>`;
+  const face = cardHTML(P.sl[i], opt), top = `<div class="ontop">${face}</div>`;
   return `<div class="${cls}">${under}${top}<span class="tg" title="${t('sipsIfFail')}">${i+1}</span></div>`;
 }
 function deckStack(top){
@@ -1887,7 +1886,6 @@ document.addEventListener('click', e => {
   else if(a === 'undo') act({t:'undo'});
   else if(a === 'reveal') act({t:'reveal', i:+b.dataset.i});
   else if(a === 'cont') act({t:'next'});
-  else if(a === 'peek') showPeek(b.dataset.c, 2500);
   else if(a === 'lobbydeck') act({t:'deck', v:b.dataset.v});
   else if(a === 'lobbyav') openAvatarPicker(setMyAvatar, profile.av);
   else if(a === 'lang') setLang(b.dataset.v);

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="description" content="BustBus: el juego del autobús para la previa. Juega en un solo móvil o cada uno con el suyo con un código de partida.">
 <meta name="theme-color" content="#0f1830">
 <meta name="mobile-web-app-capable" content="yes">
@@ -29,7 +29,8 @@
   --f-cond:'Barlow Condensed','Arial Narrow',sans-serif;
   color-scheme:dark;
 }
-html{height:100%;box-sizing:border-box}
+html{height:100%;box-sizing:border-box;touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+input,textarea,select{font-size:16px!important}
 *,*::before,*::after{box-sizing:inherit}
 body{height:100%;margin:0;overflow:hidden;color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.35;-webkit-tap-highlight-color:transparent;
   background:var(--night) linear-gradient(170deg,#1d2c5a 0%,#121d3d 50%,#0b1228 100%) fixed}
@@ -1929,6 +1930,10 @@ document.addEventListener('keydown', e => {
   if(e.key === 'Enter' && e.target.id === 'firstName') saveFirstName();
 });
 
+/* Sin zoom: ni pellizcar ni doble toque */
+['gesturestart','gesturechange','gestureend'].forEach(ev => document.addEventListener(ev, e => e.preventDefault(), {passive:false}));
+document.addEventListener('touchmove', e => { if(e.touches && e.touches.length > 1) e.preventDefault(); }, {passive:false});
+document.addEventListener('wheel', e => { if(e.ctrlKey) e.preventDefault(); }, {passive:false});
 preload(ui.deck);
 applyStatic();
 render();

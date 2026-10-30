@@ -34,7 +34,10 @@ html{height:100%;box-sizing:border-box}
 body{height:100%;margin:0;overflow:hidden;color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.35;-webkit-tap-highlight-color:transparent;
   background:var(--night) linear-gradient(170deg,#1d2c5a 0%,#121d3d 50%,#0b1228 100%) fixed}
 button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible,input:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+input{outline:none;-webkit-appearance:none;appearance:none}
+input:focus,input:focus-visible{outline:none;box-shadow:none}
+input[type=checkbox]{-webkit-appearance:auto;appearance:auto}
 .gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 #app{height:100%;display:flex;flex-direction:column;max-width:560px;margin:0 auto}
 
@@ -62,6 +65,7 @@ footer.bottom{flex:none;padding-block:6px 10px;display:flex;flex-direction:colum
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .face img{display:block;width:100%;height:100%;object-fit:fill;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));-webkit-user-select:none;user-select:none;pointer-events:none}
 .front{transform:rotateY(180deg)}
+.cimg{display:block;width:100%;height:100%;background-repeat:no-repeat;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
 .placeholder{width:var(--w);aspect-ratio:338/489;border:2px dashed rgba(245,242,255,.22);border-radius:8%/6%;flex:none}
 .land{animation:land .4s .6s both}
 @keyframes land{from{transform:translateY(-14px);opacity:0}}
@@ -102,10 +106,13 @@ h1.title{margin:0;line-height:0}
 .deck-opt b{font-family:var(--f-display);font-weight:400;font-size:14px}
 .deck-opt small{color:var(--muted);font-size:12px;line-height:1.15}
 .codebox{width:100%;text-align:center;font-family:var(--f-display);font-size:34px;letter-spacing:10px;text-transform:uppercase;padding:10px 0 10px 10px;border:0;border-radius:12px;background:var(--ticket);color:var(--ticket-ink);box-shadow:0 3px 0 var(--ticket-edge)}
-.names{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.names .ticket input{font-size:15.5px;padding:9px 6px}
-.names .stub{padding:0 7px;font-size:13px}
-.addp{border:2px dashed rgba(245,242,255,.3);background:transparent;border-radius:10px;font-weight:600;min-height:42px}
+.names{display:flex;flex-direction:column;gap:7px;width:min(100%,300px);min-height:0;overflow-y:auto;padding:2px 8px 6px}
+.local-setup{gap:clamp(6px,1.6cqh,12px)}
+.local-setup .names{flex:1;align-self:center}
+.nrow{flex:none;min-width:0}
+.names .ticket input{font-size:15.5px;padding:8px 8px}
+.names .stub{padding:0 9px;font-size:13px;min-width:34px}
+.addp{flex:none;border:2px dashed rgba(245,242,255,.3);background:transparent;border-radius:10px;font-weight:600;min-height:40px}
 .hint{color:var(--muted);font-size:14.5px;margin:0}
 
 /* ---------- Lobby ---------- */
@@ -259,8 +266,10 @@ h1.title{margin:0;line-height:0}
 .adult input{width:22px;height:22px;accent-color:var(--bus)}
 .me-chip{align-self:center;display:flex;align-items:center;gap:8px;border:2px solid var(--line);background:var(--panel);border-radius:999px;padding:4px 14px 4px 4px;font-size:15px}
 .me-chip em{font-style:normal;color:var(--muted);font-size:13px}
-.big-opt{border:2px solid var(--line);background:var(--seat);border-radius:15px;padding:clamp(12px,2.6cqh,17px);font-family:var(--f-display);font-size:clamp(15px,4.6cqw,18px);box-shadow:0 4px 0 #0b1226}
-.big-opt.primary{background:var(--bus);color:#1c1503;border-color:var(--bus);box-shadow:0 4px 0 var(--bus-deep)}
+.big-opt{border:0;border-radius:15px;padding:clamp(12px,2.6cqh,17px);font-family:var(--f-display);font-size:clamp(15px,4.6cqw,18px);color:#1c1503}
+.big-opt.y1{background:#ffd23f;box-shadow:0 4px 0 #c99a12}
+.big-opt.y2{background:#ffb81c;box-shadow:0 4px 0 #b9800a}
+.big-opt.y3{background:#f29b0f;box-shadow:0 4px 0 #a96304}
 .big-opt:active{transform:translateY(3px)}
 .warn-line{color:var(--muted);font-size:12.5px;margin:0 6px;line-height:1.3}
 .tk-name .av{margin-left:12px}
@@ -293,6 +302,20 @@ h1.title{margin:0;line-height:0}
 .prof .avgrid{flex:1;min-height:0;overflow-y:auto;grid-template-columns:repeat(8,1fr);align-content:start;padding:4px 2px}
 .avpick .av{font-size:clamp(12px,3.4cqw,16px)}
 .mact .go{background:var(--bus);border-color:var(--bus);color:#1c1503}
+
+
+.pchip.me{cursor:pointer;border:0;font:inherit;font-weight:700;font-size:15.5px;text-align:left}
+.avopts{display:flex;gap:8px;margin:8px 0 12px}
+.avopts label{flex:1;text-align:center}
+.modalgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-height:44vh;overflow-y:auto}
+
+
+.madeby{align-self:center;color:var(--muted);opacity:.55;font-size:11.5px;text-decoration:none;letter-spacing:.2px;margin-bottom:-4px}
+.madeby:active,.madeby:hover{opacity:.9;text-decoration:underline}
+.lcur{color:var(--muted);font-weight:600;font-size:14.5px}
+.langlist{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.langbtn{border:2px solid var(--line);background:var(--seat);border-radius:12px;padding:12px 10px;font-weight:700;font-size:16px;text-align:left}
+.langbtn[aria-pressed="true"]{border-color:var(--bus);background:#3a3410}
 
 /* ---------- Final ---------- */
 .end{gap:1.5cqh;align-items:center;text-align:center}
@@ -355,13 +378,14 @@ h1.title{margin:0;line-height:0}
 
 <div class="scrim" id="scrim" hidden></div>
 <nav class="drawer" id="drawer" hidden aria-label="Opciones">
-  <div class="drawer-h">Opciones</div>
-  <button class="drow" id="optMusic" aria-pressed="true"><span>Música</span><span class="sw"></span></button>
-  <button class="drow" id="optSfx" aria-pressed="true"><span>Efectos de sonido</span><span class="sw"></span></button>
-  <button class="drow" id="optHints" aria-pressed="false"><span>Pistas en la pirámide</span><span class="sw"></span></button>
+  <div class="drawer-h" id="tOptions">Opciones</div>
+  <button class="drow" id="optMusic" aria-pressed="true"><span id="tMusic">Música</span><span class="sw"></span></button>
+  <button class="drow" id="optSfx" aria-pressed="true"><span id="tSfx">Efectos de sonido</span><span class="sw"></span></button>
+  <button class="drow" id="optHints" aria-pressed="false"><span id="tHints">Pistas en la pirámide</span><span class="sw"></span></button>
+  <button class="drow" id="optLang"><span id="tLang">Idioma</span><span id="tLangCur" class="lcur">Español ›</span></button>
   <div class="sep"></div>
-  <button class="drow" id="optRules"><span>Ver reglas</span><span>›</span></button>
-  <button class="drow danger" id="optExit"><span>Salir al menú principal</span><span>›</span></button>
+  <button class="drow" id="optRules"><span id="tRules">Ver reglas</span><span>›</span></button>
+  <button class="drow danger" id="optExit"><span id="tExit">Salir al menú principal</span><span>›</span></button>
 </nav>
 <div class="modal" id="modal" hidden><div class="modal-box" id="modalBox" role="dialog" aria-modal="true"></div></div>
 <div class="sheet" id="sheet" hidden></div>
@@ -391,9 +415,482 @@ const ui = { screen:'home', deck: store.get('deck','poker'), name: (store.get('p
 if(!Array.isArray(ui.names) || ui.names.length < 2) ui.names = ['','',''];
 let seenEv = 0, bannerT = null;
 
+const I18N = {
+es:{
+ langName:"Español", options:"Opciones", music:"Música", sfx:"Efectos de sonido", hints:"Pistas en la pirámide", language:"Idioma", rules:"Ver reglas", exitMenu:"Salir al menú principal", openMenu:"Abrir opciones",
+ back:"‹ Volver", credit:"juego creado por", tagline:"Sube al bus y disfruta de la previa", editProfile:"Editar perfil", edit:"Editar", resume:"Volver a la partida",
+ create:"Crear partida", join:"Unirse a partida ya creada", local:"Jugar en un solo móvil",
+ warn:"Solo para mayores de 18. Bebed con cabeza: los tragos pueden ser de cualquier bebida, agua entre parada y parada y que nadie conduzca después.",
+ cardsCredit:"Cartas de póker: SVG-cards de David Bellot (LGPL 2.1). Baraja española: Basquetteur, Wikimedia Commons (CC BY-SA 3.0).",
+ phHome:"Inicio", whatName:"¿Cómo te llamas?", savedAsName:"Se guardará como tu nombre de jugador.", yourName:"Tu nombre", adult:"Tengo 18 años o más", save:"Guardar",
+ errName:"Escribe tu nombre", errAdult:"BustBus es solo para mayores de 18 años",
+ deck:"Baraja", poker:"Póker", spanish:"Española", playerName:"Tu nombre de jugador", namePh:"Cómo te llamas",
+ createHint:"Serás el admin de la partida. Al continuar se genera un código para que tus amigos entren en tu lobby.", continueN:"Continuar ▸",
+ codeLbl:"Código de partida (4 números)", joinBtn:"Unirse ▸", phJoin:"Unirse", phLocal:"Un solo móvil", players:"Jugadores", addPlayer:"+ Añadir jugador", nameShort:"Nombre", removePlayer:"Quitar jugador {n}", startN:"Empezar ▸",
+ game:"Partida {c}", searching:"Buscando", connecting:"Conectando con quien ha creado la partida…", waiting:"Esperando…",
+ lobbyAdmin:"Lobby · eres el admin", lobby:"Lobby", chooseDeck:"Escoge la baraja", deckInfoPoker:"Baraja de póker · empieza el admin.", deckInfoEs:"Baraja española · empieza el admin.",
+ gameCode:"Código de partida", tellCode:"Diles este código para que entren con «{j}».", passengers:"Pasajeros", admin:"Admin", you:"Tú", photoEdit:"✎ Foto", changePhoto:"Cambiar tu foto de perfil", tapTicket:"Toca tu billete para cambiar tu foto.",
+ waitPlayers:"Esperando jugadores…", startWith:"Iniciar con {n} ▸", waitAdmin:"Esperando al admin", creating:"Creando partida…", searchingGame:"Buscando partida…",
+ errCode:"El código son 4 números", notFound:"No encuentro la partida {c}. Revisa el código", errConn:"No se pudo conectar. Revisa tu conexión a internet e inténtalo otra vez", errSync:"No se pudo sincronizar la partida", lostConn:"Se ha perdido la conexión", hostGone:"El anfitrión se ha desconectado. Esperando a que vuelva…",
+ errMin2:"Hacen falta al menos 2 jugadores", errMax:"Con esta baraja caben {n} jugadores", errDup:"Hay dos nombres iguales", deckEmpty:"Mazo vacío: se barajan los descartes",
+ yourTicket:"Tu billete", name:"Nombre", orIcon:"O elige un icono", gallery:"Galería", camera:"Cámara", yourPhoto:"Tu foto", close:"Cerrar", errImg:"Elige una imagen", errPhoto:"No se pudo usar esa foto", errReadPhoto:"No se pudo leer la foto", saveN:"Guardar ▸",
+ stage1:"Parada 1 · Carta {n} de 4", q0:"¿Par o impar?", q1:"¿Arriba o abajo?", q2:"¿Dentro o fuera?", q3:"¿Mismo palo o diferente?",
+ o_par:"Par", o_impar:"Impar", o_mayor:"Arriba", o_menor:"Abajo", o_dentro:"Dentro", o_fuera:"Fuera", o_mismo:"Mismo palo", o_distinto:"Diferente",
+ even:"par", odd:"impar", whyParity:"Es {p} ({v}).", whyTie1:"Mismo número que la primera.", whyHigher:"Mayor que {c}.", whyLower:"Menor que {c}.", whyTie2:"Mismo número que uno de los extremos.", whyIn:"Cae dentro ({a}–{b}).", whyOut:"Cae fuera ({a}–{b}).", whySame:"Repite {s}.", whyNew:"Es un palo nuevo.",
+ tieAny:"Mismo número: bebe digas lo que digas.", revealHint:"Si has acertado te libras; si no, bebe 1 trago.", was:"Era: {a}", safe:"¡Te libras!", drink:"¡Bebe!", choosing:"{n} está eligiendo…", firstCard:"Primera carta",
+ turnOf:"Turno<br>de", yourTurn:"Te<br>toca", chooseOrTap:"Elige o toca la carta", turnName:"Turno de {n}", buildPyr:"Montar la pirámide ▸", nextName:"Siguiente: {n} ▸", waitFor:"Esperando a {n}", flipAria:"Girar la carta",
+ stage2:"Parada 2 · La pirámide", stage2Row:"Parada 2 · {row} · {d}", rowN:"Fila {n}", top:"Cima", sip1:"{n} trago", sipN:"{n} tragos",
+ tapAny:"Toca cualquier carta para destaparla. Base 1 trago · fila 2: 2 · fila 3: 3 · cima: 5.", sends:"¡{n}, manda {d}!", nobodyHas:"Nadie tiene {c}.",
+ p2Intro:"Base 1 trago · fila 2: 2 · fila 3: 3 · cima: 5. Si tienes el mismo número, toca tu carta.", throwsChoosing:"{n} tira {c} y elige quién bebe…", anyoneHas:"¿Alguien tiene {c}? Toca tu carta para tirarla.",
+ yourHand:"Tu mazo · {c}", card1:"{n} carta", cardN:"{n} cartas", noCards:"Sin cartas", freeAll:"¡Te has librado de todas!", tapPyr:"Toca una carta de la pirámide", toBus:"Al autobús ▸", choosingWho:"Eligiendo quién bebe…", revealsHost:"Destapa {n}", reveal:"Destapar ▸", revealTop:"Destapar la cima ▸", nextCard:"Siguiente carta ▸",
+ waitReveal:"Espera a que se destape una carta", noMatch:"No coincide con {c}", whoDrinks:"¿Quién bebe {d}?", throwsP:"{n} tira {c}", keepIt:"Mejor me la guardo", throwAria:"Tirar {c}", revealAria:"Destapar carta",
+ busUp:"Suben al autobús", nobodyCards:"Nadie tiene cartas: subís todos", withCards:"Con {c}", tieW:"empate", stage3:"Parada 3 · Carta {n} de 9", sipsIfFail:"Tragos si fallas aquí",
+ nextHL:"¿La siguiente será más alta o más baja?", higherAria:"Arriba: más alta", lowerAria:"Abajo: más baja", hit:"¡Aciertas!", endTrip:"¡Fin del trayecto!", miss:"¡Fallo!", drinkWord:"Bebe", backCp:"Volvéis al checkpoint", backStart:"Vuelta al principio", continue:"Continuar",
+ onBus:"En el bus:", chooseArrow:"Elige ▲ o ▼", nextN:"Siguiente ▸", seeSips:"Ver los tragos ▸", vote:"Votad", decideAll:"Decidid", yourTurnP:"Te toca", decide:"Decide", hlThan:"¿Mayor o menor que {c}?", higher:"Mayor", lower:"Menor",
+ getOff:"Bajada tras {f}.", fail1:"{n} fallo", failN:"{n} fallos", pass:"¡Pasas!", cpOn:"Checkpoint activado.", tieFail:"(empate = fallo)", toCp:"Al checkpoint.", toStart:"Vuelta al principio.", watching:"tú miras",
+ voting:"Están votando…", confirm:"Confirmar: {v} ▸", noMajority:"Falta mayoría", chooseHL:"Elige mayor o menor", decideName:"Decide {n}", keepGoing:"Seguir el viaje ▸",
+ tally:"Recuento", sipsTitle:"Tragos", yellowNote:"En amarillo, quien viajó en el autobús.", playAgain:"Otra partida ▸", waitAnother:"Esperando a que empiece otra", phEnd:"Fin del trayecto",
+ exitQ:"¿Salir al menú principal?", exitHost:"Has creado tú la partida: se acabará para todos.", exitGuest:"Saldrás de la partida en curso.", keepPlaying:"Seguir jugando", exit:"Salir",
+ howTo:"Cómo se juega", valPoker:"As = 1 · J = 11 · Q = 12 · K = 13", valEs:"As = 1 · Sota = 10 · Caballo = 11 · Rey = 12", gotIt:"Entendido",
+ r1t:"Parada 1 · Las cuatro preguntas", r1:["Cada jugador recibe 4 cartas por turnos: primero la 1ª a todos, luego la 2ª…","Carta 1: ¿par o impar? · Carta 2: ¿arriba o abajo que la 1ª? · Carta 3: ¿dentro o fuera del rango de las dos primeras? · Carta 4: ¿mismo palo que alguna de las tuyas o diferente?","Si fallas, bebes 1 trago. Si sale el mismo número, también."],
+ r2t:"Parada 2 · La pirámide", r2:["10 cartas boca abajo en filas de 4, 3, 2 y 1, que se destapan de la base a la cima.","Si tienes el mismo número, tira tu carta y elige quién bebe: base 1 trago, fila 2: 2, fila 3: 3, cima: 5.","Puedes guardarte una carta para más arriba, pero al pasar de carta ya no hay vuelta atrás.","Quien acabe con más cartas sube al autobús. Si hay empate, suben juntos.","En un solo móvil: toca la carta que quieras; las que coinciden se tiran solas y cada uno manda sus tragos."],
+ r3t:"Parada 3 · El viaje", r3:["9 cartas en forma de ∩: dos filas de 4 y un puente arriba.","Adivina si la carta será mayor o menor. Empate = fallo.","Si fallas, bebes tantos tragos como cartas llevabas (incluida la del fallo) y vuelves a empezar.","Si pasas el puente, es checkpoint: vuelves ahí, pero los tragos se cuentan igual.","Si viajáis varios, cada uno vota, gana la mayoría y se pulsa Siguiente para confirmar.","En un solo móvil: sale una carta del montón y adivinas si la siguiente del recorrido será más alta (▲) o más baja (▼)."],
+ cardFmt:"{r} de {s}", rk:{1:"As",11:"Jota",12:"Reina",13:"Rey"}, rkEs:{1:"As",10:"Sota",11:"Caballo",12:"Rey"},
+ suits:{S:"picas",H:"corazones",D:"diamantes",C:"tréboles"}, suitsEs:{O:"oros",C:"copas",E:"espadas",B:"bastos"}
+},
+ca:{
+ langName:"Català", options:"Opcions", music:"Música", sfx:"Efectes de so", hints:"Pistes a la piràmide", language:"Idioma", rules:"Veure les regles", exitMenu:"Sortir al menú principal", openMenu:"Obrir opcions",
+ back:"‹ Tornar", credit:"joc creat per", tagline:"Puja al bus i gaudeix de la prèvia", editProfile:"Editar el perfil", edit:"Editar", resume:"Tornar a la partida",
+ create:"Crear partida", join:"Unir-se a una partida ja creada", local:"Jugar en un sol mòbil",
+ warn:"Només per a majors de 18 anys. Beveu amb cap: els glops poden ser de qualsevol beguda, aigua entre parada i parada i que ningú condueixi després.",
+ cardsCredit:"Cartes de pòquer: SVG-cards de David Bellot (LGPL 2.1). Baralla espanyola: Basquetteur, Wikimedia Commons (CC BY-SA 3.0).",
+ phHome:"Inici", whatName:"Com et dius?", savedAsName:"Es desarà com el teu nom de jugador.", yourName:"El teu nom", adult:"Tinc 18 anys o més", save:"Desar",
+ errName:"Escriu el teu nom", errAdult:"BustBus és només per a majors de 18 anys",
+ deck:"Baralla", poker:"Pòquer", spanish:"Espanyola", playerName:"El teu nom de jugador", namePh:"Com et dius",
+ createHint:"Seràs l'admin de la partida. En continuar es genera un codi perquè els teus amics entrin al teu lobby.", continueN:"Continuar ▸",
+ codeLbl:"Codi de partida (4 números)", joinBtn:"Unir-se ▸", phJoin:"Unir-se", phLocal:"Un sol mòbil", players:"Jugadors", addPlayer:"+ Afegir jugador", nameShort:"Nom", removePlayer:"Treure el jugador {n}", startN:"Començar ▸",
+ game:"Partida {c}", searching:"Buscant", connecting:"Connectant amb qui ha creat la partida…", waiting:"Esperant…",
+ lobbyAdmin:"Lobby · ets l'admin", lobby:"Lobby", chooseDeck:"Tria la baralla", deckInfoPoker:"Baralla de pòquer · comença l'admin.", deckInfoEs:"Baralla espanyola · comença l'admin.",
+ gameCode:"Codi de partida", tellCode:"Digues-los aquest codi perquè entrin amb «{j}».", passengers:"Passatgers", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Canviar la foto de perfil", tapTicket:"Toca el teu bitllet per canviar la foto.",
+ waitPlayers:"Esperant jugadors…", startWith:"Començar amb {n} ▸", waitAdmin:"Esperant l'admin", creating:"Creant la partida…", searchingGame:"Buscant la partida…",
+ errCode:"El codi són 4 números", notFound:"No trobo la partida {c}. Revisa el codi", errConn:"No s'ha pogut connectar. Revisa la connexió a internet i torna-ho a provar", errSync:"No s'ha pogut sincronitzar la partida", lostConn:"S'ha perdut la connexió", hostGone:"L'amfitrió s'ha desconnectat. Esperant que torni…",
+ errMin2:"Calen almenys 2 jugadors", errMax:"Amb aquesta baralla hi caben {n} jugadors", errDup:"Hi ha dos noms iguals", deckEmpty:"Munt buit: es barregen les descartades",
+ yourTicket:"El teu bitllet", name:"Nom", orIcon:"O tria una icona", gallery:"Galeria", camera:"Càmera", yourPhoto:"La teva foto", close:"Tancar", errImg:"Tria una imatge", errPhoto:"No s'ha pogut fer servir aquesta foto", errReadPhoto:"No s'ha pogut llegir la foto", saveN:"Desar ▸",
+ stage1:"Parada 1 · Carta {n} de 4", q0:"Parell o senar?", q1:"Amunt o avall?", q2:"Dins o fora?", q3:"Mateix pal o diferent?",
+ o_par:"Parell", o_impar:"Senar", o_mayor:"Amunt", o_menor:"Avall", o_dentro:"Dins", o_fuera:"Fora", o_mismo:"Mateix pal", o_distinto:"Diferent",
+ even:"parell", odd:"senar", whyParity:"És {p} ({v}).", whyTie1:"Mateix número que la primera.", whyHigher:"Més alta que {c}.", whyLower:"Més baixa que {c}.", whyTie2:"Mateix número que un dels extrems.", whyIn:"Cau dins ({a}–{b}).", whyOut:"Cau fora ({a}–{b}).", whySame:"Repeteix {s}.", whyNew:"És un pal nou.",
+ tieAny:"Mateix número: beus diguis el que diguis.", revealHint:"Si l'has encertat et lliures; si no, beu 1 glop.", was:"Era: {a}", safe:"Et lliures!", drink:"Beu!", choosing:"{n} està triant…", firstCard:"Primera carta",
+ turnOf:"Torn<br>de", yourTurn:"Et<br>toca", chooseOrTap:"Tria o toca la carta", turnName:"Torn de {n}", buildPyr:"Muntar la piràmide ▸", nextName:"Següent: {n} ▸", waitFor:"Esperant {n}", flipAria:"Girar la carta",
+ stage2:"Parada 2 · La piràmide", stage2Row:"Parada 2 · {row} · {d}", rowN:"Fila {n}", top:"Cim", sip1:"{n} glop", sipN:"{n} glops",
+ tapAny:"Toca qualsevol carta per destapar-la. Base 1 glop · fila 2: 2 · fila 3: 3 · cim: 5.", sends:"{n}, envia {d}!", nobodyHas:"Ningú té {c}.",
+ p2Intro:"Base 1 glop · fila 2: 2 · fila 3: 3 · cim: 5. Si tens el mateix número, toca la teva carta.", throwsChoosing:"{n} tira {c} i tria qui beu…", anyoneHas:"Algú té {c}? Toca la teva carta per tirar-la.",
+ yourHand:"La teva mà · {c}", card1:"{n} carta", cardN:"{n} cartes", noCards:"Sense cartes", freeAll:"T'has lliurat de totes!", tapPyr:"Toca una carta de la piràmide", toBus:"A l'autobús ▸", choosingWho:"Triant qui beu…", revealsHost:"Destapa {n}", reveal:"Destapar ▸", revealTop:"Destapar el cim ▸", nextCard:"Següent carta ▸",
+ waitReveal:"Espera que es destapi una carta", noMatch:"No coincideix amb {c}", whoDrinks:"Qui beu {d}?", throwsP:"{n} tira {c}", keepIt:"Millor me la guardo", throwAria:"Tirar {c}", revealAria:"Destapar carta",
+ busUp:"Pugen a l'autobús", nobodyCards:"Ningú té cartes: hi pugeu tots", withCards:"Amb {c}", tieW:"empat", stage3:"Parada 3 · Carta {n} de 9", sipsIfFail:"Glops si falles aquí",
+ nextHL:"La següent serà més alta o més baixa?", higherAria:"Amunt: més alta", lowerAria:"Avall: més baixa", hit:"Encertes!", endTrip:"Final del trajecte!", miss:"Error!", drinkWord:"Beu", backCp:"Torneu al checkpoint", backStart:"Tornada al principi", continue:"Continuar",
+ onBus:"Al bus:", chooseArrow:"Tria ▲ o ▼", nextN:"Següent ▸", seeSips:"Veure els glops ▸", vote:"Voteu", decideAll:"Decidiu", yourTurnP:"Et toca", decide:"Decideix", hlThan:"Més alta o més baixa que {c}?", higher:"Més alta", lower:"Més baixa",
+ getOff:"Baixada després de {f}.", fail1:"{n} error", failN:"{n} errors", pass:"Passes!", cpOn:"Checkpoint activat.", tieFail:"(empat = error)", toCp:"Al checkpoint.", toStart:"Tornada al principi.", watching:"tu mires",
+ voting:"Estan votant…", confirm:"Confirmar: {v} ▸", noMajority:"Falta majoria", chooseHL:"Tria més alta o més baixa", decideName:"Decideix {n}", keepGoing:"Seguir el viatge ▸",
+ tally:"Recompte", sipsTitle:"Glops", yellowNote:"En groc, qui ha viatjat a l'autobús.", playAgain:"Una altra partida ▸", waitAnother:"Esperant que en comenci una altra", phEnd:"Final del trajecte",
+ exitQ:"Sortir al menú principal?", exitHost:"Has creat tu la partida: s'acabarà per a tothom.", exitGuest:"Sortiràs de la partida en curs.", keepPlaying:"Seguir jugant", exit:"Sortir",
+ howTo:"Com es juga", valPoker:"As = 1 · J = 11 · Q = 12 · K = 13", valEs:"As = 1 · Sota = 10 · Cavall = 11 · Rei = 12", gotIt:"Entesos",
+ r1t:"Parada 1 · Les quatre preguntes", r1:["Cada jugador rep 4 cartes per torns: primer la 1a a tothom, després la 2a…","Carta 1: parell o senar? · Carta 2: amunt o avall que la 1a? · Carta 3: dins o fora del rang de les dues primeres? · Carta 4: mateix pal que alguna de les teves o diferent?","Si falles, beus 1 glop. Si surt el mateix número, també."],
+ r2t:"Parada 2 · La piràmide", r2:["10 cartes cap per avall en files de 4, 3, 2 i 1, que es destapen de la base al cim.","Si tens el mateix número, tira la teva carta i tria qui beu: base 1 glop, fila 2: 2, fila 3: 3, cim: 5.","Pots guardar-te una carta per més amunt, però en passar de carta ja no hi ha marxa enrere.","Qui acabi amb més cartes puja a l'autobús. Si hi ha empat, hi pugen junts.","En un sol mòbil: toca la carta que vulguis; les que coincideixen es tiren soles i cadascú envia els seus glops."],
+ r3t:"Parada 3 · El viatge", r3:["9 cartes en forma de ∩: dues files de 4 i un pont a dalt.","Endevina si la carta serà més alta o més baixa. Empat = error.","Si falles, beus tants glops com cartes portaves (inclosa la de l'error) i tornes a començar.","Si passes el pont, és checkpoint: hi tornes, però els glops es compten igual.","Si hi viatgeu diversos, cadascú vota, guanya la majoria i es prem Següent per confirmar.","En un sol mòbil: surt una carta del munt i endevines si la següent del recorregut serà més alta (▲) o més baixa (▼)."],
+ cardFmt:"{r} de {s}", elide:true, rk:{1:"As",11:"Jota",12:"Reina",13:"Rei"}, rkEs:{1:"As",10:"Sota",11:"Cavall",12:"Rei"},
+ suits:{S:"piques",H:"cors",D:"diamants",C:"trèvols"}, suitsEs:{O:"oros",C:"copes",E:"espases",B:"bastos"}
+},
+eu:{
+ langName:"Euskara", options:"Aukerak", music:"Musika", sfx:"Soinu-efektuak", hints:"Piramideko pistak", language:"Hizkuntza", rules:"Arauak ikusi", exitMenu:"Menu nagusira irten", openMenu:"Aukerak ireki",
+ back:"‹ Itzuli", credit:"jokoaren egilea:", tagline:"Igo autobusera eta gozatu aurrefestaz", editProfile:"Profila editatu", edit:"Editatu", resume:"Partidara itzuli",
+ create:"Partida sortu", join:"Sortutako partida batera batu", local:"Mugikor bakarrean jokatu",
+ warn:"18 urtetik gorakoentzat soilik. Edan buruarekin: zurrutadak edozein edarirekin izan daitezke, ura geltoki artean eta inork ez gidatu gero.",
+ cardsCredit:"Poker kartak: David Bellot-en SVG-cards (LGPL 2.1). Karta espainiarrak: Basquetteur, Wikimedia Commons (CC BY-SA 3.0).",
+ phHome:"Hasiera", whatName:"Nola duzu izena?", savedAsName:"Zure jokalari-izen gisa gordeko da.", yourName:"Zure izena", adult:"18 urte edo gehiago ditut", save:"Gorde",
+ errName:"Idatzi zure izena", errAdult:"BustBus 18 urtetik gorakoentzat soilik da",
+ deck:"Karta-sorta", poker:"Pokerra", spanish:"Espainiarra", playerName:"Zure jokalari-izena", namePh:"Nola duzu izena",
+ createHint:"Partidaren admina izango zara. Jarraitzean kode bat sortuko da zure lagunak zure lobby-ra sar daitezen.", continueN:"Jarraitu ▸",
+ codeLbl:"Partidaren kodea (4 zenbaki)", joinBtn:"Batu ▸", phJoin:"Batu", phLocal:"Mugikor bakarra", players:"Jokalariak", addPlayer:"+ Jokalaria gehitu", nameShort:"Izena", removePlayer:"{n}. jokalaria kendu", startN:"Hasi ▸",
+ game:"{c} partida", searching:"Bilatzen", connecting:"Partida sortu duenarekin konektatzen…", waiting:"Zain…",
+ lobbyAdmin:"Lobby · zu zara admina", lobby:"Lobby", chooseDeck:"Aukeratu karta-sorta", deckInfoPoker:"Poker kartak · admina hasiko da.", deckInfoEs:"Karta espainiarrak · admina hasiko da.",
+ gameCode:"Partidaren kodea", tellCode:"Esan kode hau «{j}» erabiliz sar daitezen.", passengers:"Bidaiariak", admin:"Admin", you:"Zu", photoEdit:"✎ Argazkia", changePhoto:"Profileko argazkia aldatu", tapTicket:"Ukitu zure txartela argazkia aldatzeko.",
+ waitPlayers:"Jokalarien zain…", startWith:"Hasi {n}rekin ▸", waitAdmin:"Adminaren zain", creating:"Partida sortzen…", searchingGame:"Partida bilatzen…",
+ errCode:"Kodea 4 zenbaki dira", notFound:"Ez dut {c} partida aurkitzen. Begiratu kodea", errConn:"Ezin izan da konektatu. Begiratu interneteko konexioa eta saiatu berriro", errSync:"Ezin izan da partida sinkronizatu", lostConn:"Konexioa galdu da", hostGone:"Anfitrioia deskonektatu da. Itzuli arte zain…",
+ errMin2:"Gutxienez 2 jokalari behar dira", errMax:"Karta-sorta honekin {n} jokalari sartzen dira", errDup:"Bi izen berdin daude", deckEmpty:"Sorta hutsik: baztertutakoak nahasten dira",
+ yourTicket:"Zure txartela", name:"Izena", orIcon:"Edo aukeratu ikono bat", gallery:"Galeria", camera:"Kamera", yourPhoto:"Zure argazkia", close:"Itxi", errImg:"Aukeratu irudi bat", errPhoto:"Ezin izan da argazki hori erabili", errReadPhoto:"Ezin izan da argazkia irakurri", saveN:"Gorde ▸",
+ stage1:"1. geltokia · {n}/4 karta", q0:"Bikoitia ala bakoitia?", q1:"Gora ala behera?", q2:"Barruan ala kanpoan?", q3:"Palo bera ala desberdina?",
+ o_par:"Bikoitia", o_impar:"Bakoitia", o_mayor:"Gora", o_menor:"Behera", o_dentro:"Barruan", o_fuera:"Kanpoan", o_mismo:"Palo bera", o_distinto:"Desberdina",
+ even:"bikoitia", odd:"bakoitia", whyParity:"{p} da ({v}).", whyTie1:"Lehenengoaren zenbaki bera.", whyHigher:"{c} baino handiagoa.", whyLower:"{c} baino txikiagoa.", whyTie2:"Muturretako baten zenbaki bera.", whyIn:"Barruan dago ({a}–{b}).", whyOut:"Kanpoan dago ({a}–{b}).", whySame:"{s} errepikatzen du.", whyNew:"Palo berria da.",
+ tieAny:"Zenbaki bera: edan, esan duzuna esanda ere.", revealHint:"Asmatu baduzu libre zaude; bestela, edan zurrutada 1.", was:"{a} zen", safe:"Libre!", drink:"Edan!", choosing:"{n} aukeratzen ari da…", firstCard:"Lehenengo karta",
+ turnOf:"Txanda", yourTurn:"Zure<br>txanda", chooseOrTap:"Aukeratu edo ukitu karta", turnName:"{n}(r)en txanda", buildPyr:"Piramidea muntatu ▸", nextName:"Hurrengoa: {n} ▸", waitFor:"{n}(r)en zain", flipAria:"Karta jiratu",
+ stage2:"2. geltokia · Piramidea", stage2Row:"2. geltokia · {row} · {d}", rowN:"{n}. ilara", top:"Gailurra", sip1:"zurrutada {n}", sipN:"{n} zurrutada",
+ tapAny:"Ukitu edozein karta irauli dadin. Oinarria 1 zurrutada · 2. ilara: 2 · 3. ilara: 3 · gailurra: 5.", sends:"{n}, bidali {d}!", nobodyHas:"Inork ez du {c}.",
+ p2Intro:"Oinarria 1 zurrutada · 2. ilara: 2 · 3. ilara: 3 · gailurra: 5. Zenbaki bera baduzu, ukitu zure karta.", throwsChoosing:"{n}(e)k {c} botatzen du eta nork edan aukeratzen du…", anyoneHas:"Norbaitek du {c}? Ukitu zure karta botatzeko.",
+ yourHand:"Zure kartak · {c}", card1:"karta {n}", cardN:"{n} karta", noCards:"Kartarik ez", freeAll:"Guztietatik libratu zara!", tapPyr:"Ukitu piramideko karta bat", toBus:"Autobusera ▸", choosingWho:"Nork edan aukeratzen…", revealsHost:"{n}(e)k iraultzen du", reveal:"Irauli ▸", revealTop:"Gailurra irauli ▸", nextCard:"Hurrengo karta ▸",
+ waitReveal:"Itxaron karta bat irauli arte", noMatch:"Ez dator bat {c}(r)ekin", whoDrinks:"Nork edan {d}?", throwsP:"{n}(e)k {c} botatzen du", keepIt:"Hobe gordetzen dut", throwAria:"{c} bota", revealAria:"Karta irauli",
+ busUp:"Autobusera igotzen dira", nobodyCards:"Inork ez du kartarik: denok igotzen zarete", withCards:"{c}rekin", tieW:"berdinketa", stage3:"3. geltokia · {n}/9 karta", sipsIfFail:"Hemen huts eginez gero zurrutadak",
+ nextHL:"Hurrengoa altuagoa ala baxuagoa izango da?", higherAria:"Gora: altuagoa", lowerAria:"Behera: baxuagoa", hit:"Asmatu duzu!", endTrip:"Bidaiaren amaiera!", miss:"Hutsa!", drinkWord:"Edan", backCp:"Checkpointera itzuli zarete", backStart:"Hasierara itzuli", continue:"Jarraitu",
+ onBus:"Autobusean:", chooseArrow:"Aukeratu ▲ edo ▼", nextN:"Hurrengoa ▸", seeSips:"Zurrutadak ikusi ▸", vote:"Bozkatu", decideAll:"Erabaki", yourTurnP:"Zure txanda", decide:"Erabakitzen du", hlThan:"{c} baino altuagoa ala baxuagoa?", higher:"Altuagoa", lower:"Baxuagoa",
+ getOff:"Jaitsi da {f} ondoren.", fail1:"huts {n}", failN:"{n} huts", pass:"Pasatzen zara!", cpOn:"Checkpointa aktibatuta.", tieFail:"(berdinketa = hutsa)", toCp:"Checkpointera.", toStart:"Hasierara itzuli.", watching:"zu begira",
+ voting:"Bozkatzen ari dira…", confirm:"Berretsi: {v} ▸", noMajority:"Gehiengoa falta da", chooseHL:"Aukeratu altuagoa ala baxuagoa", decideName:"{n}(e)k erabakitzen du", keepGoing:"Bidaian jarraitu ▸",
+ tally:"Zenbaketa", sipsTitle:"Zurrutadak", yellowNote:"Horiz, autobusean bidaiatu duena.", playAgain:"Beste partida bat ▸", waitAnother:"Beste bat hasi arte zain", phEnd:"Bidaiaren amaiera",
+ exitQ:"Menu nagusira irten?", exitHost:"Zuk sortu duzu partida: guztientzat amaituko da.", exitGuest:"Martxan dagoen partidatik irtengo zara.", keepPlaying:"Jokatzen jarraitu", exit:"Irten",
+ howTo:"Nola jokatu", valPoker:"Batekoa = 1 · J = 11 · Q = 12 · K = 13", valEs:"Batekoa = 1 · Txanka = 10 · Zaldia = 11 · Errege = 12", gotIt:"Ulertuta",
+ r1t:"1. geltokia · Lau galderak", r1:["Jokalari bakoitzak 4 karta jasotzen ditu txandaka: lehenik 1.a denei, gero 2.a…","1. karta: bikoitia ala bakoitia? · 2. karta: 1.a baino gora ala behera? · 3. karta: lehen bien tartean barruan ala kanpoan? · 4. karta: zure kartaren baten palo bera ala desberdina?","Huts eginez gero, zurrutada 1 edaten duzu. Zenbaki bera ateratzen bada, baita ere."],
+ r2t:"2. geltokia · Piramidea", r2:["10 karta buruz behera 4, 3, 2 eta 1eko ilaretan, oinarritik gailurrera irauliz.","Zenbaki bera baduzu, bota zure karta eta aukeratu nork edan: oinarria 1, 2. ilara 2, 3. ilara 3, gailurra 5.","Karta bat gordetzeko aukera duzu, baina hurrengo kartara pasatzean ez dago atzera bueltarik.","Karta gehien dituena autobusera igotzen da. Berdinketan, elkarrekin igotzen dira.","Mugikor bakarrean: ukitu nahi duzun karta; bat datozenak bakarrik botatzen dira eta bakoitzak bere zurrutadak bidaltzen ditu."],
+ r3t:"3. geltokia · Bidaia", r3:["9 karta ∩ itxuran: 4ko bi ilara eta goian zubi bat.","Asmatu karta altuagoa ala baxuagoa izango den. Berdinketa = hutsa.","Huts eginez gero, eramandako karta adina zurrutada edaten dituzu (hutsarena barne) eta berriro hasten zara.","Zubia pasatzen baduzu, checkpointa da: hara itzultzen zara, baina zurrutadak berdin kontatzen dira.","Batzuk bidaiatzen badira, bakoitzak bozkatzen du, gehiengoak irabazten du eta Hurrengoa sakatzen da.","Mugikor bakarrean: sortatik karta bat ateratzen da eta ibilbideko hurrengoa altuagoa (▲) ala baxuagoa (▼) izango den asmatzen duzu."],
+ cardFmt:"{r} ({s})", rk:{1:"Batekoa",11:"J",12:"Q",13:"K"}, rkEs:{1:"Batekoa",10:"Txanka",11:"Zaldia",12:"Errege"},
+ suits:{S:"pikak",H:"bihotzak",D:"diamanteak",C:"hirustak"}, suitsEs:{O:"urreak",C:"kopak",E:"ezpatak",B:"bastoiak"}
+},
+gl:{
+ langName:"Galego", options:"Opcións", music:"Música", sfx:"Efectos de son", hints:"Pistas na pirámide", language:"Idioma", rules:"Ver as regras", exitMenu:"Saír ao menú principal", openMenu:"Abrir opcións",
+ back:"‹ Volver", credit:"xogo creado por", tagline:"Sube ao bus e goza da previa", editProfile:"Editar perfil", edit:"Editar", resume:"Volver á partida",
+ create:"Crear partida", join:"Unirse a unha partida xa creada", local:"Xogar nun só móbil",
+ warn:"Só para maiores de 18 anos. Bebede con cabeza: os grolos poden ser de calquera bebida, auga entre parada e parada e que ninguén conduza despois.",
+ cardsCredit:"Cartas de póker: SVG-cards de David Bellot (LGPL 2.1). Baralla española: Basquetteur, Wikimedia Commons (CC BY-SA 3.0).",
+ phHome:"Inicio", whatName:"Como te chamas?", savedAsName:"Gardarase como o teu nome de xogador.", yourName:"O teu nome", adult:"Teño 18 anos ou máis", save:"Gardar",
+ errName:"Escribe o teu nome", errAdult:"BustBus é só para maiores de 18 anos",
+ deck:"Baralla", poker:"Póker", spanish:"Española", playerName:"O teu nome de xogador", namePh:"Como te chamas",
+ createHint:"Serás o admin da partida. Ao continuar xérase un código para que os teus amigos entren no teu lobby.", continueN:"Continuar ▸",
+ codeLbl:"Código da partida (4 números)", joinBtn:"Unirse ▸", phJoin:"Unirse", phLocal:"Un só móbil", players:"Xogadores", addPlayer:"+ Engadir xogador", nameShort:"Nome", removePlayer:"Quitar o xogador {n}", startN:"Comezar ▸",
+ game:"Partida {c}", searching:"Buscando", connecting:"Conectando con quen creou a partida…", waiting:"Agardando…",
+ lobbyAdmin:"Lobby · es o admin", lobby:"Lobby", chooseDeck:"Escolle a baralla", deckInfoPoker:"Baralla de póker · comeza o admin.", deckInfoEs:"Baralla española · comeza o admin.",
+ gameCode:"Código da partida", tellCode:"Dilles este código para que entren con «{j}».", passengers:"Pasaxeiros", admin:"Admin", you:"Ti", photoEdit:"✎ Foto", changePhoto:"Cambiar a túa foto de perfil", tapTicket:"Toca o teu billete para cambiar a foto.",
+ waitPlayers:"Agardando xogadores…", startWith:"Comezar con {n} ▸", waitAdmin:"Agardando polo admin", creating:"Creando a partida…", searchingGame:"Buscando a partida…",
+ errCode:"O código son 4 números", notFound:"Non atopo a partida {c}. Revisa o código", errConn:"Non se puido conectar. Revisa a conexión a internet e téntao de novo", errSync:"Non se puido sincronizar a partida", lostConn:"Perdeuse a conexión", hostGone:"O anfitrión desconectouse. Agardando a que volva…",
+ errMin2:"Fan falta polo menos 2 xogadores", errMax:"Con esta baralla caben {n} xogadores", errDup:"Hai dous nomes iguais", deckEmpty:"Mazo baleiro: barállanse os descartes",
+ yourTicket:"O teu billete", name:"Nome", orIcon:"Ou escolle unha icona", gallery:"Galería", camera:"Cámara", yourPhoto:"A túa foto", close:"Pechar", errImg:"Escolle unha imaxe", errPhoto:"Non se puido usar esa foto", errReadPhoto:"Non se puido ler a foto", saveN:"Gardar ▸",
+ stage1:"Parada 1 · Carta {n} de 4", q0:"Par ou impar?", q1:"Arriba ou abaixo?", q2:"Dentro ou fóra?", q3:"Mesmo pau ou diferente?",
+ o_par:"Par", o_impar:"Impar", o_mayor:"Arriba", o_menor:"Abaixo", o_dentro:"Dentro", o_fuera:"Fóra", o_mismo:"Mesmo pau", o_distinto:"Diferente",
+ even:"par", odd:"impar", whyParity:"É {p} ({v}).", whyTie1:"Mesmo número ca a primeira.", whyHigher:"Maior ca {c}.", whyLower:"Menor ca {c}.", whyTie2:"Mesmo número ca un dos extremos.", whyIn:"Cae dentro ({a}–{b}).", whyOut:"Cae fóra ({a}–{b}).", whySame:"Repite {s}.", whyNew:"É un pau novo.",
+ tieAny:"Mesmo número: bebes digas o que digas.", revealHint:"Se acertaches, líbraste; se non, bebe 1 grolo.", was:"Era: {a}", safe:"Líbraste!", drink:"Bebe!", choosing:"{n} está escollendo…", firstCard:"Primeira carta",
+ turnOf:"Quenda<br>de", yourTurn:"Tócache", chooseOrTap:"Escolle ou toca a carta", turnName:"Quenda de {n}", buildPyr:"Montar a pirámide ▸", nextName:"Seguinte: {n} ▸", waitFor:"Agardando por {n}", flipAria:"Voltear a carta",
+ stage2:"Parada 2 · A pirámide", stage2Row:"Parada 2 · {row} · {d}", rowN:"Fila {n}", top:"Cima", sip1:"{n} grolo", sipN:"{n} grolos",
+ tapAny:"Toca calquera carta para destapala. Base 1 grolo · fila 2: 2 · fila 3: 3 · cima: 5.", sends:"{n}, manda {d}!", nobodyHas:"Ninguén ten {c}.",
+ p2Intro:"Base 1 grolo · fila 2: 2 · fila 3: 3 · cima: 5. Se tes o mesmo número, toca a túa carta.", throwsChoosing:"{n} tira {c} e escolle quen bebe…", anyoneHas:"Alguén ten {c}? Toca a túa carta para tirala.",
+ yourHand:"O teu mazo · {c}", card1:"{n} carta", cardN:"{n} cartas", noCards:"Sen cartas", freeAll:"Libraches de todas!", tapPyr:"Toca unha carta da pirámide", toBus:"Ao autobús ▸", choosingWho:"Escollendo quen bebe…", revealsHost:"Destapa {n}", reveal:"Destapar ▸", revealTop:"Destapar a cima ▸", nextCard:"Seguinte carta ▸",
+ waitReveal:"Agarda a que se destape unha carta", noMatch:"Non coincide con {c}", whoDrinks:"Quen bebe {d}?", throwsP:"{n} tira {c}", keepIt:"Mellor gárdoa", throwAria:"Tirar {c}", revealAria:"Destapar carta",
+ busUp:"Soben ao autobús", nobodyCards:"Ninguén ten cartas: subides todos", withCards:"Con {c}", tieW:"empate", stage3:"Parada 3 · Carta {n} de 9", sipsIfFail:"Grolos se fallas aquí",
+ nextHL:"A seguinte será máis alta ou máis baixa?", higherAria:"Arriba: máis alta", lowerAria:"Abaixo: máis baixa", hit:"Acertas!", endTrip:"Fin do traxecto!", miss:"Fallo!", drinkWord:"Bebe", backCp:"Volvedes ao checkpoint", backStart:"Volta ao principio", continue:"Continuar",
+ onBus:"No bus:", chooseArrow:"Escolle ▲ ou ▼", nextN:"Seguinte ▸", seeSips:"Ver os grolos ▸", vote:"Votade", decideAll:"Decidide", yourTurnP:"Tócache", decide:"Decide", hlThan:"Maior ou menor ca {c}?", higher:"Maior", lower:"Menor",
+ getOff:"Baixada tras {f}.", fail1:"{n} fallo", failN:"{n} fallos", pass:"Pasas!", cpOn:"Checkpoint activado.", tieFail:"(empate = fallo)", toCp:"Ao checkpoint.", toStart:"Volta ao principio.", watching:"ti miras",
+ voting:"Están votando…", confirm:"Confirmar: {v} ▸", noMajority:"Falta maioría", chooseHL:"Escolle maior ou menor", decideName:"Decide {n}", keepGoing:"Seguir a viaxe ▸",
+ tally:"Reconto", sipsTitle:"Grolos", yellowNote:"En amarelo, quen viaxou no autobús.", playAgain:"Outra partida ▸", waitAnother:"Agardando a que comece outra", phEnd:"Fin do traxecto",
+ exitQ:"Saír ao menú principal?", exitHost:"Creaches ti a partida: acabarase para todos.", exitGuest:"Sairás da partida en curso.", keepPlaying:"Seguir xogando", exit:"Saír",
+ howTo:"Como se xoga", valPoker:"Ás = 1 · J = 11 · Q = 12 · K = 13", valEs:"Ás = 1 · Sota = 10 · Cabalo = 11 · Rei = 12", gotIt:"Entendido",
+ r1t:"Parada 1 · As catro preguntas", r1:["Cada xogador recibe 4 cartas por quendas: primeiro a 1ª a todos, despois a 2ª…","Carta 1: par ou impar? · Carta 2: arriba ou abaixo ca a 1ª? · Carta 3: dentro ou fóra do rango das dúas primeiras? · Carta 4: mesmo pau ca algunha das túas ou diferente?","Se fallas, bebes 1 grolo. Se sae o mesmo número, tamén."],
+ r2t:"Parada 2 · A pirámide", r2:["10 cartas boca abaixo en filas de 4, 3, 2 e 1, que se destapan da base á cima.","Se tes o mesmo número, tira a túa carta e escolle quen bebe: base 1 grolo, fila 2: 2, fila 3: 3, cima: 5.","Podes gardar unha carta para máis arriba, pero ao pasar de carta xa non hai volta atrás.","Quen remate con máis cartas sobe ao autobús. Se hai empate, soben xuntos.","Nun só móbil: toca a carta que queiras; as que coinciden tíranse soas e cada un manda os seus grolos."],
+ r3t:"Parada 3 · A viaxe", r3:["9 cartas en forma de ∩: dúas filas de 4 e unha ponte arriba.","Adiviña se a carta será maior ou menor. Empate = fallo.","Se fallas, bebes tantos grolos como cartas levabas (incluída a do fallo) e volves comezar.","Se pasas a ponte, é checkpoint: volves alí, pero os grolos cóntanse igual.","Se viaxades varios, cada un vota, gaña a maioría e prémese Seguinte para confirmar.","Nun só móbil: sae unha carta do monte e adiviñas se a seguinte do percorrido será máis alta (▲) ou máis baixa (▼)."],
+ cardFmt:"{r} de {s}", rk:{1:"Ás",11:"Xota",12:"Raíña",13:"Rei"}, rkEs:{1:"Ás",10:"Sota",11:"Cabalo",12:"Rei"},
+ suits:{S:"picas",H:"corazóns",D:"diamantes",C:"trevos"}, suitsEs:{O:"ouros",C:"copas",E:"espadas",B:"bastos"}
+},
+en:{
+ langName:"English", options:"Options", music:"Music", sfx:"Sound effects", hints:"Pyramid hints", language:"Language", rules:"See the rules", exitMenu:"Back to main menu", openMenu:"Open options",
+ back:"‹ Back", credit:"game created by", tagline:"Get on the bus and enjoy the pre-party", editProfile:"Edit profile", edit:"Edit", resume:"Back to the game",
+ create:"Create game", join:"Join an existing game", local:"Play on one phone",
+ warn:"Adults (18+) only. Drink responsibly: sips can be of any drink, have water between stops and nobody drives afterwards.",
+ cardsCredit:"Poker cards: SVG-cards by David Bellot (LGPL 2.1). Spanish deck: Basquetteur, Wikimedia Commons (CC BY-SA 3.0).",
+ phHome:"Home", whatName:"What's your name?", savedAsName:"It will be saved as your player name.", yourName:"Your name", adult:"I am 18 or older", save:"Save",
+ errName:"Type your name", errAdult:"BustBus is for adults (18+) only",
+ deck:"Deck", poker:"Poker", spanish:"Spanish", playerName:"Your player name", namePh:"What's your name",
+ createHint:"You'll be the game admin. When you continue, a code is created so your friends can join your lobby.", continueN:"Continue ▸",
+ codeLbl:"Game code (4 digits)", joinBtn:"Join ▸", phJoin:"Join", phLocal:"One phone", players:"Players", addPlayer:"+ Add player", nameShort:"Name", removePlayer:"Remove player {n}", startN:"Start ▸",
+ game:"Game {c}", searching:"Searching", connecting:"Connecting to the game creator…", waiting:"Waiting…",
+ lobbyAdmin:"Lobby · you're the admin", lobby:"Lobby", chooseDeck:"Choose the deck", deckInfoPoker:"Poker deck · the admin starts.", deckInfoEs:"Spanish deck · the admin starts.",
+ gameCode:"Game code", tellCode:"Give them this code to join with «{j}».", passengers:"Passengers", admin:"Admin", you:"You", photoEdit:"✎ Photo", changePhoto:"Change your profile photo", tapTicket:"Tap your ticket to change your photo.",
+ waitPlayers:"Waiting for players…", startWith:"Start with {n} ▸", waitAdmin:"Waiting for the admin", creating:"Creating game…", searchingGame:"Looking for the game…",
+ errCode:"The code is 4 digits", notFound:"Can't find game {c}. Check the code", errConn:"Couldn't connect. Check your internet connection and try again", errSync:"Couldn't sync the game", lostConn:"Connection lost", hostGone:"The host disconnected. Waiting for them to come back…",
+ errMin2:"You need at least 2 players", errMax:"This deck fits {n} players", errDup:"Two names are the same", deckEmpty:"Deck empty: shuffling the discards",
+ yourTicket:"Your ticket", name:"Name", orIcon:"Or pick an icon", gallery:"Gallery", camera:"Camera", yourPhoto:"Your photo", close:"Close", errImg:"Pick an image", errPhoto:"Couldn't use that photo", errReadPhoto:"Couldn't read the photo", saveN:"Save ▸",
+ stage1:"Stop 1 · Card {n} of 4", q0:"Even or odd?", q1:"Higher or lower?", q2:"Inside or outside?", q3:"Same suit or different?",
+ o_par:"Even", o_impar:"Odd", o_mayor:"Higher", o_menor:"Lower", o_dentro:"Inside", o_fuera:"Outside", o_mismo:"Same suit", o_distinto:"Different",
+ even:"even", odd:"odd", whyParity:"It's {p} ({v}).", whyTie1:"Same number as the first one.", whyHigher:"Higher than {c}.", whyLower:"Lower than {c}.", whyTie2:"Same number as one of the ends.", whyIn:"It's inside ({a}–{b}).", whyOut:"It's outside ({a}–{b}).", whySame:"Repeats {s}.", whyNew:"It's a new suit.",
+ tieAny:"Same number: drink whatever you said.", revealHint:"If you guessed right you're safe; if not, drink 1 sip.", was:"It was: {a}", safe:"You're safe!", drink:"Drink!", choosing:"{n} is choosing…", firstCard:"First card",
+ turnOf:"Turn", yourTurn:"Your<br>turn", chooseOrTap:"Choose or tap the card", turnName:"{n}'s turn", buildPyr:"Build the pyramid ▸", nextName:"Next: {n} ▸", waitFor:"Waiting for {n}", flipAria:"Flip the card",
+ stage2:"Stop 2 · The pyramid", stage2Row:"Stop 2 · {row} · {d}", rowN:"Row {n}", top:"Top", sip1:"{n} sip", sipN:"{n} sips",
+ tapAny:"Tap any card to flip it. Bottom row 1 sip · row 2: 2 · row 3: 3 · top: 5.", sends:"{n}, give out {d}!", nobodyHas:"Nobody has {c}.",
+ p2Intro:"Bottom row 1 sip · row 2: 2 · row 3: 3 · top: 5. If you have the same number, tap your card.", throwsChoosing:"{n} plays {c} and chooses who drinks…", anyoneHas:"Anyone have {c}? Tap your card to play it.",
+ yourHand:"Your hand · {c}", card1:"{n} card", cardN:"{n} cards", noCards:"No cards", freeAll:"You got rid of them all!", tapPyr:"Tap a card in the pyramid", toBus:"To the bus ▸", choosingWho:"Choosing who drinks…", revealsHost:"{n} flips", reveal:"Flip ▸", revealTop:"Flip the top ▸", nextCard:"Next card ▸",
+ waitReveal:"Wait until a card is flipped", noMatch:"Doesn't match {c}", whoDrinks:"Who drinks {d}?", throwsP:"{n} plays {c}", keepIt:"I'd rather keep it", throwAria:"Play {c}", revealAria:"Flip card",
+ busUp:"Getting on the bus", nobodyCards:"Nobody has cards: you all get on", withCards:"With {c}", tieW:"tie", stage3:"Stop 3 · Card {n} of 9", sipsIfFail:"Sips if you miss here",
+ nextHL:"Will the next one be higher or lower?", higherAria:"Up: higher", lowerAria:"Down: lower", hit:"Correct!", endTrip:"End of the line!", miss:"Miss!", drinkWord:"Drink", backCp:"Back to the checkpoint", backStart:"Back to the start", continue:"Continue",
+ onBus:"On the bus:", chooseArrow:"Choose ▲ or ▼", nextN:"Next ▸", seeSips:"See the sips ▸", vote:"Vote", decideAll:"Decide", yourTurnP:"Your turn", decide:"Deciding", hlThan:"Higher or lower than {c}?", higher:"Higher", lower:"Lower",
+ getOff:"Off the bus after {f}.", fail1:"{n} miss", failN:"{n} misses", pass:"You pass!", cpOn:"Checkpoint reached.", tieFail:"(tie = miss)", toCp:"Back to the checkpoint.", toStart:"Back to the start.", watching:"you're watching",
+ voting:"They're voting…", confirm:"Confirm: {v} ▸", noMajority:"No majority yet", chooseHL:"Choose higher or lower", decideName:"{n} decides", keepGoing:"Keep riding ▸",
+ tally:"Tally", sipsTitle:"Sips", yellowNote:"In yellow, whoever rode the bus.", playAgain:"Play again ▸", waitAnother:"Waiting for another game", phEnd:"End of the line",
+ exitQ:"Back to the main menu?", exitHost:"You created this game: it will end for everyone.", exitGuest:"You'll leave the current game.", keepPlaying:"Keep playing", exit:"Leave",
+ howTo:"How to play", valPoker:"Ace = 1 · J = 11 · Q = 12 · K = 13", valEs:"Ace = 1 · Jack = 10 · Knight = 11 · King = 12", gotIt:"Got it",
+ r1t:"Stop 1 · The four questions", r1:["Each player gets 4 cards in turns: first everyone's 1st card, then the 2nd…","Card 1: even or odd? · Card 2: higher or lower than the 1st? · Card 3: inside or outside the range of the first two? · Card 4: same suit as one of yours or different?","If you miss, drink 1 sip. If the same number comes up, you drink too."],
+ r2t:"Stop 2 · The pyramid", r2:["10 face-down cards in rows of 4, 3, 2 and 1, flipped from the bottom to the top.","If you have the same number, play your card and choose who drinks: bottom 1 sip, row 2: 2, row 3: 3, top: 5.","You can keep a card for higher up, but once the next card is flipped there's no going back.","Whoever ends with the most cards rides the bus. In a tie, they ride together.","On one phone: tap any card; matching cards are played automatically and each player gives out their sips."],
+ r3t:"Stop 3 · The ride", r3:["9 cards in a ∩ shape: two rows of 4 and a bridge on top.","Guess whether the card will be higher or lower. A tie is a miss.","If you miss, drink as many sips as cards you'd reached (including the miss) and start again.","If you pass the bridge, it's a checkpoint: you go back there, but the sips still count.","If several of you ride, everyone votes, the majority wins and you press Next to confirm.","On one phone: a card comes from the pile and you guess whether the next card on the route will be higher (▲) or lower (▼)."],
+ cardFmt:"{r} of {s}", rk:{1:"Ace",11:"Jack",12:"Queen",13:"King"}, rkEs:{1:"Ace",10:"Jack",11:"Knight",12:"King"},
+ suits:{S:"spades",H:"hearts",D:"diamonds",C:"clubs"}, suitsEs:{O:"coins",C:"cups",E:"swords",B:"clubs"}
+},
+fr:{
+ langName:"Français", options:"Options", music:"Musique", sfx:"Effets sonores", hints:"Indices dans la pyramide", language:"Langue", rules:"Voir les règles", exitMenu:"Retour au menu principal", openMenu:"Ouvrir les options",
+ back:"‹ Retour", credit:"jeu créé par", tagline:"Monte dans le bus et profite de l'apéro", editProfile:"Modifier le profil", edit:"Modifier", resume:"Revenir à la partie",
+ create:"Créer une partie", join:"Rejoindre une partie existante", local:"Jouer sur un seul téléphone",
+ warn:"Réservé aux plus de 18 ans. Buvez avec modération : les gorgées peuvent être de n'importe quelle boisson, de l'eau entre deux arrêts et personne ne conduit après.",
+ cardsCredit:"Cartes de poker : SVG-cards de David Bellot (LGPL 2.1). Jeu espagnol : Basquetteur, Wikimedia Commons (CC BY-SA 3.0).",
+ phHome:"Accueil", whatName:"Comment tu t'appelles ?", savedAsName:"Ce sera ton nom de joueur.", yourName:"Ton nom", adult:"J'ai 18 ans ou plus", save:"Enregistrer",
+ errName:"Écris ton nom", errAdult:"BustBus est réservé aux plus de 18 ans",
+ deck:"Jeu de cartes", poker:"Poker", spanish:"Espagnol", playerName:"Ton nom de joueur", namePh:"Comment tu t'appelles",
+ createHint:"Tu seras l'admin de la partie. En continuant, un code est créé pour que tes amis rejoignent ton lobby.", continueN:"Continuer ▸",
+ codeLbl:"Code de la partie (4 chiffres)", joinBtn:"Rejoindre ▸", phJoin:"Rejoindre", phLocal:"Un seul téléphone", players:"Joueurs", addPlayer:"+ Ajouter un joueur", nameShort:"Nom", removePlayer:"Retirer le joueur {n}", startN:"Commencer ▸",
+ game:"Partie {c}", searching:"Recherche", connecting:"Connexion à la personne qui a créé la partie…", waiting:"En attente…",
+ lobbyAdmin:"Lobby · tu es l'admin", lobby:"Lobby", chooseDeck:"Choisis le jeu de cartes", deckInfoPoker:"Jeu de poker · l'admin lance la partie.", deckInfoEs:"Jeu espagnol · l'admin lance la partie.",
+ gameCode:"Code de la partie", tellCode:"Donne-leur ce code pour entrer avec « {j} ».", passengers:"Passagers", admin:"Admin", you:"Toi", photoEdit:"✎ Photo", changePhoto:"Changer ta photo de profil", tapTicket:"Touche ton ticket pour changer ta photo.",
+ waitPlayers:"En attente de joueurs…", startWith:"Lancer à {n} ▸", waitAdmin:"En attente de l'admin", creating:"Création de la partie…", searchingGame:"Recherche de la partie…",
+ errCode:"Le code fait 4 chiffres", notFound:"Partie {c} introuvable. Vérifie le code", errConn:"Connexion impossible. Vérifie ta connexion internet et réessaie", errSync:"Impossible de synchroniser la partie", lostConn:"Connexion perdue", hostGone:"L'hôte s'est déconnecté. En attente de son retour…",
+ errMin2:"Il faut au moins 2 joueurs", errMax:"Ce jeu permet {n} joueurs", errDup:"Deux noms sont identiques", deckEmpty:"Pioche vide : on mélange la défausse",
+ yourTicket:"Ton ticket", name:"Nom", orIcon:"Ou choisis une icône", gallery:"Galerie", camera:"Appareil photo", yourPhoto:"Ta photo", close:"Fermer", errImg:"Choisis une image", errPhoto:"Impossible d'utiliser cette photo", errReadPhoto:"Impossible de lire la photo", saveN:"Enregistrer ▸",
+ stage1:"Arrêt 1 · Carte {n} sur 4", q0:"Pair ou impair ?", q1:"Plus haut ou plus bas ?", q2:"Dedans ou dehors ?", q3:"Même couleur ou différente ?",
+ o_par:"Pair", o_impair:"Impair", o_impar:"Impair", o_mayor:"Plus haut", o_menor:"Plus bas", o_dentro:"Dedans", o_fuera:"Dehors", o_mismo:"Même couleur", o_distinto:"Différente",
+ even:"pair", odd:"impair", whyParity:"C'est {p} ({v}).", whyTie1:"Même valeur que la première.", whyHigher:"Plus haut que {c}.", whyLower:"Plus bas que {c}.", whyTie2:"Même valeur qu'une des bornes.", whyIn:"Dedans ({a}–{b}).", whyOut:"Dehors ({a}–{b}).", whySame:"Encore du {s}.", whyNew:"C'est une nouvelle couleur.",
+ tieAny:"Même valeur : tu bois quoi que tu aies dit.", revealHint:"Si tu as deviné, tu es sauvé ; sinon, bois 1 gorgée.", was:"C'était : {a}", safe:"Sauvé !", drink:"Bois !", choosing:"{n} est en train de choisir…", firstCard:"Première carte",
+ turnOf:"Tour<br>de", yourTurn:"À toi", chooseOrTap:"Choisis ou touche la carte", turnName:"Tour de {n}", buildPyr:"Monter la pyramide ▸", nextName:"Suivant : {n} ▸", waitFor:"On attend {n}", flipAria:"Retourner la carte",
+ stage2:"Arrêt 2 · La pyramide", stage2Row:"Arrêt 2 · {row} · {d}", rowN:"Rangée {n}", top:"Sommet", sip1:"{n} gorgée", sipN:"{n} gorgées",
+ tapAny:"Touche n'importe quelle carte pour la retourner. Base 1 gorgée · rangée 2 : 2 · rangée 3 : 3 · sommet : 5.", sends:"{n}, distribue {d} !", nobodyHas:"Personne n'a {c}.",
+ p2Intro:"Base 1 gorgée · rangée 2 : 2 · rangée 3 : 3 · sommet : 5. Si tu as la même valeur, touche ta carte.", throwsChoosing:"{n} pose {c} et choisit qui boit…", anyoneHas:"Quelqu'un a {c} ? Touche ta carte pour la poser.",
+ yourHand:"Ta main · {c}", card1:"{n} carte", cardN:"{n} cartes", noCards:"Aucune carte", freeAll:"Tu t'es débarrassé de toutes !", tapPyr:"Touche une carte de la pyramide", toBus:"Au bus ▸", choosingWho:"Choix de qui boit…", revealsHost:"{n} retourne", reveal:"Retourner ▸", revealTop:"Retourner le sommet ▸", nextCard:"Carte suivante ▸",
+ waitReveal:"Attends qu'une carte soit retournée", noMatch:"Ne correspond pas à {c}", whoDrinks:"Qui boit {d} ?", throwsP:"{n} pose {c}", keepIt:"Je préfère la garder", throwAria:"Poser {c}", revealAria:"Retourner la carte",
+ busUp:"Montent dans le bus", nobodyCards:"Personne n'a de cartes : tout le monde monte", withCards:"Avec {c}", tieW:"égalité", stage3:"Arrêt 3 · Carte {n} sur 9", sipsIfFail:"Gorgées si tu rates ici",
+ nextHL:"La suivante sera plus haute ou plus basse ?", higherAria:"Haut : plus haute", lowerAria:"Bas : plus basse", hit:"Bien vu !", endTrip:"Terminus !", miss:"Raté !", drinkWord:"Bois", backCp:"Retour au checkpoint", backStart:"Retour au départ", continue:"Continuer",
+ onBus:"Dans le bus :", chooseArrow:"Choisis ▲ ou ▼", nextN:"Suivant ▸", seeSips:"Voir les gorgées ▸", vote:"Votez", decideAll:"Décidez", yourTurnP:"À toi", decide:"Décide", hlThan:"Plus haute ou plus basse que {c} ?", higher:"Plus haute", lower:"Plus basse",
+ getOff:"Descente après {f}.", fail1:"{n} raté", failN:"{n} ratés", pass:"Ça passe !", cpOn:"Checkpoint activé.", tieFail:"(égalité = raté)", toCp:"Retour au checkpoint.", toStart:"Retour au départ.", watching:"tu regardes",
+ voting:"Ils votent…", confirm:"Confirmer : {v} ▸", noMajority:"Pas encore de majorité", chooseHL:"Choisis plus haute ou plus basse", decideName:"{n} décide", keepGoing:"Continuer le trajet ▸",
+ tally:"Décompte", sipsTitle:"Gorgées", yellowNote:"En jaune, qui a voyagé dans le bus.", playAgain:"Nouvelle partie ▸", waitAnother:"En attente d'une nouvelle partie", phEnd:"Terminus",
+ exitQ:"Revenir au menu principal ?", exitHost:"Tu as créé la partie : elle se terminera pour tout le monde.", exitGuest:"Tu quitteras la partie en cours.", keepPlaying:"Continuer à jouer", exit:"Quitter",
+ howTo:"Comment jouer", valPoker:"As = 1 · V = 11 · D = 12 · R = 13", valEs:"As = 1 · Valet = 10 · Cavalier = 11 · Roi = 12", gotIt:"Compris",
+ r1t:"Arrêt 1 · Les quatre questions", r1:["Chaque joueur reçoit 4 cartes à tour de rôle : d'abord la 1re à tout le monde, puis la 2e…","Carte 1 : pair ou impair ? · Carte 2 : plus haute ou plus basse que la 1re ? · Carte 3 : dedans ou dehors de l'intervalle des deux premières ? · Carte 4 : même couleur qu'une des tiennes ou différente ?","Si tu rates, tu bois 1 gorgée. Si la même valeur sort, tu bois aussi."],
+ r2t:"Arrêt 2 · La pyramide", r2:["10 cartes face cachée en rangées de 4, 3, 2 et 1, retournées de la base au sommet.","Si tu as la même valeur, pose ta carte et choisis qui boit : base 1 gorgée, rangée 2 : 2, rangée 3 : 3, sommet : 5.","Tu peux garder une carte pour plus haut, mais une fois la carte suivante retournée, pas de retour en arrière.","Celui qui finit avec le plus de cartes monte dans le bus. En cas d'égalité, ils montent ensemble.","Sur un seul téléphone : touche la carte que tu veux ; les cartes identiques sont posées automatiquement et chacun distribue ses gorgées."],
+ r3t:"Arrêt 3 · Le trajet", r3:["9 cartes en forme de ∩ : deux rangées de 4 et un pont en haut.","Devine si la carte sera plus haute ou plus basse. Égalité = raté.","Si tu rates, tu bois autant de gorgées que de cartes atteintes (y compris la ratée) et tu recommences.","Si tu passes le pont, c'est un checkpoint : tu y retournes, mais les gorgées comptent quand même.","Si vous êtes plusieurs, chacun vote, la majorité l'emporte et on appuie sur Suivant pour confirmer.","Sur un seul téléphone : une carte sort de la pioche et tu devines si la suivante du parcours sera plus haute (▲) ou plus basse (▼)."],
+ cardFmt:"{r} de {s}", elide:true, rk:{1:"As",11:"Valet",12:"Dame",13:"Roi"}, rkEs:{1:"As",10:"Valet",11:"Cavalier",12:"Roi"},
+ suits:{S:"pique",H:"cœur",D:"carreau",C:"trèfle"}, suitsEs:{O:"deniers",C:"coupes",E:"épées",B:"bâtons"}
+},
+it:{
+ langName:"Italiano", options:"Opzioni", music:"Musica", sfx:"Effetti sonori", hints:"Suggerimenti nella piramide", language:"Lingua", rules:"Vedi le regole", exitMenu:"Torna al menu principale", openMenu:"Apri opzioni",
+ back:"‹ Indietro", credit:"gioco creato da", tagline:"Sali sul bus e goditi il pre-serata", editProfile:"Modifica profilo", edit:"Modifica", resume:"Torna alla partita",
+ create:"Crea partita", join:"Unisciti a una partita", local:"Gioca su un solo telefono",
+ warn:"Solo per maggiori di 18 anni. Bevete responsabilmente: i sorsi possono essere di qualsiasi bevanda, acqua tra una fermata e l'altra e nessuno guida dopo.",
+ cardsCredit:"Carte da poker: SVG-cards di David Bellot (LGPL 2.1). Mazzo spagnolo: Basquetteur, Wikimedia Commons (CC BY-SA 3.0).",
+ phHome:"Inizio", whatName:"Come ti chiami?", savedAsName:"Verrà salvato come tuo nome di gioco.", yourName:"Il tuo nome", adult:"Ho 18 anni o più", save:"Salva",
+ errName:"Scrivi il tuo nome", errAdult:"BustBus è solo per maggiori di 18 anni",
+ deck:"Mazzo", poker:"Poker", spanish:"Spagnolo", playerName:"Il tuo nome di gioco", namePh:"Come ti chiami",
+ createHint:"Sarai l'admin della partita. Continuando si genera un codice perché i tuoi amici entrino nella tua lobby.", continueN:"Continua ▸",
+ codeLbl:"Codice partita (4 cifre)", joinBtn:"Unisciti ▸", phJoin:"Unisciti", phLocal:"Un solo telefono", players:"Giocatori", addPlayer:"+ Aggiungi giocatore", nameShort:"Nome", removePlayer:"Rimuovi giocatore {n}", startN:"Inizia ▸",
+ game:"Partita {c}", searching:"Ricerca", connecting:"Connessione con chi ha creato la partita…", waiting:"In attesa…",
+ lobbyAdmin:"Lobby · sei l'admin", lobby:"Lobby", chooseDeck:"Scegli il mazzo", deckInfoPoker:"Mazzo da poker · inizia l'admin.", deckInfoEs:"Mazzo spagnolo · inizia l'admin.",
+ gameCode:"Codice partita", tellCode:"Di' loro questo codice per entrare con «{j}».", passengers:"Passeggeri", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Cambia la tua foto profilo", tapTicket:"Tocca il tuo biglietto per cambiare foto.",
+ waitPlayers:"In attesa di giocatori…", startWith:"Inizia in {n} ▸", waitAdmin:"In attesa dell'admin", creating:"Creazione della partita…", searchingGame:"Ricerca della partita…",
+ errCode:"Il codice è di 4 cifre", notFound:"Non trovo la partita {c}. Controlla il codice", errConn:"Connessione non riuscita. Controlla internet e riprova", errSync:"Impossibile sincronizzare la partita", lostConn:"Connessione persa", hostGone:"L'host si è disconnesso. In attesa che torni…",
+ errMin2:"Servono almeno 2 giocatori", errMax:"Con questo mazzo si gioca in {n}", errDup:"Ci sono due nomi uguali", deckEmpty:"Mazzo vuoto: si mescolano gli scarti",
+ yourTicket:"Il tuo biglietto", name:"Nome", orIcon:"Oppure scegli un'icona", gallery:"Galleria", camera:"Fotocamera", yourPhoto:"La tua foto", close:"Chiudi", errImg:"Scegli un'immagine", errPhoto:"Impossibile usare questa foto", errReadPhoto:"Impossibile leggere la foto", saveN:"Salva ▸",
+ stage1:"Fermata 1 · Carta {n} di 4", q0:"Pari o dispari?", q1:"Su o giù?", q2:"Dentro o fuori?", q3:"Stesso seme o diverso?",
+ o_par:"Pari", o_impar:"Dispari", o_mayor:"Su", o_menor:"Giù", o_dentro:"Dentro", o_fuera:"Fuori", o_mismo:"Stesso seme", o_distinto:"Diverso",
+ even:"pari", odd:"dispari", whyParity:"È {p} ({v}).", whyTie1:"Stesso numero della prima.", whyHigher:"Più alta di {c}.", whyLower:"Più bassa di {c}.", whyTie2:"Stesso numero di uno degli estremi.", whyIn:"È dentro ({a}–{b}).", whyOut:"È fuori ({a}–{b}).", whySame:"Ripete {s}.", whyNew:"È un seme nuovo.",
+ tieAny:"Stesso numero: bevi qualunque cosa tu abbia detto.", revealHint:"Se hai indovinato sei salvo; altrimenti bevi 1 sorso.", was:"Era: {a}", safe:"Salvo!", drink:"Bevi!", choosing:"{n} sta scegliendo…", firstCard:"Prima carta",
+ turnOf:"Turno<br>di", yourTurn:"Tocca<br>a te", chooseOrTap:"Scegli o tocca la carta", turnName:"Turno di {n}", buildPyr:"Costruisci la piramide ▸", nextName:"Prossimo: {n} ▸", waitFor:"In attesa di {n}", flipAria:"Gira la carta",
+ stage2:"Fermata 2 · La piramide", stage2Row:"Fermata 2 · {row} · {d}", rowN:"Fila {n}", top:"Cima", sip1:"{n} sorso", sipN:"{n} sorsi",
+ tapAny:"Tocca una carta qualsiasi per girarla. Base 1 sorso · fila 2: 2 · fila 3: 3 · cima: 5.", sends:"{n}, fai bere {d}!", nobodyHas:"Nessuno ha {c}.",
+ p2Intro:"Base 1 sorso · fila 2: 2 · fila 3: 3 · cima: 5. Se hai lo stesso numero, tocca la tua carta.", throwsChoosing:"{n} gioca {c} e sceglie chi beve…", anyoneHas:"Qualcuno ha {c}? Tocca la tua carta per giocarla.",
+ yourHand:"La tua mano · {c}", card1:"{n} carta", cardN:"{n} carte", noCards:"Nessuna carta", freeAll:"Te ne sei liberato del tutto!", tapPyr:"Tocca una carta della piramide", toBus:"Al bus ▸", choosingWho:"Scelta di chi beve…", revealsHost:"Gira {n}", reveal:"Gira ▸", revealTop:"Gira la cima ▸", nextCard:"Carta successiva ▸",
+ waitReveal:"Aspetta che venga girata una carta", noMatch:"Non corrisponde a {c}", whoDrinks:"Chi beve {d}?", throwsP:"{n} gioca {c}", keepIt:"Meglio tenerla", throwAria:"Gioca {c}", revealAria:"Gira carta",
+ busUp:"Salgono sul bus", nobodyCards:"Nessuno ha carte: salite tutti", withCards:"Con {c}", tieW:"pareggio", stage3:"Fermata 3 · Carta {n} di 9", sipsIfFail:"Sorsi se sbagli qui",
+ nextHL:"La prossima sarà più alta o più bassa?", higherAria:"Su: più alta", lowerAria:"Giù: più bassa", hit:"Indovinato!", endTrip:"Capolinea!", miss:"Sbagliato!", drinkWord:"Bevi", backCp:"Tornate al checkpoint", backStart:"Si torna all'inizio", continue:"Continua",
+ onBus:"Sul bus:", chooseArrow:"Scegli ▲ o ▼", nextN:"Avanti ▸", seeSips:"Vedi i sorsi ▸", vote:"Votate", decideAll:"Decidete", yourTurnP:"Tocca a te", decide:"Decide", hlThan:"Più alta o più bassa di {c}?", higher:"Più alta", lower:"Più bassa",
+ getOff:"Scesi dopo {f}.", fail1:"{n} errore", failN:"{n} errori", pass:"Passi!", cpOn:"Checkpoint attivato.", tieFail:"(pareggio = errore)", toCp:"Al checkpoint.", toStart:"Si torna all'inizio.", watching:"tu guardi",
+ voting:"Stanno votando…", confirm:"Conferma: {v} ▸", noMajority:"Manca la maggioranza", chooseHL:"Scegli più alta o più bassa", decideName:"Decide {n}", keepGoing:"Continua il viaggio ▸",
+ tally:"Conteggio", sipsTitle:"Sorsi", yellowNote:"In giallo, chi ha viaggiato sul bus.", playAgain:"Un'altra partita ▸", waitAnother:"In attesa di un'altra partita", phEnd:"Capolinea",
+ exitQ:"Tornare al menu principale?", exitHost:"Hai creato tu la partita: finirà per tutti.", exitGuest:"Lascerai la partita in corso.", keepPlaying:"Continua a giocare", exit:"Esci",
+ howTo:"Come si gioca", valPoker:"Asso = 1 · J = 11 · Q = 12 · K = 13", valEs:"Asso = 1 · Fante = 10 · Cavallo = 11 · Re = 12", gotIt:"Capito",
+ r1t:"Fermata 1 · Le quattro domande", r1:["Ogni giocatore riceve 4 carte a turno: prima la 1ª a tutti, poi la 2ª…","Carta 1: pari o dispari? · Carta 2: su o giù rispetto alla 1ª? · Carta 3: dentro o fuori dall'intervallo delle prime due? · Carta 4: stesso seme di una delle tue o diverso?","Se sbagli, bevi 1 sorso. Se esce lo stesso numero, bevi anche."],
+ r2t:"Fermata 2 · La piramide", r2:["10 carte coperte in file da 4, 3, 2 e 1, girate dalla base alla cima.","Se hai lo stesso numero, gioca la tua carta e scegli chi beve: base 1 sorso, fila 2: 2, fila 3: 3, cima: 5.","Puoi tenerti una carta per più in alto, ma girata la carta successiva non si torna indietro.","Chi finisce con più carte sale sul bus. In caso di pareggio, salgono insieme.","Su un solo telefono: tocca la carta che vuoi; quelle uguali si giocano da sole e ognuno fa bere i suoi sorsi."],
+ r3t:"Fermata 3 · Il viaggio", r3:["9 carte a forma di ∩: due file da 4 e un ponte in alto.","Indovina se la carta sarà più alta o più bassa. Pareggio = errore.","Se sbagli, bevi tanti sorsi quante carte avevi raggiunto (compresa quella sbagliata) e ricominci.","Se superi il ponte è un checkpoint: torni lì, ma i sorsi contano lo stesso.","Se viaggiate in più, ognuno vota, vince la maggioranza e si preme Avanti per confermare.","Su un solo telefono: esce una carta dal mazzo e indovini se la prossima del percorso sarà più alta (▲) o più bassa (▼)."],
+ cardFmt:"{r} di {s}", rk:{1:"Asso",11:"Fante",12:"Donna",13:"Re"}, rkEs:{1:"Asso",10:"Fante",11:"Cavallo",12:"Re"},
+ suits:{S:"picche",H:"cuori",D:"quadri",C:"fiori"}, suitsEs:{O:"denari",C:"coppe",E:"spade",B:"bastoni"}
+},
+pt:{
+ langName:"Português", options:"Opções", music:"Música", sfx:"Efeitos sonoros", hints:"Dicas na pirâmide", language:"Idioma", rules:"Ver as regras", exitMenu:"Voltar ao menu principal", openMenu:"Abrir opções",
+ back:"‹ Voltar", credit:"jogo criado por", tagline:"Sobe no autocarro e aproveita o pré-festa", editProfile:"Editar perfil", edit:"Editar", resume:"Voltar à partida",
+ create:"Criar partida", join:"Entrar numa partida já criada", local:"Jogar num só telemóvel",
+ warn:"Só para maiores de 18 anos. Bebam com cabeça: os goles podem ser de qualquer bebida, água entre paragens e ninguém conduz depois.",
+ cardsCredit:"Cartas de póquer: SVG-cards de David Bellot (LGPL 2.1). Baralho espanhol: Basquetteur, Wikimedia Commons (CC BY-SA 3.0).",
+ phHome:"Início", whatName:"Como te chamas?", savedAsName:"Será guardado como o teu nome de jogador.", yourName:"O teu nome", adult:"Tenho 18 anos ou mais", save:"Guardar",
+ errName:"Escreve o teu nome", errAdult:"O BustBus é só para maiores de 18 anos",
+ deck:"Baralho", poker:"Póquer", spanish:"Espanhol", playerName:"O teu nome de jogador", namePh:"Como te chamas",
+ createHint:"Vais ser o admin da partida. Ao continuar é gerado um código para os teus amigos entrarem no teu lobby.", continueN:"Continuar ▸",
+ codeLbl:"Código da partida (4 números)", joinBtn:"Entrar ▸", phJoin:"Entrar", phLocal:"Um só telemóvel", players:"Jogadores", addPlayer:"+ Adicionar jogador", nameShort:"Nome", removePlayer:"Remover jogador {n}", startN:"Começar ▸",
+ game:"Partida {c}", searching:"A procurar", connecting:"A ligar a quem criou a partida…", waiting:"À espera…",
+ lobbyAdmin:"Lobby · és o admin", lobby:"Lobby", chooseDeck:"Escolhe o baralho", deckInfoPoker:"Baralho de póquer · o admin começa.", deckInfoEs:"Baralho espanhol · o admin começa.",
+ gameCode:"Código da partida", tellCode:"Diz-lhes este código para entrarem com «{j}».", passengers:"Passageiros", admin:"Admin", you:"Tu", photoEdit:"✎ Foto", changePhoto:"Mudar a tua foto de perfil", tapTicket:"Toca no teu bilhete para mudar a foto.",
+ waitPlayers:"À espera de jogadores…", startWith:"Começar com {n} ▸", waitAdmin:"À espera do admin", creating:"A criar a partida…", searchingGame:"A procurar a partida…",
+ errCode:"O código são 4 números", notFound:"Não encontro a partida {c}. Verifica o código", errConn:"Não foi possível ligar. Verifica a ligação à internet e tenta outra vez", errSync:"Não foi possível sincronizar a partida", lostConn:"A ligação perdeu-se", hostGone:"O anfitrião desligou-se. À espera que volte…",
+ errMin2:"São precisos pelo menos 2 jogadores", errMax:"Com este baralho cabem {n} jogadores", errDup:"Há dois nomes iguais", deckEmpty:"Baralho vazio: baralham-se as descartadas",
+ yourTicket:"O teu bilhete", name:"Nome", orIcon:"Ou escolhe um ícone", gallery:"Galeria", camera:"Câmara", yourPhoto:"A tua foto", close:"Fechar", errImg:"Escolhe uma imagem", errPhoto:"Não foi possível usar essa foto", errReadPhoto:"Não foi possível ler a foto", saveN:"Guardar ▸",
+ stage1:"Paragem 1 · Carta {n} de 4", q0:"Par ou ímpar?", q1:"Acima ou abaixo?", q2:"Dentro ou fora?", q3:"Mesmo naipe ou diferente?",
+ o_par:"Par", o_impar:"Ímpar", o_mayor:"Acima", o_menor:"Abaixo", o_dentro:"Dentro", o_fuera:"Fora", o_mismo:"Mesmo naipe", o_distinto:"Diferente",
+ even:"par", odd:"ímpar", whyParity:"É {p} ({v}).", whyTie1:"Mesmo número que a primeira.", whyHigher:"Maior que {c}.", whyLower:"Menor que {c}.", whyTie2:"Mesmo número que um dos extremos.", whyIn:"Cai dentro ({a}–{b}).", whyOut:"Cai fora ({a}–{b}).", whySame:"Repete {s}.", whyNew:"É um naipe novo.",
+ tieAny:"Mesmo número: bebes digas o que disseres.", revealHint:"Se acertaste, safas-te; se não, bebe 1 gole.", was:"Era: {a}", safe:"Safaste-te!", drink:"Bebe!", choosing:"{n} está a escolher…", firstCard:"Primeira carta",
+ turnOf:"Vez<br>de", yourTurn:"É a<br>tua vez", chooseOrTap:"Escolhe ou toca na carta", turnName:"Vez de {n}", buildPyr:"Montar a pirâmide ▸", nextName:"Seguinte: {n} ▸", waitFor:"À espera de {n}", flipAria:"Virar a carta",
+ stage2:"Paragem 2 · A pirâmide", stage2Row:"Paragem 2 · {row} · {d}", rowN:"Fila {n}", top:"Topo", sip1:"{n} gole", sipN:"{n} goles",
+ tapAny:"Toca em qualquer carta para a virar. Base 1 gole · fila 2: 2 · fila 3: 3 · topo: 5.", sends:"{n}, manda {d}!", nobodyHas:"Ninguém tem {c}.",
+ p2Intro:"Base 1 gole · fila 2: 2 · fila 3: 3 · topo: 5. Se tiveres o mesmo número, toca na tua carta.", throwsChoosing:"{n} joga {c} e escolhe quem bebe…", anyoneHas:"Alguém tem {c}? Toca na tua carta para a jogar.",
+ yourHand:"A tua mão · {c}", card1:"{n} carta", cardN:"{n} cartas", noCards:"Sem cartas", freeAll:"Livraste-te de todas!", tapPyr:"Toca numa carta da pirâmide", toBus:"Para o autocarro ▸", choosingWho:"A escolher quem bebe…", revealsHost:"{n} vira", reveal:"Virar ▸", revealTop:"Virar o topo ▸", nextCard:"Carta seguinte ▸",
+ waitReveal:"Espera que se vire uma carta", noMatch:"Não coincide com {c}", whoDrinks:"Quem bebe {d}?", throwsP:"{n} joga {c}", keepIt:"Prefiro guardá-la", throwAria:"Jogar {c}", revealAria:"Virar carta",
+ busUp:"Sobem para o autocarro", nobodyCards:"Ninguém tem cartas: sobem todos", withCards:"Com {c}", tieW:"empate", stage3:"Paragem 3 · Carta {n} de 9", sipsIfFail:"Goles se falhares aqui",
+ nextHL:"A seguinte será mais alta ou mais baixa?", higherAria:"Acima: mais alta", lowerAria:"Abaixo: mais baixa", hit:"Acertaste!", endTrip:"Fim da viagem!", miss:"Falhaste!", drinkWord:"Bebe", backCp:"Voltam ao checkpoint", backStart:"De volta ao início", continue:"Continuar",
+ onBus:"No autocarro:", chooseArrow:"Escolhe ▲ ou ▼", nextN:"Seguinte ▸", seeSips:"Ver os goles ▸", vote:"Votem", decideAll:"Decidam", yourTurnP:"É a tua vez", decide:"Decide", hlThan:"Mais alta ou mais baixa que {c}?", higher:"Mais alta", lower:"Mais baixa",
+ getOff:"Saída após {f}.", fail1:"{n} falha", failN:"{n} falhas", pass:"Passas!", cpOn:"Checkpoint ativado.", tieFail:"(empate = falha)", toCp:"Ao checkpoint.", toStart:"De volta ao início.", watching:"tu assistes",
+ voting:"Estão a votar…", confirm:"Confirmar: {v} ▸", noMajority:"Falta maioria", chooseHL:"Escolhe mais alta ou mais baixa", decideName:"{n} decide", keepGoing:"Continuar a viagem ▸",
+ tally:"Contagem", sipsTitle:"Goles", yellowNote:"A amarelo, quem viajou no autocarro.", playAgain:"Outra partida ▸", waitAnother:"À espera de outra partida", phEnd:"Fim da viagem",
+ exitQ:"Voltar ao menu principal?", exitHost:"Foste tu que criaste a partida: vai acabar para todos.", exitGuest:"Vais sair da partida em curso.", keepPlaying:"Continuar a jogar", exit:"Sair",
+ howTo:"Como se joga", valPoker:"Ás = 1 · J = 11 · Q = 12 · K = 13", valEs:"Ás = 1 · Valete = 10 · Cavalo = 11 · Rei = 12", gotIt:"Percebido",
+ r1t:"Paragem 1 · As quatro perguntas", r1:["Cada jogador recebe 4 cartas à vez: primeiro a 1.ª a todos, depois a 2.ª…","Carta 1: par ou ímpar? · Carta 2: acima ou abaixo da 1.ª? · Carta 3: dentro ou fora do intervalo das duas primeiras? · Carta 4: mesmo naipe que alguma das tuas ou diferente?","Se falhares, bebes 1 gole. Se sair o mesmo número, também."],
+ r2t:"Paragem 2 · A pirâmide", r2:["10 cartas viradas para baixo em filas de 4, 3, 2 e 1, que se viram da base ao topo.","Se tiveres o mesmo número, joga a tua carta e escolhe quem bebe: base 1 gole, fila 2: 2, fila 3: 3, topo: 5.","Podes guardar uma carta para mais acima, mas depois de virar a seguinte já não há volta atrás.","Quem acabar com mais cartas sobe para o autocarro. Em caso de empate, sobem juntos.","Num só telemóvel: toca na carta que quiseres; as que coincidem são jogadas sozinhas e cada um manda os seus goles."],
+ r3t:"Paragem 3 · A viagem", r3:["9 cartas em forma de ∩: duas filas de 4 e uma ponte em cima.","Adivinha se a carta será mais alta ou mais baixa. Empate = falha.","Se falhares, bebes tantos goles como as cartas que levavas (incluindo a da falha) e voltas ao início.","Se passares a ponte, é checkpoint: voltas lá, mas os goles contam na mesma.","Se viajarem vários, cada um vota, ganha a maioria e carrega-se em Seguinte para confirmar.","Num só telemóvel: sai uma carta do monte e adivinhas se a seguinte do percurso será mais alta (▲) ou mais baixa (▼)."],
+ cardFmt:"{r} de {s}", rk:{1:"Ás",11:"Valete",12:"Dama",13:"Rei"}, rkEs:{1:"Ás",10:"Valete",11:"Cavalo",12:"Rei"},
+ suits:{S:"espadas",H:"copas",D:"ouros",C:"paus"}, suitsEs:{O:"ouros",C:"copas",E:"espadas",B:"paus"}
+},
+de:{
+ langName:"Deutsch", options:"Optionen", music:"Musik", sfx:"Soundeffekte", hints:"Hinweise in der Pyramide", language:"Sprache", rules:"Regeln ansehen", exitMenu:"Zum Hauptmenü", openMenu:"Optionen öffnen",
+ back:"‹ Zurück", credit:"Spiel von", tagline:"Steig in den Bus und genieß das Vorglühen", editProfile:"Profil bearbeiten", edit:"Bearbeiten", resume:"Zurück zum Spiel",
+ create:"Spiel erstellen", join:"Einem Spiel beitreten", local:"Auf einem Handy spielen",
+ warn:"Nur für Erwachsene ab 18. Trinkt verantwortungsvoll: Schlucke können jedes Getränk sein, Wasser zwischen den Haltestellen und danach fährt niemand Auto.",
+ cardsCredit:"Pokerkarten: SVG-cards von David Bellot (LGPL 2.1). Spanisches Blatt: Basquetteur, Wikimedia Commons (CC BY-SA 3.0).",
+ phHome:"Start", whatName:"Wie heißt du?", savedAsName:"Das wird dein Spielername.", yourName:"Dein Name", adult:"Ich bin 18 oder älter", save:"Speichern",
+ errName:"Gib deinen Namen ein", errAdult:"BustBus ist nur für Erwachsene ab 18",
+ deck:"Kartenspiel", poker:"Poker", spanish:"Spanisch", playerName:"Dein Spielername", namePh:"Wie heißt du",
+ createHint:"Du bist der Admin des Spiels. Danach wird ein Code erstellt, mit dem deine Freunde in deine Lobby kommen.", continueN:"Weiter ▸",
+ codeLbl:"Spielcode (4 Ziffern)", joinBtn:"Beitreten ▸", phJoin:"Beitreten", phLocal:"Ein Handy", players:"Spieler", addPlayer:"+ Spieler hinzufügen", nameShort:"Name", removePlayer:"Spieler {n} entfernen", startN:"Los ▸",
+ game:"Spiel {c}", searching:"Suche", connecting:"Verbinde mit dem Ersteller des Spiels…", waiting:"Warten…",
+ lobbyAdmin:"Lobby · du bist Admin", lobby:"Lobby", chooseDeck:"Wähle das Kartenspiel", deckInfoPoker:"Pokerkarten · der Admin startet.", deckInfoEs:"Spanisches Blatt · der Admin startet.",
+ gameCode:"Spielcode", tellCode:"Gib ihnen diesen Code für «{j}».", passengers:"Fahrgäste", admin:"Admin", you:"Du", photoEdit:"✎ Foto", changePhoto:"Profilfoto ändern", tapTicket:"Tippe auf dein Ticket, um dein Foto zu ändern.",
+ waitPlayers:"Warte auf Spieler…", startWith:"Mit {n} starten ▸", waitAdmin:"Warte auf den Admin", creating:"Spiel wird erstellt…", searchingGame:"Spiel wird gesucht…",
+ errCode:"Der Code hat 4 Ziffern", notFound:"Spiel {c} nicht gefunden. Prüfe den Code", errConn:"Verbindung fehlgeschlagen. Prüfe deine Internetverbindung und versuch es nochmal", errSync:"Spiel konnte nicht synchronisiert werden", lostConn:"Verbindung verloren", hostGone:"Der Host ist offline. Warte, bis er zurückkommt…",
+ errMin2:"Es braucht mindestens 2 Spieler", errMax:"Mit diesem Blatt passen {n} Spieler", errDup:"Zwei Namen sind gleich", deckEmpty:"Stapel leer: Ablage wird gemischt",
+ yourTicket:"Dein Ticket", name:"Name", orIcon:"Oder wähle ein Symbol", gallery:"Galerie", camera:"Kamera", yourPhoto:"Dein Foto", close:"Schließen", errImg:"Wähle ein Bild", errPhoto:"Dieses Foto geht nicht", errReadPhoto:"Foto konnte nicht gelesen werden", saveN:"Speichern ▸",
+ stage1:"Haltestelle 1 · Karte {n} von 4", q0:"Gerade oder ungerade?", q1:"Höher oder tiefer?", q2:"Drinnen oder draußen?", q3:"Gleiche Farbe oder andere?",
+ o_par:"Gerade", o_impar:"Ungerade", o_mayor:"Höher", o_menor:"Tiefer", o_dentro:"Drinnen", o_fuera:"Draußen", o_mismo:"Gleiche Farbe", o_distinto:"Andere",
+ even:"gerade", odd:"ungerade", whyParity:"Sie ist {p} ({v}).", whyTie1:"Gleiche Zahl wie die erste.", whyHigher:"Höher als {c}.", whyLower:"Tiefer als {c}.", whyTie2:"Gleiche Zahl wie eine der Grenzen.", whyIn:"Liegt drinnen ({a}–{b}).", whyOut:"Liegt draußen ({a}–{b}).", whySame:"Wieder {s}.", whyNew:"Eine neue Farbe.",
+ tieAny:"Gleiche Zahl: trink, egal was du gesagt hast.", revealHint:"Wenn du richtig lagst, bist du raus; sonst trink 1 Schluck.", was:"Es war: {a}", safe:"Glück gehabt!", drink:"Trink!", choosing:"{n} wählt…", firstCard:"Erste Karte",
+ turnOf:"Am<br>Zug", yourTurn:"Du bist<br>dran", chooseOrTap:"Wähle oder tippe die Karte", turnName:"{n} ist dran", buildPyr:"Pyramide bauen ▸", nextName:"Weiter: {n} ▸", waitFor:"Warte auf {n}", flipAria:"Karte umdrehen",
+ stage2:"Haltestelle 2 · Die Pyramide", stage2Row:"Haltestelle 2 · {row} · {d}", rowN:"Reihe {n}", top:"Spitze", sip1:"{n} Schluck", sipN:"{n} Schlucke",
+ tapAny:"Tippe auf eine beliebige Karte, um sie umzudrehen. Basis 1 Schluck · Reihe 2: 2 · Reihe 3: 3 · Spitze: 5.", sends:"{n}, verteil {d}!", nobodyHas:"Niemand hat {c}.",
+ p2Intro:"Basis 1 Schluck · Reihe 2: 2 · Reihe 3: 3 · Spitze: 5. Hast du dieselbe Zahl, tippe auf deine Karte.", throwsChoosing:"{n} legt {c} und wählt, wer trinkt…", anyoneHas:"Hat jemand {c}? Tippe auf deine Karte, um sie zu legen.",
+ yourHand:"Deine Hand · {c}", card1:"{n} Karte", cardN:"{n} Karten", noCards:"Keine Karten", freeAll:"Du bist alle los!", tapPyr:"Tippe auf eine Karte der Pyramide", toBus:"Zum Bus ▸", choosingWho:"Es wird gewählt, wer trinkt…", revealsHost:"{n} deckt auf", reveal:"Aufdecken ▸", revealTop:"Spitze aufdecken ▸", nextCard:"Nächste Karte ▸",
+ waitReveal:"Warte, bis eine Karte aufgedeckt ist", noMatch:"Passt nicht zu {c}", whoDrinks:"Wer trinkt {d}?", throwsP:"{n} legt {c}", keepIt:"Ich behalte sie lieber", throwAria:"{c} legen", revealAria:"Karte aufdecken",
+ busUp:"Steigen in den Bus", nobodyCards:"Niemand hat Karten: alle steigen ein", withCards:"Mit {c}", tieW:"Gleichstand", stage3:"Haltestelle 3 · Karte {n} von 9", sipsIfFail:"Schlucke, wenn du hier danebenliegst",
+ nextHL:"Wird die nächste höher oder tiefer?", higherAria:"Hoch: höher", lowerAria:"Runter: tiefer", hit:"Richtig!", endTrip:"Endstation!", miss:"Daneben!", drinkWord:"Trink", backCp:"Zurück zum Checkpoint", backStart:"Zurück zum Start", continue:"Weiter",
+ onBus:"Im Bus:", chooseArrow:"Wähle ▲ oder ▼", nextN:"Weiter ▸", seeSips:"Schlucke ansehen ▸", vote:"Stimmt ab", decideAll:"Entscheidet", yourTurnP:"Du bist dran", decide:"Entscheidet", hlThan:"Höher oder tiefer als {c}?", higher:"Höher", lower:"Tiefer",
+ getOff:"Ausgestiegen nach {f}.", fail1:"{n} Fehler", failN:"{n} Fehlern", pass:"Weiter geht's!", cpOn:"Checkpoint erreicht.", tieFail:"(Gleichstand = Fehler)", toCp:"Zum Checkpoint.", toStart:"Zurück zum Start.", watching:"du schaust zu",
+ voting:"Sie stimmen ab…", confirm:"Bestätigen: {v} ▸", noMajority:"Noch keine Mehrheit", chooseHL:"Wähle höher oder tiefer", decideName:"{n} entscheidet", keepGoing:"Weiterfahren ▸",
+ tally:"Abrechnung", sipsTitle:"Schlucke", yellowNote:"Gelb: wer Bus gefahren ist.", playAgain:"Noch ein Spiel ▸", waitAnother:"Warte auf ein neues Spiel", phEnd:"Endstation",
+ exitQ:"Zum Hauptmenü?", exitHost:"Du hast das Spiel erstellt: es endet für alle.", exitGuest:"Du verlässt das laufende Spiel.", keepPlaying:"Weiterspielen", exit:"Verlassen",
+ howTo:"So wird gespielt", valPoker:"Ass = 1 · B = 11 · D = 12 · K = 13", valEs:"Ass = 1 · Bube = 10 · Reiter = 11 · König = 12", gotIt:"Verstanden",
+ r1t:"Haltestelle 1 · Die vier Fragen", r1:["Jeder Spieler bekommt reihum 4 Karten: erst alle die 1., dann die 2.…","Karte 1: gerade oder ungerade? · Karte 2: höher oder tiefer als die 1.? · Karte 3: innerhalb oder außerhalb der ersten beiden? · Karte 4: gleiche Farbe wie eine deiner Karten oder andere?","Liegst du falsch, trinkst du 1 Schluck. Kommt dieselbe Zahl, auch."],
+ r2t:"Haltestelle 2 · Die Pyramide", r2:["10 verdeckte Karten in Reihen zu 4, 3, 2 und 1, von unten nach oben aufgedeckt.","Hast du dieselbe Zahl, leg deine Karte und wähle, wer trinkt: Basis 1, Reihe 2: 2, Reihe 3: 3, Spitze: 5.","Du kannst eine Karte für weiter oben behalten, aber nach der nächsten Karte gibt es kein Zurück.","Wer am Ende die meisten Karten hat, fährt Bus. Bei Gleichstand fahren alle zusammen.","Auf einem Handy: tippe auf eine beliebige Karte; passende Karten werden automatisch gelegt und jeder verteilt seine Schlucke."],
+ r3t:"Haltestelle 3 · Die Fahrt", r3:["9 Karten in ∩-Form: zwei Reihen à 4 und eine Brücke oben.","Rate, ob die Karte höher oder tiefer ist. Gleichstand = Fehler.","Liegst du daneben, trinkst du so viele Schlucke wie Karten erreicht (inklusive Fehler) und fängst neu an.","Hast du die Brücke geschafft, ist sie ein Checkpoint: du startest dort, die Schlucke zählen trotzdem.","Fahren mehrere, stimmt jeder ab, die Mehrheit gewinnt und man drückt Weiter zum Bestätigen.","Auf einem Handy: eine Karte kommt vom Stapel und du rätst, ob die nächste Karte der Strecke höher (▲) oder tiefer (▼) ist."],
+ cardFmt:"{s} {r}", rk:{1:"Ass",11:"Bube",12:"Dame",13:"König"}, rkEs:{1:"Ass",10:"Bube",11:"Reiter",12:"König"},
+ suits:{S:"Pik",H:"Herz",D:"Karo",C:"Kreuz"}, suitsEs:{O:"Münzen",C:"Kelche",E:"Schwerter",B:"Stäbe"}
+},
+zh:{
+ langName:"中文", options:"选项", music:"音乐", sfx:"音效", hints:"金字塔提示", language:"语言", rules:"查看规则", exitMenu:"返回主菜单", openMenu:"打开选项",
+ back:"‹ 返回", credit:"游戏作者", tagline:"上车，享受派对前的时光", editProfile:"编辑资料", edit:"编辑", resume:"回到游戏",
+ create:"创建游戏", join:"加入已创建的游戏", local:"一部手机游戏",
+ warn:"仅限18岁以上。理性饮酒：可以用任何饮料，每站之间喝点水，之后不要开车。",
+ cardsCredit:"扑克牌：David Bellot 的 SVG-cards（LGPL 2.1）。西班牙纸牌：Basquetteur，Wikimedia Commons（CC BY-SA 3.0）。",
+ phHome:"首页", whatName:"你叫什么名字？", savedAsName:"将保存为你的玩家名。", yourName:"你的名字", adult:"我已年满18岁", save:"保存",
+ errName:"请输入你的名字", errAdult:"BustBus 仅限18岁以上",
+ deck:"牌组", poker:"扑克", spanish:"西班牙牌", playerName:"你的玩家名", namePh:"你叫什么名字",
+ createHint:"你将成为游戏管理员。继续后会生成一个代码，朋友们用它进入你的大厅。", continueN:"继续 ▸",
+ codeLbl:"游戏代码（4位数字）", joinBtn:"加入 ▸", phJoin:"加入", phLocal:"一部手机", players:"玩家", addPlayer:"+ 添加玩家", nameShort:"名字", removePlayer:"移除玩家 {n}", startN:"开始 ▸",
+ game:"游戏 {c}", searching:"正在查找", connecting:"正在连接游戏创建者…", waiting:"等待中…",
+ lobbyAdmin:"大厅 · 你是管理员", lobby:"大厅", chooseDeck:"选择牌组", deckInfoPoker:"扑克牌 · 由管理员开始。", deckInfoEs:"西班牙牌 · 由管理员开始。",
+ gameCode:"游戏代码", tellCode:"把这个代码告诉他们，用「{j}」加入。", passengers:"乘客", admin:"管理员", you:"你", photoEdit:"✎ 照片", changePhoto:"更换头像", tapTicket:"点击你的车票更换照片。",
+ waitPlayers:"等待玩家…", startWith:"{n}人开始 ▸", waitAdmin:"等待管理员", creating:"正在创建游戏…", searchingGame:"正在查找游戏…",
+ errCode:"代码是4位数字", notFound:"找不到游戏 {c}，请检查代码", errConn:"无法连接，请检查网络后重试", errSync:"无法同步游戏", lostConn:"连接已断开", hostGone:"主持人已断开，等待其回来…",
+ errMin2:"至少需要2名玩家", errMax:"此牌组最多 {n} 名玩家", errDup:"有两个名字相同", deckEmpty:"牌堆空了：洗入弃牌",
+ yourTicket:"你的车票", name:"名字", orIcon:"或选择一个图标", gallery:"相册", camera:"相机", yourPhoto:"你的照片", close:"关闭", errImg:"请选择图片", errPhoto:"无法使用这张照片", errReadPhoto:"无法读取照片", saveN:"保存 ▸",
+ stage1:"第1站 · 第{n}/4张", q0:"单还是双？", q1:"大还是小？", q2:"里面还是外面？", q3:"同花色还是不同？",
+ o_par:"双", o_impar:"单", o_mayor:"大", o_menor:"小", o_dentro:"里面", o_fuera:"外面", o_mismo:"同花色", o_distinto:"不同",
+ even:"双数", odd:"单数", whyParity:"是{p}（{v}）。", whyTie1:"与第一张点数相同。", whyHigher:"比{c}大。", whyLower:"比{c}小。", whyTie2:"与一端点数相同。", whyIn:"在范围内（{a}–{b}）。", whyOut:"在范围外（{a}–{b}）。", whySame:"又是{s}。", whyNew:"是新花色。",
+ tieAny:"点数相同：不管你猜什么都要喝。", revealHint:"猜对就过关；猜错喝1口。", was:"结果：{a}", safe:"过关！", drink:"喝！", choosing:"{n}正在选择…", firstCard:"第一张",
+ turnOf:"轮到", yourTurn:"轮到你", chooseOrTap:"选择或点击卡牌", turnName:"轮到{n}", buildPyr:"搭建金字塔 ▸", nextName:"下一位：{n} ▸", waitFor:"等待{n}", flipAria:"翻牌",
+ stage2:"第2站 · 金字塔", stage2Row:"第2站 · {row} · {d}", rowN:"第{n}排", top:"塔顶", sip1:"{n}口", sipN:"{n}口",
+ tapAny:"点击任意卡牌翻开。底排1口 · 第2排2口 · 第3排3口 · 塔顶5口。", sends:"{n}，请别人喝{d}！", nobodyHas:"没人有{c}。",
+ p2Intro:"底排1口 · 第2排2口 · 第3排3口 · 塔顶5口。如果你有相同点数，点击你的牌。", throwsChoosing:"{n}打出{c}，正在选谁喝…", anyoneHas:"有人有{c}吗？点击你的牌打出。",
+ yourHand:"你的手牌 · {c}", card1:"{n}张", cardN:"{n}张", noCards:"没有牌", freeAll:"你的牌全出完了！", tapPyr:"点击金字塔中的一张牌", toBus:"上车 ▸", choosingWho:"正在选谁喝…", revealsHost:"由{n}翻牌", reveal:"翻牌 ▸", revealTop:"翻开塔顶 ▸", nextCard:"下一张 ▸",
+ waitReveal:"请等翻开一张牌", noMatch:"与{c}不符", whoDrinks:"谁喝{d}？", throwsP:"{n}打出{c}", keepIt:"还是留着吧", throwAria:"打出{c}", revealAria:"翻牌",
+ busUp:"上车的是", nobodyCards:"没人有牌：大家都上车", withCards:"剩{c}", tieW:"平局", stage3:"第3站 · 第{n}/9张", sipsIfFail:"在此猜错要喝的口数",
+ nextHL:"下一张会更大还是更小？", higherAria:"上：更大", lowerAria:"下：更小", hit:"猜对了！", endTrip:"终点站！", miss:"猜错了！", drinkWord:"喝", backCp:"回到检查点", backStart:"回到起点", continue:"继续",
+ onBus:"车上：", chooseArrow:"选择 ▲ 或 ▼", nextN:"下一步 ▸", seeSips:"查看口数 ▸", vote:"投票", decideAll:"一起决定", yourTurnP:"轮到你", decide:"决定中", hlThan:"比{c}大还是小？", higher:"大", lower:"小",
+ getOff:"失误{f}后下车。", fail1:"{n}次", failN:"{n}次", pass:"通过！", cpOn:"已到达检查点。", tieFail:"（平局=失误）", toCp:"回到检查点。", toStart:"回到起点。", watching:"你在观看",
+ voting:"正在投票…", confirm:"确认：{v} ▸", noMajority:"尚未过半", chooseHL:"选择大或小", decideName:"{n}来决定", keepGoing:"继续前进 ▸",
+ tally:"统计", sipsTitle:"口数", yellowNote:"黄色为坐过巴士的人。", playAgain:"再来一局 ▸", waitAnother:"等待新的一局", phEnd:"终点站",
+ exitQ:"返回主菜单？", exitHost:"这局是你创建的：所有人的游戏都会结束。", exitGuest:"你将离开当前游戏。", keepPlaying:"继续游戏", exit:"离开",
+ howTo:"玩法", valPoker:"A = 1 · J = 11 · Q = 12 · K = 13", valEs:"A = 1 · 侍从 = 10 · 骑士 = 11 · 国王 = 12", gotIt:"明白了",
+ r1t:"第1站 · 四个问题", r1:["每位玩家轮流拿4张牌：先每人第1张，再第2张…","第1张：单还是双？· 第2张：比第1张大还是小？· 第3张：在前两张之间还是之外？· 第4张：与你的某张同花色还是不同？","猜错喝1口。点数相同也要喝。"],
+ r2t:"第2站 · 金字塔", r2:["10张背面朝上的牌排成4、3、2、1排，从底部翻到塔顶。","如果你有相同点数，打出你的牌并选择谁喝：底排1口，第2排2口，第3排3口，塔顶5口。","你可以留着牌等更高的排，但翻下一张后就不能回头。","手上剩牌最多的人上巴士。平局就一起上。","一部手机模式：点击任意牌；相同点数的牌会自动打出，每人分配自己的口数。"],
+ r3t:"第3站 · 旅程", r3:["9张牌排成∩形：两列各4张，顶上一座桥。","猜下一张牌更大还是更小。平局算失误。","猜错就按已走过的牌数喝（包括猜错那张），然后重新开始。","过了桥就是检查点：从那里重来，但口数照算。","多人同车时每人投票，多数决定，然后按“下一步”确认。","一部手机模式：从牌堆抽一张，猜路线上的下一张会更大（▲）还是更小（▼）。"],
+ cardFmt:"{s}{r}", rk:{1:"A",11:"J",12:"Q",13:"K"}, rkEs:{1:"A",10:"侍从",11:"骑士",12:"国王"},
+ suits:{S:"黑桃",H:"红心",D:"方块",C:"梅花"}, suitsEs:{O:"金币",C:"圣杯",E:"宝剑",B:"权杖"}
+},
+ja:{
+ langName:"日本語", options:"オプション", music:"音楽", sfx:"効果音", hints:"ピラミッドのヒント", language:"言語", rules:"ルールを見る", exitMenu:"メインメニューに戻る", openMenu:"オプションを開く",
+ back:"‹ 戻る", credit:"ゲーム制作", tagline:"バスに乗って、飲み会前を楽しもう", editProfile:"プロフィールを編集", edit:"編集", resume:"ゲームに戻る",
+ create:"ゲームを作成", join:"作成済みのゲームに参加", local:"1台のスマホで遊ぶ",
+ warn:"18歳以上限定。節度を持って：一口はどんな飲み物でもOK、停留所の合間に水を飲み、その後は誰も運転しないこと。",
+ cardsCredit:"トランプ：David Bellot の SVG-cards（LGPL 2.1）。スペインのカード：Basquetteur、Wikimedia Commons（CC BY-SA 3.0）。",
+ phHome:"ホーム", whatName:"名前は？", savedAsName:"プレイヤー名として保存されます。", yourName:"あなたの名前", adult:"18歳以上です", save:"保存",
+ errName:"名前を入力してください", errAdult:"BustBus は18歳以上限定です",
+ deck:"デッキ", poker:"トランプ", spanish:"スペイン", playerName:"プレイヤー名", namePh:"名前は？",
+ createHint:"あなたがゲームの管理者になります。続けるとコードが作成され、友だちはそれでロビーに入れます。", continueN:"続ける ▸",
+ codeLbl:"ゲームコード（4桁の数字）", joinBtn:"参加 ▸", phJoin:"参加", phLocal:"スマホ1台", players:"プレイヤー", addPlayer:"+ プレイヤーを追加", nameShort:"名前", removePlayer:"プレイヤー{n}を削除", startN:"スタート ▸",
+ game:"ゲーム {c}", searching:"検索中", connecting:"作成者に接続しています…", waiting:"待機中…",
+ lobbyAdmin:"ロビー · あなたが管理者", lobby:"ロビー", chooseDeck:"デッキを選ぶ", deckInfoPoker:"トランプ · 管理者が開始します。", deckInfoEs:"スペインのカード · 管理者が開始します。",
+ gameCode:"ゲームコード", tellCode:"このコードを伝えて「{j}」から参加してもらおう。", passengers:"乗客", admin:"管理者", you:"あなた", photoEdit:"✎ 写真", changePhoto:"プロフィール写真を変更", tapTicket:"自分のチケットをタップして写真を変更。",
+ waitPlayers:"プレイヤーを待っています…", startWith:"{n}人で開始 ▸", waitAdmin:"管理者を待っています", creating:"ゲームを作成中…", searchingGame:"ゲームを検索中…",
+ errCode:"コードは4桁の数字です", notFound:"ゲーム{c}が見つかりません。コードを確認してください", errConn:"接続できません。インターネット接続を確認して再試行してください", errSync:"ゲームを同期できません", lostConn:"接続が切れました", hostGone:"ホストが切断しました。戻るのを待っています…",
+ errMin2:"2人以上必要です", errMax:"このデッキは{n}人までです", errDup:"同じ名前が2つあります", deckEmpty:"山札が空：捨て札をシャッフルします",
+ yourTicket:"あなたのチケット", name:"名前", orIcon:"またはアイコンを選択", gallery:"ギャラリー", camera:"カメラ", yourPhoto:"あなたの写真", close:"閉じる", errImg:"画像を選んでください", errPhoto:"その写真は使えません", errReadPhoto:"写真を読み込めません", saveN:"保存 ▸",
+ stage1:"停留所1 · {n}/4枚目", q0:"偶数？奇数？", q1:"上？下？", q2:"内側？外側？", q3:"同じマーク？違う？",
+ o_par:"偶数", o_impar:"奇数", o_mayor:"上", o_menor:"下", o_dentro:"内側", o_fuera:"外側", o_mismo:"同じマーク", o_distinto:"違う",
+ even:"偶数", odd:"奇数", whyParity:"{p}です（{v}）。", whyTie1:"1枚目と同じ数字。", whyHigher:"{c}より上。", whyLower:"{c}より下。", whyTie2:"端の数字と同じ。", whyIn:"内側（{a}–{b}）。", whyOut:"外側（{a}–{b}）。", whySame:"また{s}。", whyNew:"新しいマーク。",
+ tieAny:"同じ数字：何を言っても飲む。", revealHint:"当たればセーフ、外れたら1口飲む。", was:"結果：{a}", safe:"セーフ！", drink:"飲め！", choosing:"{n}が選んでいます…", firstCard:"1枚目",
+ turnOf:"番", yourTurn:"あなたの<br>番", chooseOrTap:"選ぶかカードをタップ", turnName:"{n}の番", buildPyr:"ピラミッドを作る ▸", nextName:"次：{n} ▸", waitFor:"{n}を待っています", flipAria:"カードをめくる",
+ stage2:"停留所2 · ピラミッド", stage2Row:"停留所2 · {row} · {d}", rowN:"{n}段目", top:"頂上", sip1:"{n}口", sipN:"{n}口",
+ tapAny:"好きなカードをタップしてめくろう。土台1口 · 2段目2口 · 3段目3口 · 頂上5口。", sends:"{n}、{d}を誰かに！", nobodyHas:"{c}は誰も持っていない。",
+ p2Intro:"土台1口 · 2段目2口 · 3段目3口 · 頂上5口。同じ数字があれば自分のカードをタップ。", throwsChoosing:"{n}が{c}を出して飲む人を選んでいます…", anyoneHas:"{c}を持っている人は？カードをタップして出そう。",
+ yourHand:"あなたの手札 · {c}", card1:"{n}枚", cardN:"{n}枚", noCards:"カードなし", freeAll:"全部出し切った！", tapPyr:"ピラミッドのカードをタップ", toBus:"バスへ ▸", choosingWho:"飲む人を選んでいます…", revealsHost:"{n}がめくります", reveal:"めくる ▸", revealTop:"頂上をめくる ▸", nextCard:"次のカード ▸",
+ waitReveal:"カードがめくられるまで待って", noMatch:"{c}と一致しません", whoDrinks:"{d}飲むのは誰？", throwsP:"{n}が{c}を出す", keepIt:"やっぱり取っておく", throwAria:"{c}を出す", revealAria:"カードをめくる",
+ busUp:"バスに乗るのは", nobodyCards:"誰もカードがない：全員乗車", withCards:"残り{c}", tieW:"同点", stage3:"停留所3 · {n}/9枚目", sipsIfFail:"ここで外したら飲む口数",
+ nextHL:"次は上？下？", higherAria:"上：大きい", lowerAria:"下：小さい", hit:"正解！", endTrip:"終点！", miss:"ハズレ！", drinkWord:"飲め", backCp:"チェックポイントへ戻る", backStart:"最初に戻る", continue:"続ける",
+ onBus:"乗車中：", chooseArrow:"▲か▼を選ぶ", nextN:"次へ ▸", seeSips:"口数を見る ▸", vote:"投票しよう", decideAll:"決めよう", yourTurnP:"あなたの番", decide:"選択中", hlThan:"{c}より上？下？", higher:"上", lower:"下",
+ getOff:"{f}のミスで降車。", fail1:"{n}回", failN:"{n}回", pass:"突破！", cpOn:"チェックポイント到達。", tieFail:"（同点＝ミス）", toCp:"チェックポイントへ。", toStart:"最初に戻る。", watching:"観戦中",
+ voting:"投票中…", confirm:"決定：{v} ▸", noMajority:"まだ過半数なし", chooseHL:"上か下を選ぶ", decideName:"{n}が決める", keepGoing:"旅を続ける ▸",
+ tally:"集計", sipsTitle:"口数", yellowNote:"黄色はバスに乗った人。", playAgain:"もう1回 ▸", waitAnother:"次のゲームを待っています", phEnd:"終点",
+ exitQ:"メインメニューに戻る？", exitHost:"あなたが作ったゲームなので、全員のゲームが終わります。", exitGuest:"進行中のゲームから抜けます。", keepPlaying:"続ける", exit:"退出",
+ howTo:"遊び方", valPoker:"A = 1 · J = 11 · Q = 12 · K = 13", valEs:"A = 1 · 従者 = 10 · 騎士 = 11 · 王 = 12", gotIt:"わかった",
+ r1t:"停留所1 · 4つの質問", r1:["各プレイヤーに順番に4枚配る：まず全員に1枚目、次に2枚目…","1枚目：偶数か奇数か？ · 2枚目：1枚目より上か下か？ · 3枚目：最初の2枚の間か外か？ · 4枚目：手札と同じマークか違うか？","外れたら1口。同じ数字が出ても飲む。"],
+ r2t:"停留所2 · ピラミッド", r2:["裏向きの10枚を4・3・2・1段に並べ、下から順にめくる。","同じ数字があればカードを出して飲む人を選ぶ：土台1口、2段目2口、3段目3口、頂上5口。","上の段のために取っておけるが、次をめくったら戻れない。","最後に一番多く持っている人がバスに乗る。同点なら一緒に乗る。","スマホ1台モード：好きなカードをタップ。一致するカードは自動で出され、各自が口数を割り振る。"],
+ r3t:"停留所3 · バスの旅", r3:["9枚を∩の形に：4枚の列が2つと上に橋。","カードが上か下かを当てる。同点はミス。","外したら、進んだ枚数分（ミスしたカードを含む）飲んで最初から。","橋を越えたらチェックポイント：そこから再開、でも口数はそのまま数える。","複数人が乗ったら全員投票、多数決のあと「次へ」で決定。","スマホ1台モード：山札から1枚引き、ルートの次のカードが上（▲）か下（▼）かを当てる。"],
+ cardFmt:"{s}の{r}", rk:{1:"A",11:"J",12:"Q",13:"K"}, rkEs:{1:"A",10:"従者",11:"騎士",12:"王"},
+ suits:{S:"スペード",H:"ハート",D:"ダイヤ",C:"クラブ"}, suitsEs:{O:"金貨",C:"聖杯",E:"剣",B:"棍棒"}
+}
+};
+const LANGS = ['es','ca','eu','gl','en','fr','it','pt','de','zh','ja'];
+let LANG = (() => { const sv = store.get('lang', null); if(sv && I18N[sv]) return sv; const nl = String(navigator.language || 'es').slice(0, 2).toLowerCase(); return I18N[nl] ? nl : 'es'; })();
+function t(k, v){
+  let x = I18N[LANG][k]; if(x === undefined) x = I18N.es[k]; if(x === undefined) return k;
+  if(v && typeof x === 'string') x = x.replace(/\{(\w+)\}/g, (m, n) => v[n] !== undefined ? v[n] : m);
+  return x;
+}
+const sips = n => t(n === 1 ? 'sip1' : 'sipN', {n});
+const cardsN = n => t(n === 1 ? 'card1' : 'cardN', {n});
+const failsN = n => t(n === 1 ? 'fail1' : 'failN', {n});
 /* ================= Baraja ================= */
 const SUITS = { poker:['S','H','D','C'], es:['O','C','E','B'] };
-const SUIT_NAME = { poker:{S:'picas',H:'corazones',D:'diamantes',C:'tréboles'}, es:{O:'oros',C:'copas',E:'espadas',B:'bastos'} };
 const MAXP = dk => dk === 'poker' ? 8 : 7;
 function rnd(n){ try{ const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; }catch(e){ return Math.floor(Math.random()*n); } }
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j = rnd(i+1); [a[i],a[j]] = [a[j],a[i]]; } return a; }
@@ -403,26 +900,32 @@ function newDeck(dk, big){
 }
 const val = c => +c.slice(1);
 const suit = c => c[0];
+function suitNameOf(code, dk){ const L = I18N[LANG]; return ((dk || st.dk) === 'poker' ? L.suits : L.suitsEs)[code]; }
+function rankName(c, dk){ const L = I18N[LANG], r = val(c); return ((dk || st.dk) === 'poker' ? L.rk : L.rkEs)[r] || String(r); }
 function cardName(c, dk){
-  dk = dk || st.dk; const r = val(c);
-  const n = dk === 'poker' ? ({1:'As',11:'Jota',12:'Reina',13:'Rey'}[r] || r) : ({1:'As',10:'Sota',11:'Caballo',12:'Rey'}[r] || r);
-  return `${n} de ${SUIT_NAME[dk][suit(c)]}`;
+  dk = dk || st.dk; const L = I18N[LANG], sn = suitNameOf(suit(c), dk);
+  let f = L.cardFmt; if(L.elide && /^[aeiouàáèéíòóúœh]/i.test(sn)) f = f.replace(' de {s}', " d'{s}");
+  return f.replace('{r}', rankName(c, dk)).replace('{s}', sn);
 }
-const withArt = c => { const n = cardName(c); return (/^(Jota|Reina|Sota)/.test(n) ? 'la ' : 'el ') + n; };
-const shortArt = c => withArt(c).replace(/ de .*/, '');
+const withArt = c => { const n = cardName(c); if(LANG !== 'es') return n; return (/^(Jota|Reina|Sota)/.test(n) ? 'la ' : 'el ') + n; };
+const shortArt = c => LANG === 'es' ? withArt(c).replace(/ de .*/, '') : rankName(c);
+function whyText(w){
+  if(!w) return ''; if(typeof w === 'string') return w;
+  const v = Object.assign({}, w); if(v.p) v.p = t(v.p); if(v.c) v.c = withArt(v.c); if(v.s) v.s = suitNameOf(v.s);
+  return t(w.k, v);
+}
 
 /* ================= Cartas (imágenes reales) ================= */
-const IMG = (dk, c) => `cartas/${dk === 'poker' ? 'pk' : 'es'}/${c}.webp`;
-const BACK = dk => dk === 'poker' ? 'cartas/pk/back-red.webp' : 'cartas/es/back.webp';
-const preloaded = {};
-function preload(dk){
-  if(preloaded[dk]) return; preloaded[dk] = [];
-  const srcs = [BACK(dk)]; for(const s of SUITS[dk]) for(let r=1;r<=(dk==='poker'?13:12);r++) srcs.push(IMG(dk, s+r));
-  srcs.forEach(src => { const im = new Image(); im.src = src; preloaded[dk].push(im); });
+const SPR = { poker:{url:'cartas/pk.webp', cols:14, rows:4, suits:'SHDC'}, es:{url:'cartas/es.webp', cols:13, rows:4, suits:'OCEB'} };
+function faceStyle(dk, c){
+  const S = SPR[dk], col = c ? val(c) - 1 : S.cols - 1, row = c ? S.suits.indexOf(c[0]) : 0;
+  return `background-image:url(${S.url});background-size:${S.cols*100}% ${S.rows*100}%;background-position:${col/(S.cols-1)*100}% ${row/(S.rows-1)*100}%`;
 }
+const preloaded = {};
+function preload(dk){ if(preloaded[dk]) return; const im = new Image(); im.src = SPR[dk].url; preloaded[dk] = im; }
 function cardHTML(c, o = {}){
   const dk = o.dk || (st ? st.dk : ui.deck), up = o.up !== false && c, flip = !!c && o.flip === true;
-  return `<div class="card ${dk} ${up && !flip ? 'up' : ''} ${o.cls||''}" ${flip ? 'data-flip' : ''} ${c ? `role="img" aria-label="${esc(cardName(c, dk))}"` : 'aria-hidden="true"'}><div class="in"><div class="face back"><img src="${BACK(dk)}" alt="" draggable="false"></div><div class="face front">${c ? `<img src="${IMG(dk, c)}" alt="" draggable="false">` : ''}</div></div></div>`;
+  return `<div class="card ${dk} ${up && !flip ? 'up' : ''} ${o.cls||''}" ${flip ? 'data-flip' : ''} ${c ? `role="img" aria-label="${esc(cardName(c, dk))}"` : 'aria-hidden="true"'}><div class="in"><div class="face back"><span class="cimg" style="${faceStyle(dk, null)}"></span></div><div class="face front">${c ? `<span class="cimg" style="${faceStyle(dk, c)}"></span>` : ''}</div></div></div>`;
 }
 function runFlips(){
   const els = document.querySelectorAll('[data-flip]'); if(!els.length) return;
@@ -504,7 +1007,7 @@ const idxOf = pid => st ? st.pl.findIndex(p => p.id === pid) : -1;
 function ev(o){ st.ev = Object.assign({s: (st.ev ? st.ev.s : 0) + 1}, o); }
 function draw(){
   if(!H.cards.length){
-    if(H.discard.length){ H.cards = shuffle(H.discard.splice(0)); st.note = 'Mazo vacío: se barajan los descartes'; }
+    if(H.discard.length){ H.cards = shuffle(H.discard.splice(0)); st.note = 'deckEmpty'; }
     else H.cards = newDeck(st.dk, st.big);
   }
   return H.cards.pop();
@@ -518,26 +1021,26 @@ function startGame(){
 }
 function p1Reveal(){
   const P = st.p1, pl = st.pl[P.pi], h = pl.h, c = draw(), v = val(c); let ans, tie = false;
-  if(P.r === 0) ans = v % 2 === 0 ? 'Par' : 'Impar';
-  else if(P.r === 1){ const p = val(h[0]); if(v === p) tie = true; else ans = v > p ? 'Arriba' : 'Abajo'; }
-  else if(P.r === 2){ const a = Math.min(val(h[0]), val(h[1])), b = Math.max(val(h[0]), val(h[1])); if(v === a || v === b) tie = true; else ans = v > a && v < b ? 'Dentro' : 'Fuera'; }
-  else ans = h.some(x => suit(x) === suit(c)) ? 'Mismo palo' : 'Diferente';
+  if(P.r === 0) ans = v % 2 === 0 ? 'o_par' : 'o_impar';
+  else if(P.r === 1){ const p = val(h[0]); if(v === p) tie = true; else ans = v > p ? 'o_mayor' : 'o_menor'; }
+  else if(P.r === 2){ const a = Math.min(val(h[0]), val(h[1])), b = Math.max(val(h[0]), val(h[1])); if(v === a || v === b) tie = true; else ans = v > a && v < b ? 'o_dentro' : 'o_fuera'; }
+  else ans = h.some(x => suit(x) === suit(c)) ? 'o_mismo' : 'o_distinto';
   h.push(c); P.done = 1;
-  if(tie){ P.ok = 0; P.why = 'Mismo número: bebe digas lo que digas.'; pl.d += 1; }
-  else { P.ok = -1; P.ans = ans; P.why = 'Si has acertado te libras; si no, bebe 1 trago.'; }
+  if(tie){ P.ok = 0; P.why = {k:'tieAny'}; pl.d += 1; }
+  else { P.ok = -1; P.ans = ans; P.why = {k:'revealHint'}; }
   ev({flip:c, snd: tie ? 'bad' : null});
 }
 function p1Guess(g){
   if(g === 'flip') return p1Reveal();
   const P = st.p1, pl = st.pl[P.pi], h = pl.h, c = draw(), v = val(c); let ok, why;
-  if(P.r === 0){ const par = v % 2 === 0; ok = par === (g === 'par'); why = `Es ${par ? 'par' : 'impar'} (${v}).`; }
+  if(P.r === 0){ const par = v % 2 === 0; ok = par === (g === 'par'); why = {k:'whyParity', p: par ? 'even' : 'odd', v}; }
   else if(P.r === 1){ const p = val(h[0]);
-    if(v === p){ ok = false; why = 'Mismo número que la primera.'; }
-    else { ok = g === 'mayor' ? v > p : v < p; why = `${v > p ? 'Mayor' : 'Menor'} que ${withArt(h[0])}.`; } }
+    if(v === p){ ok = false; why = {k:'whyTie1'}; }
+    else { ok = g === 'mayor' ? v > p : v < p; why = {k: v > p ? 'whyHigher' : 'whyLower', c: h[0]}; } }
   else if(P.r === 2){ const a = Math.min(val(h[0]), val(h[1])), b = Math.max(val(h[0]), val(h[1]));
-    if(v === a || v === b){ ok = false; why = 'Mismo número que uno de los extremos.'; }
-    else { const inside = v > a && v < b; ok = (g === 'dentro') === inside; why = `Cae ${inside ? 'dentro' : 'fuera'} (${a}–${b}).`; } }
-  else { const same = h.some(x => suit(x) === suit(c)); ok = (g === 'mismo') === same; why = same ? `Repite ${SUIT_NAME[st.dk][suit(c)]}.` : 'Es un palo nuevo.'; }
+    if(v === a || v === b){ ok = false; why = {k:'whyTie2'}; }
+    else { const inside = v > a && v < b; ok = (g === 'dentro') === inside; why = {k: inside ? 'whyIn' : 'whyOut', a, b}; } }
+  else { const same = h.some(x => suit(x) === suit(c)); ok = (g === 'mismo') === same; why = same ? {k:'whySame', s: suit(c)} : {k:'whyNew'}; }
   h.push(c); P.done = 1; P.ok = ok ? 1 : 0; P.why = why;
   if(!ok) pl.d += 1;
   ev({flip:c, snd: ok ? 'good' : 'bad'});
@@ -662,7 +1165,7 @@ function apply(a, who){
       const P = st.p1; if(!P.done || !ok(who === P.pi || isHost)) return false;
       const n = st.pl.length;
       if(P.r === 3 && P.pi === n-1){ p2Init(); return true; }
-      P.pi = (P.pi + 1) % n; if(P.pi === 0) P.r++; P.done = 0; P.ok = 0; P.why = '';
+      P.pi = (P.pi + 1) % n; if(P.pi === 0) P.r++; P.done = 0; P.ok = 0; P.why = null;
       ev({}); return true;
     }
     if(st.ph === 'p2'){
@@ -693,7 +1196,7 @@ function getRoom(){
   })();
   return roomPromise;
 }
-function genCode(){ const L = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; let s = ''; for(let i=0;i<4;i++) s += L[rnd(L.length)]; return s; }
+function genCode(){ let s = ''; for(let i=0;i<4;i++) s += rnd(10); return s; }
 const BAD_CH = new RegExp('[\\u0000-\\u001f\\u007f\\u200b-\\u200f\\u2028-\\u202e\\u2060-\\u206f\\ufeff]', 'g');
 const cleanName = s => String(s || '').replace(BAD_CH, '').trim().slice(0, 14);
 /* Sin Claude (web publicada): misma interfaz que room, sobre un broker MQTT público.
@@ -746,7 +1249,7 @@ function sendPresence(){
   if(!R) return;
   const base = mode === 'host' ? {role:'host', code, pid:ME, st} : {role:'p', code, pid:ME, nm:cleanName(ui.name), aq:myQ};
   R.presence(Object.assign({av: validAv(profile.av) ? profile.av : null}, base)).catch(e => {
-    if(e && e.code === 'invalid_argument') R.presence(Object.assign({av:null}, base)).catch(() => toast('No se pudo sincronizar la partida'));
+    if(e && e.code === 'invalid_argument') R.presence(Object.assign({av:null}, base)).catch(() => toast(t('errSync')));
   });
 }
 function uniqueName(nm){ let n = nm, k = 2; while(st.pl.some(p => p.n.toLowerCase() === n.toLowerCase())) n = nm.slice(0,12) + ' ' + (k++); return n; }
@@ -785,7 +1288,7 @@ function onPeers(ch){
     const ns = hp.presence.st;
     if(!st || ns.n !== st.n){ st = ns; preload(st.dk); render(); } else if(avChanged) render();
   } else if(st){
-    $('#offline').textContent = 'El anfitrión se ha desconectado. Esperando a que vuelva…'; $('#offline').hidden = false;
+    $('#offline').textContent = t('hostGone'); $('#offline').hidden = false;
   }
 }
 function commit(){
@@ -804,13 +1307,13 @@ function act(a){
     sendPresence();
   }
 }
-function listen(){ if(unsubPeers) unsubPeers(); unsubPeers = R.onPeers(onPeers, () => toast('Se ha perdido la conexión')); }
-function onlineErr(){ return 'No se pudo conectar. Revisa tu conexión a internet e inténtalo otra vez'; }
+function listen(){ if(unsubPeers) unsubPeers(); unsubPeers = R.onPeers(onPeers, () => toast(t('lostConn'))); }
+function onlineErr(){ return t('errConn'); }
 
 async function createOnline(){
-  const nm = cleanName(ui.name); if(!nm) return toast('Escribe tu nombre');
+  const nm = cleanName(ui.name); if(!nm) return toast(t('errName'));
   store.set('name', nm); ui.name = nm;
-  musicStart(); setNext('Creando partida…', false);
+  musicStart(); setNext(t('creating'), false);
   try{ code = genCode(); R = await joinRoom(code); }catch(e){ code = null; render(); return toast(onlineErr()); }
   mode = 'host'; seenActs = {};
   st = {n:0, ph:'lobby', dk:ui.deck, big:false, host:ME, pl:[{id:ME, n:nm, h:[], d:0}], ev:null};
@@ -820,11 +1323,11 @@ async function createOnline(){
   listen(); commit(); keepAwake();
 }
 async function joinOnline(){
-  const nm = cleanName(ui.name); if(!nm) return toast('Escribe tu nombre');
-  const c = (ui.joinCode || '').toUpperCase().replace(/[^A-Z]/g, '');
-  if(c.length !== 4) return toast('El código tiene 4 letras');
+  const nm = cleanName(ui.name); if(!nm) return toast(t('errName'));
+  const c = (ui.joinCode || '').replace(/\D/g, '');
+  if(c.length !== 4) return toast(t('errCode'));
   store.set('name', nm); ui.name = nm;
-  setNext('Buscando partida…', false);
+  setNext(t('searchingGame'), false);
   try{ R = await joinRoom(c); }catch(e){ render(); return toast(onlineErr()); }
   code = c; mode = 'guest'; st = null; mySeq = store.get('seq.' + c, 0); myQ = [];
   store.set('session', {mode:'guest', code:c});
@@ -832,7 +1335,7 @@ async function joinOnline(){
   musicStart(); if(A.music) A.music.gain.value = A.musicOn ? .17 : 0;
   listen(); sendPresence(); keepAwake();
   ui.screen = 'waiting'; render();
-  setTimeout(() => { if(mode === 'guest' && !st && code === c) toast('No encuentro la partida ' + c + '. Revisa el código'); }, 7000);
+  setTimeout(() => { if(mode === 'guest' && !st && code === c) toast(t('notFound', {c})); }, 7000);
 }
 async function resumeSession(){
   const s = store.get('session', null); if(!s) return;
@@ -858,9 +1361,9 @@ function leaveGame(){
 }
 function startLocal(){
   const names = ui.names.map(cleanName).filter(Boolean);
-  if(names.length < 2) return toast('Hacen falta al menos 2 jugadores');
-  if(names.length > MAXP(ui.deck)) return toast(`Con esta baraja caben ${MAXP(ui.deck)} jugadores`);
-  if(new Set(names.map(n => n.toLowerCase())).size !== names.length) return toast('Hay dos nombres iguales');
+  if(names.length < 2) return toast(t('errMin2'));
+  if(names.length > MAXP(ui.deck)) return toast(t('errMax', {n: MAXP(ui.deck)}));
+  if(new Set(names.map(n => n.toLowerCase())).size !== names.length) return toast(t('errDup'));
   store.set('names', ui.names);
   mode = 'local'; musicStart(); keepAwake();
   st = {n:0, ph:'lobby', dk:ui.deck, big:false, host:'local', pl:names.map((n,i) => ({id:'l'+i, n, h:[], d:0})), ev:null};
@@ -899,8 +1402,8 @@ function avOfPlayer(i){
   if(mode === 'local') return avatarHTML(p.n.toLowerCase() === (profile.name || '').toLowerCase() ? profile.av : null, p.n);
   return avatarHTML(p.id === ME ? profile.av : AV[p.id], p.n);
 }
-function readPhoto(file){
-  if(!file || !/^image\//.test(file.type)) return toast('Elige una imagen');
+function readPhoto(file, cb){
+  if(!file || !/^image\//.test(file.type)) return toast(t('errImg'));
   const fr = new FileReader();
   fr.onload = () => {
     const img = new Image();
@@ -910,36 +1413,49 @@ function readPhoto(file){
       const g = c.getContext('2d'); g.drawImage(img, sx, sy, k, k, 0, 0, S2, S2);
       let q = .7, url = c.toDataURL('image/jpeg', q);
       while(url.length > 2500 && q > .2){ q -= .1; url = c.toDataURL('image/jpeg', q); }
-      if(url.length > 2500) return toast('No se pudo usar esa foto');
-      ui.draftAv = url; render();
+      if(url.length > 2500) return toast(t('errPhoto'));
+      if(cb) cb(url); else { ui.draftAv = url; render(); }
     };
-    img.onerror = () => toast('No se pudo leer la foto');
+    img.onerror = () => toast(t('errReadPhoto'));
     img.src = fr.result;
   };
   fr.readAsDataURL(file);
 }
+function setMyAvatar(av){
+  profile.av = av; store.set('profile', profile);
+  modal.hidden = true; if(R) sendPresence(); render();
+}
+function openAvatarPicker(){
+  const icons = PRESETS.map((p,i) => 'p' + i).concat(EMOJI.map((e,i) => 'e' + i));
+  openModal(`<h3>${t('yourPhoto')}</h3>
+    <div class="avopts"><label class="secondary small">${t('gallery')}<input type="file" id="mGal" accept="image/*" hidden></label><label class="secondary small">${t('camera')}<input type="file" id="mCam" accept="image/*" capture="user" hidden></label></div>
+    <div class="avgrid modalgrid">${icons.map(v => `<button class="avpick" data-act="setav" data-v="${v}" aria-pressed="${profile.av === v}">${avatarHTML(v, '')}</button>`).join('')}</div>`,
+    `<div class="mact"><button data-m="close">${t('close')}</button></div>`);
+  const onFile = e => readPhoto(e.target.files && e.target.files[0], setMyAvatar);
+  $('#mGal').addEventListener('change', onFile); $('#mCam').addEventListener('change', onFile);
+}
 function renderProfile(){
-  setPhase('Tu billete');
+  setPhase(t('yourTicket'));
   const av = ui.draftAv || profile.av, nm = ui.draftName !== undefined ? ui.draftName : profile.name;
   const icons = PRESETS.map((p,i) => 'p' + i).concat(EMOJI.map((e,i) => 'e' + i));
-  main.innerHTML = `<section class="scr form prof">${backBtn}<h2>Tu billete</h2>
+  main.innerHTML = `<section class="scr form prof">${backBtn()}<h2>${t('yourTicket')}</h2>
     <div class="ticket notch profcard">
-      <div class="avwrap"><button class="avbtn" data-act="avmenu" aria-label="Cambiar foto" aria-expanded="${!!ui.avMenu}">${avatarHTML(av, nm, 'xl')}<span class="avedit" aria-hidden="true">✎</span></button>
+      <div class="avwrap"><button class="avbtn" data-act="avmenu" aria-label="${t('changePhoto')}" aria-expanded="${!!ui.avMenu}">${avatarHTML(av, nm, 'xl')}<span class="avedit" aria-hidden="true">✎</span></button>
         <div class="avmenu" ${ui.avMenu ? '' : 'hidden'}>
-          <label>Galería<input type="file" id="phGal" accept="image/*" hidden></label>
-          <label>Cámara<input type="file" id="phCam" accept="image/*" capture="user" hidden></label>
+          <label>${t('gallery')}<input type="file" id="phGal" accept="image/*" hidden></label>
+          <label>${t('camera')}<input type="file" id="phCam" accept="image/*" capture="user" hidden></label>
         </div></div>
-      <div class="nmwrap"><label class="tk-l" for="pfn">Nombre</label><input id="pfn" value="${esc(nm)}" placeholder="Cómo te llamas" maxlength="14" autocomplete="off"></div>
+      <div class="nmwrap"><label class="tk-l" for="pfn">${t('name')}</label><input id="pfn" value="${esc(nm)}" placeholder="${t('namePh')}" maxlength="14" autocomplete="off"></div>
     </div>
-    <p class="lbl" style="margin:0">O elige un icono</p>
+    <p class="lbl" style="margin:0">${t('orIcon')}</p>
     <div class="avgrid">${icons.map(v => `<button class="avpick" data-act="pickav" data-v="${v}" aria-pressed="${av === v}">${avatarHTML(v, '')}</button>`).join('')}</div></section>`;
   const onFile = e => { ui.avMenu = false; readPhoto(e.target.files && e.target.files[0]); };
   $('#phGal').addEventListener('change', onFile); $('#phCam').addEventListener('change', onFile);
-  setNext('Guardar ▸', true, saveProfile);
+  setNext(t('saveN'), true, saveProfile);
 }
 function saveProfile(){
   const nm = cleanName(ui.draftName !== undefined ? ui.draftName : profile.name);
-  if(!nm) return toast('Escribe tu nombre');
+  if(!nm) return toast(t('errName'));
   profile.name = nm; if(ui.draftAv) profile.av = ui.draftAv;
   store.set('profile', profile); store.set('name', nm); ui.name = nm;
   ui.draftAv = null; ui.draftName = undefined;
@@ -973,7 +1489,7 @@ function render(){
     if(E.flip) sfx('flip');
     if(E.snd) setTimeout(() => sfx(E.snd), E.flip ? 600 : 0);
     if(E.banner) showBanner();
-    if(st.note && amHost()) toast(st.note);
+    if(st.note && amHost()) toast(t(st.note));
   }
   renderSheet(); runFlips(); syncMenu();
 }
@@ -992,35 +1508,36 @@ function busSVG(){
     <g class="wheel"><circle cx="232" cy="110" r="18" fill="#15161c" stroke="#3a3d4a" stroke-width="5"/><path d="M232 98V122M220 110H244" stroke="#9aa0b5" stroke-width="3"/></g></svg>`;
 }
 function renderHome(){
-  setPhase('Inicio');
+  setPhase(t('phHome'));
   const s = store.get('session', null);
   main.innerHTML = `<section class="scr home">
-    <button class="me-chip" data-act="go" data-v="profile" aria-label="Editar perfil">${avatarHTML(profile.av, profile.name, 'sm')}<b>${esc(profile.name)}</b><em>Editar</em></button>
-    ${busSVG()}<h1 class="title"><img class="logo" src="img/logo.png" alt="BustBus" width="457" height="97"></h1><p class="tagline">Sube al bus y disfruta de la previa</p>
+    <a class="madeby" href="https://www.instagram.com/abreviado.pba?xtok=cmg1aHF2N21lcnls" target="_blank" rel="noopener">${t('credit')} @abreviado.pba</a>
+    <button class="me-chip" data-act="go" data-v="profile" aria-label="${t('editProfile')}">${avatarHTML(profile.av, profile.name, 'sm')}<b>${esc(profile.name)}</b><em>${t('edit')}</em></button>
+    ${busSVG()}<h1 class="title"><img class="logo" src="img/logo.png" alt="BustBus" width="457" height="97"></h1><p class="tagline">${t('tagline')}</p>
     <div class="menu-btns">
-      ${s ? `<button class="resume" data-act="resume">Volver a la partida${s.code ? ' ' + esc(s.code) : ''}</button>` : ''}
-      <button class="big-opt primary" data-act="go" data-v="create">Crear partida</button>
-      <button class="big-opt" data-act="go" data-v="join">Unirse a partida ya creada</button>
-      <button class="big-opt" data-act="go" data-v="local">Jugar en un solo móvil</button>
+      ${s ? `<button class="resume" data-act="resume">${t('resume')}${s.code ? ' ' + esc(s.code) : ''}</button>` : ''}
+      <button class="big-opt y1" data-act="go" data-v="create">${t('create')}</button>
+      <button class="big-opt y2" data-act="go" data-v="join">${t('join')}</button>
+      <button class="big-opt y3" data-act="go" data-v="local">${t('local')}</button>
     </div>
-    <p class="warn-line">Solo para mayores de 18. Bebed con cabeza: los tragos pueden ser de cualquier bebida, agua entre parada y parada y que nadie conduzca después.</p>
-    <p class="credits">Cartas de póker: SVG-cards de David Bellot (LGPL 2.1). Baraja española: Basquetteur, Wikimedia Commons (CC BY-SA 3.0).</p></section>`;
+    <p class="warn-line">${t('warn')}</p>
+    <p class="credits">${t('cardsCredit')}</p></section>`;
   nextBtn.hidden = true; nextFn = null;
   if(!profile.name || !profile.adult) askName();
 }
 function askName(){
   if(!modal.hidden) return;
-  openModal(`<h3>¿Cómo te llamas?</h3><p>Se guardará como tu nombre de jugador.</p>
-    <div class="ticket notch" style="margin:10px 0"><div class="stub">${avatarHTML(profile.av, '', 'sm')}</div><input id="firstName" value="${esc(profile.name || '')}" placeholder="Tu nombre" maxlength="14" autocomplete="off"></div>
-    <label class="adult"><input type="checkbox" id="firstAdult" ${profile.adult ? 'checked' : ''}> <span>Tengo 18 años o más</span></label>`,
-    '<div class="mact"><button class="go" data-m="saveName">Guardar</button></div>');
+  openModal(`<h3>${t('whatName')}</h3><p>${t('savedAsName')}</p>
+    <div class="ticket notch" style="margin:10px 0"><div class="stub">${avatarHTML(profile.av, '', 'sm')}</div><input id="firstName" value="${esc(profile.name || '')}" placeholder="${t('yourName')}" maxlength="14" autocomplete="off"></div>
+    <label class="adult"><input type="checkbox" id="firstAdult" ${profile.adult ? 'checked' : ''}> <span>${t('adult')}</span></label>`,
+    `<div class="mact"><button class="go" data-m="saveName">${t('save')}</button></div>`);
   modal.dataset.lock = '1';
   setTimeout(() => { const i = $('#firstName'); if(i) i.focus(); }, 50);
 }
 function saveFirstName(){
   const nm = cleanName($('#firstName').value);
-  if(!nm) return toast('Escribe tu nombre');
-  if(!$('#firstAdult').checked) return toast('BustBus es solo para mayores de 18 años');
+  if(!nm) return toast(t('errName'));
+  if(!$('#firstAdult').checked) return toast(t('errAdult'));
   profile.name = nm; profile.adult = true;
   store.set('profile', profile); store.set('name', nm); ui.name = nm;
   if(!ui.names.some(n => cleanName(n))) ui.names[0] = nm;
@@ -1028,140 +1545,143 @@ function saveFirstName(){
 }
 function deckPicker(){
   const pv = (dk, a, b) => cardHTML(a, {dk}) + cardHTML(b, {dk});
-  return `<div><p class="lbl">Baraja</p><div class="decks">
-    <button class="deck-opt" data-act="deck" data-v="poker" aria-pressed="${ui.deck==='poker'}"><div class="fan">${pv('poker','S1','H13')}</div><b>Póker</b></button>
-    <button class="deck-opt" data-act="deck" data-v="es" aria-pressed="${ui.deck==='es'}"><div class="fan">${pv('es','O1','C12')}</div><b>Española</b></button>
+  return `<div><p class="lbl">${t('deck')}</p><div class="decks">
+    <button class="deck-opt" data-act="deck" data-v="poker" aria-pressed="${ui.deck==='poker'}"><div class="fan">${pv('poker','S1','H13')}</div><b>${t('poker')}</b></button>
+    <button class="deck-opt" data-act="deck" data-v="es" aria-pressed="${ui.deck==='es'}"><div class="fan">${pv('es','O1','C12')}</div><b>${t('spanish')}</b></button>
   </div></div>`;
 }
-const backBtn = '<button class="linkbtn" data-act="go" data-v="home">‹ Volver</button>';
-const nameField = () => `<div><p class="lbl">Tu nombre de jugador</p><div class="ticket notch"><div class="stub">${avatarHTML(profile.av, ui.name, 'sm')}</div><input id="nm" value="${esc(ui.name)}" placeholder="Cómo te llamas" maxlength="14" autocomplete="off"></div></div>`;
+const backBtn = () => `<button class="linkbtn" data-act="go" data-v="home">${t('back')}</button>`;
+const nameField = () => `<div><p class="lbl">${t('playerName')}</p><div class="ticket notch"><div class="stub">${avatarHTML(profile.av, ui.name, 'sm')}</div><input id="nm" value="${esc(ui.name)}" placeholder="${t('namePh')}" maxlength="14" autocomplete="off"></div></div>`;
 function renderCreate(){
-  setPhase('Crear partida');
-  main.innerHTML = `<section class="scr form">${backBtn}<h2>Crear partida</h2>${nameField()}
-    <p class="hint">Serás el admin de la partida. Al continuar se genera un código para que tus amigos entren en tu lobby.</p></section>`;
-  setNext('Continuar ▸', true, createOnline);
+  setPhase(t('create'));
+  main.innerHTML = `<section class="scr form">${backBtn()}<h2>${t('create')}</h2>${nameField()}
+    <p class="hint">${t('createHint')}</p></section>`;
+  setNext(t('continueN'), true, createOnline);
 }
 function renderJoin(){
-  setPhase('Unirse');
-  main.innerHTML = `<section class="scr form">${backBtn}<h2>Unirse a partida ya creada</h2>${nameField()}
-    <div><p class="lbl">Código de partida</p><input id="jc" class="codebox" value="${esc(ui.joinCode)}" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="····" aria-label="Código de partida"></div></section>`;
-  setNext('Unirse ▸', true, joinOnline);
+  setPhase(t('phJoin'));
+  main.innerHTML = `<section class="scr form">${backBtn()}<h2>${t('join')}</h2>${nameField()}
+    <div><p class="lbl">${t('codeLbl')}</p><input id="jc" class="codebox" value="${esc(ui.joinCode)}" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off" spellcheck="false" placeholder="····" aria-label="${t('codeLbl')}"></div></section>`;
+  setNext(t('joinBtn'), true, joinOnline);
 }
 function renderLocal(){
-  setPhase('Un solo móvil');
+  setPhase(t('phLocal'));
   const max = MAXP(ui.deck);
-  main.innerHTML = `<section class="scr form">${backBtn}<h2>Jugadores</h2>
-    <div class="names">${ui.names.map((n,i) => `<div class="ticket"><div class="stub">${i+1}</div><input id="ln-${i}" data-i="${i}" value="${esc(n)}" placeholder="Nombre" maxlength="14" autocomplete="off">${ui.names.length > 2 ? `<button class="rm" data-act="rmP" data-i="${i}" aria-label="Quitar jugador ${i+1}">✕</button>` : ''}</div>`).join('')}
-      ${ui.names.length < max ? '<button class="addp" data-act="addP">+ Añadir</button>' : ''}</div>
-    ${deckPicker()}</section>`;
-  setNext('Empezar ▸', true, startLocal);
+  main.innerHTML = `<section class="scr form local-setup">${backBtn()}${deckPicker()}
+    <p class="lbl" style="margin:0">${t('players')} · ${ui.names.length}/${max}</p>
+    <div class="names">${ui.names.map((n,i) => `<div class="ticket nrow"><div class="stub">${i+1}</div><input id="ln-${i}" data-i="${i}" value="${esc(n)}" placeholder="${t('nameShort')}" maxlength="14" autocomplete="off">${ui.names.length > 2 ? `<button class="rm" data-act="rmP" data-i="${i}" aria-label="${t('removePlayer', {n: i+1})}">✕</button>` : ''}</div>`).join('')}
+      ${ui.names.length < max ? `<button class="addp" data-act="addP">${t('addPlayer')}</button>` : ''}</div></section>`;
+  setNext(t('startN'), true, startLocal);
 }
 function renderWaiting(){
-  setPhase('Partida ' + code);
-  main.innerHTML = `<section class="scr lobby" style="justify-content:center"><div class="ticket notch bigcode"><small>Buscando</small><b>${esc(code)}</b></div><p class="hint">Conectando con quien ha creado la partida…</p></section>`;
-  setNext('Esperando…', false);
+  setPhase(t('game', {c: code}));
+  main.innerHTML = `<section class="scr lobby" style="justify-content:center"><div class="ticket notch bigcode"><small>${t('searching')}</small><b>${esc(code)}</b></div><p class="hint">${t('connecting')}</p></section>`;
+  setNext(t('waiting'), false);
 }
 function renderLobby(){
-  setPhase(mode === 'host' ? 'Lobby · eres el admin' : 'Lobby');
+  setPhase(mode === 'host' ? t('lobbyAdmin') : t('lobby'));
   const me = myIdx(), host = mode === 'host';
   const deckRow = host
-    ? `<div class="deckseg" role="group" aria-label="Baraja"><button data-act="lobbydeck" data-v="poker" aria-pressed="${st.dk === 'poker'}">Póker</button><button data-act="lobbydeck" data-v="es" aria-pressed="${st.dk === 'es'}">Española</button></div>`
-    : `<p class="hint">Baraja ${st.dk === 'poker' ? 'de póker' : 'española'} · empieza el admin.</p>`;
-  main.innerHTML = `<section class="scr lobby"><div class="ticket notch bigcode"><small>Código de partida</small><b>${esc(code)}</b></div>
-    ${host ? '<p class="hint">Diles este código para que entren con «Unirse a partida ya creada».</p>' : ''}${deckRow}
-    <p class="lbl" style="margin:0">Pasajeros · ${st.pl.length}/${MAXP(st.dk)}</p>
-    <div class="plist">${st.pl.map((p,i) => `<div class="ticket pchip ${i === me ? 'me' : ''}">${avOfPlayer(i)}<span>${esc(p.n)}</span>${p.id === st.host ? '<em>Admin</em>' : i === me ? '<em>Tú</em>' : ''}</div>`).join('')}</div></section>`;
-  if(host) setNext(st.pl.length < 2 ? 'Esperando jugadores…' : `Iniciar con ${st.pl.length} ▸`, st.pl.length >= 2, () => act({t:'start'}));
-  else setNext('Esperando al admin', false);
+    ? `<p class="lbl" style="margin:0 0 -4px">${t('chooseDeck')}</p><div class="deckseg" role="group" aria-label="${t('chooseDeck')}"><button data-act="lobbydeck" data-v="poker" aria-pressed="${st.dk === 'poker'}">${t('poker')}</button><button data-act="lobbydeck" data-v="es" aria-pressed="${st.dk === 'es'}">${t('spanish')}</button></div>`
+    : `<p class="hint">${st.dk === 'poker' ? t('deckInfoPoker') : t('deckInfoEs')}</p>`;
+  main.innerHTML = `<section class="scr lobby"><div class="ticket notch bigcode"><small>${t('gameCode')}</small><b>${esc(code)}</b></div>
+    ${host ? `<p class="hint">${t('tellCode', {j: t('join')})}</p>` : ''}${deckRow}
+    <p class="lbl" style="margin:0">${t('passengers')} · ${st.pl.length}/${MAXP(st.dk)}</p>
+    <div class="plist">${st.pl.map((p,i) => i === me
+      ? `<button class="ticket pchip me" data-act="lobbyav" aria-label="${t('changePhoto')}">${avOfPlayer(i)}<span>${esc(p.n)}</span><em>${p.id === st.host ? t('admin') + ' · ' : ''}${t('photoEdit')}</em></button>`
+      : `<div class="ticket pchip">${avOfPlayer(i)}<span>${esc(p.n)}</span>${p.id === st.host ? `<em>${t('admin')}</em>` : ''}</div>`).join('')}</div>
+    <p class="hint" style="font-size:13px">${t('tapTicket')}</p></section>`;
+  if(host) setNext(st.pl.length < 2 ? t('waitPlayers') : t('startWith', {n: st.pl.length}), st.pl.length >= 2, () => act({t:'start'}));
+  else setNext(t('waitAdmin'), false);
 }
 
 /* ---------- Parada 1 ---------- */
 const Q1 = [
-  {q:'¿Par o impar?', o:[['par','Par'],['impar','Impar']]},
-  {q:'¿Arriba o abajo?', o:[['mayor','Arriba'],['menor','Abajo']]},
-  {q:'¿Dentro o fuera?', o:[['dentro','Dentro'],['fuera','Fuera']]},
-  {q:'¿Mismo palo o diferente?', o:[['mismo','Mismo palo'],['distinto','Diferente']]}
+  {q:'q0', o:['par','impar']},
+  {q:'q1', o:['mayor','menor']},
+  {q:'q2', o:['dentro','fuera']},
+  {q:'q3', o:['mismo','distinto']}
 ];
 function renderP1(E){
   const P = st.p1, pl = st.pl[P.pi], h = pl.h, Q = Q1[P.r], n = st.pl.length, me = myIdx();
-  setPhase(`Parada 1 · Carta ${P.r+1} de 4`);
+  setPhase(t('stage1', {n: P.r+1}));
   const mine = can(me === P.pi);
   const last = h[h.length-1];
   let bottom;
-  if(P.done) bottom = P.ok === -1 ? `<div class="stamp win">Era: ${P.ans}</div><p class="explain">${P.why}</p>` : `<div class="stamp ${P.ok ? 'good' : 'bad'}">${P.ok ? '¡Te libras!' : '¡Bebe!'}</div><p class="explain">${P.why}</p>`;
-  else if(mine) bottom = `<div class="choices">${Q.o.map(([v,l]) => `<button class="choice" data-act="p1" data-v="${v}">${l}</button>`).join('')}</div>`;
-  else bottom = `<p class="wait">${esc(pl.n)} está eligiendo…</p>`;
+  if(P.done) bottom = P.ok === -1 ? `<div class="stamp win">${t('was', {a: t(P.ans)})}</div><p class="explain">${whyText(P.why)}</p>` : `<div class="stamp ${P.ok ? 'good' : 'bad'}">${P.ok ? t('safe') : t('drink')}</div><p class="explain">${whyText(P.why)}</p>`;
+  else if(mine) bottom = `<div class="choices">${Q.o.map(v => `<button class="choice" data-act="p1" data-v="${v}">${t('o_' + v)}</button>`).join('')}</div>`;
+  else bottom = `<p class="wait">${t('choosing', {n: esc(pl.n)})}</p>`;
   if(LOCAL()){
     const prev = P.done ? h.slice(0, -1) : h;
-    const big = P.done ? cardHTML(last, {flip: E.flip === last}) : mine ? `<button class="flipbtn" data-act="p1" data-v="flip" aria-label="Girar la carta">${cardHTML(null, {up:false})}</button>` : cardHTML(null, {up:false});
-    main.innerHTML = `<section class="scr p1 loc"><div class="turnline"><h2 class="who">${avOfPlayer(P.pi)}<span>${esc(pl.n)}</span></h2><div class="q">${Q.q}</div></div>
+    const big = P.done ? cardHTML(last, {flip: E.flip === last}) : mine ? `<button class="flipbtn" data-act="p1" data-v="flip" aria-label="${t('flipAria')}">${cardHTML(null, {up:false})}</button>` : cardHTML(null, {up:false});
+    main.innerHTML = `<section class="scr p1 loc"><div class="turnline"><h2 class="who">${avOfPlayer(P.pi)}<span>${esc(pl.n)}</span></h2><div class="q">${t(Q.q)}</div></div>
       <div class="bigdeck">${big}</div>
-      <div class="prev">${prev.length ? prev.map(c => cardHTML(c)).join('') : '<span class="empty-l">Primera carta</span>'}</div>
+      <div class="prev">${prev.length ? prev.map(c => cardHTML(c)).join('') : `<span class="empty-l">${t('firstCard')}</span>`}</div>
       <div class="result">${bottom}</div></section>`;
   } else {
     let cards = '';
     h.forEach((c,i) => { const isNew = P.done && i === h.length-1 && E.flip === c; cards += cardHTML(c, {flip:isNew, cls: isNew ? 'new' : ''}); });
-    if(!P.done) cards += mine ? `<button class="flipbtn" data-act="p1" data-v="flip" aria-label="Girar la carta">${cardHTML(null, {up:false})}</button>` : cardHTML(null, {up:false});
+    if(!P.done) cards += mine ? `<button class="flipbtn" data-act="p1" data-v="flip" aria-label="${t('flipAria')}">${cardHTML(null, {up:false})}</button>` : cardHTML(null, {up:false});
     for(let i = h.length + (P.done ? 0 : 1); i < 4; i++) cards += '<div class="placeholder"></div>';
-    main.innerHTML = `<section class="scr p1"><div class="turnline"><div class="ticket notch tk-name"><div class="stub">${me === P.pi ? 'Te<br>toca' : 'Turno<br>de'}</div>${avOfPlayer(P.pi)}<b>${esc(pl.n)}</b></div><div class="q">${Q.q}</div></div>
+    main.innerHTML = `<section class="scr p1"><div class="turnline"><div class="ticket notch tk-name"><div class="stub">${me === P.pi ? t('yourTurn') : t('turnOf')}</div>${avOfPlayer(P.pi)}<b>${esc(pl.n)}</b></div><div class="q">${t(Q.q)}</div></div>
       <div class="hand-big">${cards}</div><div class="result">${bottom}</div></section>`;
   }
   const lastTurn = P.r === 3 && P.pi === n-1, ni = (P.pi + 1) % n;
-  if(!P.done) setNext(mine ? 'Elige o toca la carta' : `Turno de ${pl.n}`, false);
-  else if(can(me === P.pi || amHost())) setNext(lastTurn ? 'Montar la pirámide ▸' : `Siguiente: ${st.pl[ni].n} ▸`, true, () => act({t:'next'}));
-  else setNext(`Esperando a ${pl.n}`, false);
+  if(!P.done) setNext(mine ? t('chooseOrTap') : t('turnName', {n: pl.n}), false);
+  else if(can(me === P.pi || amHost())) setNext(lastTurn ? t('buildPyr') : t('nextName', {n: st.pl[ni].n}), true, () => act({t:'next'}));
+  else setNext(t('waitFor', {n: pl.n}), false);
 }
 
 /* ---------- Parada 2 ---------- */
 function renderP2(E){
   const P = st.p2, L = LOCAL(), me = myIdx(), cur = P.rev >= 0 ? P.py[P.rev] : null;
   const r = cur ? rowOf(P.rev) : 0, d = ROW_DRINKS[r];
-  setPhase(cur ? `Parada 2 · ${r === 3 ? 'Cima' : 'Fila ' + (r+1)} · ${d} ${d > 1 ? 'tragos' : 'trago'}` : 'Parada 2 · La pirámide');
+  setPhase(cur ? t('stage2Row', {row: r === 3 ? t('top') : t('rowN', {n: r+1}), d: sips(d)}) : t('stage2'));
   const rows = [3,2,1,0].map((rr,k) => `<div class="pyr-row" style="z-index:${k+1}">${ROWS[rr].map(i => {
     const c = P.py[i], up = !!P.rv[i];
     const face = cardHTML(c, {up, flip: up && E.flip === c});
-    const inner = L && !up ? `<button class="pbtn" data-act="reveal" data-i="${i}" aria-label="Destapar carta de la ${rr === 3 ? 'cima' : 'fila ' + (rr+1)}">${face}</button>` : face;
+    const inner = L && !up ? `<button class="pbtn" data-act="reveal" data-i="${i}" aria-label="${t('revealAria')}">${face}</button>` : face;
     return `<div class="pc ${i === P.rev ? 'cur' : ''}">${inner}${P.piles[i] ? `<span class="bdg">+${P.piles[i]}</span>` : ''}</div>`;
   }).join('')}</div>`).join('');
   let info, bottom = '';
   if(L){
-    if(!cur) info = `<div class="sm">Toca cualquier carta para destaparla. Base 1 trago · fila 2: 2 · fila 3: 3 · cima: 5.</div>`;
+    if(!cur) info = `<div class="sm">${t('tapAny')}</div>`;
     else {
       const A2 = P.ann && P.ann.i === P.rev ? P.ann.list : [];
       info = `<div class="big">${cardName(cur)}</div>` + (A2.length
-        ? `<div class="ann">${A2.map(([pi,n]) => `<span>¡${nameOf(pi)}, manda ${n} ${n > 1 ? 'tragos' : 'trago'}!</span>`).join('')}</div>`
-        : `<div class="sm">Nadie tiene ${shortArt(cur)}.</div>`);
+        ? `<div class="ann">${A2.map(([pi,n]) => `<span>${t('sends', {n: nameOf(pi), d: sips(n)})}</span>`).join('')}</div>`
+        : `<div class="sm">${t('nobodyHas', {c: shortArt(cur)})}</div>`);
     }
     bottom = `<div class="counts">${st.pl.map(p => `<span class="ticket cchip"><b>${esc(p.n)}</b><em>${p.h.length}</em></span>`).join('')}</div>`;
   } else {
-    if(!cur) info = `<div class="sm">Base 1 trago · fila 2: 2 · fila 3: 3 · cima: 5. Si tienes el mismo número, toca tu carta.</div>`;
+    if(!cur) info = `<div class="sm">${t('p2Intro')}</div>`;
     else {
       const logs = P.log.filter(l => l[0] === P.rev).slice(-2);
       info = `<div class="big">${cardName(cur)}</div>` +
-        (P.pend ? `<div class="sm"><b>${nameOf(P.pend.f)}</b> tira ${withArt(P.pend.c)} y elige quién bebe…</div>`
-          : logs.length ? `<div class="log">${logs.map(l => `<b>${nameOf(l[1])}</b> → <b>${nameOf(l[2])}</b>: ${l[3]} ${l[3] > 1 ? 'tragos' : 'trago'}`).join(' · ')}</div>`
-          : `<div class="sm">¿Alguien tiene ${shortArt(cur)}? Toca tu carta para tirarla.</div>`);
+        (P.pend ? `<div class="sm">${t('throwsChoosing', {n: `<b>${nameOf(P.pend.f)}</b>`, c: withArt(P.pend.c)})}</div>`
+          : logs.length ? `<div class="log">${logs.map(l => `<b>${nameOf(l[1])}</b> → <b>${nameOf(l[2])}</b>: ${sips(l[3])}`).join(' · ')}</div>`
+          : `<div class="sm">${t('anyoneHas', {c: shortArt(cur)})}</div>`);
     }
     if(me >= 0){
       const h = st.pl[me].h, hl = c => ui.hints && cur && val(c) === val(cur) ? 'match' : '';
-      bottom = `<div class="myhand"><p class="eyebrow">Tu mazo · ${h.length} ${h.length === 1 ? 'carta' : 'cartas'}</p><div class="cs">${h.length ? h.map((c,ci) => `<button data-act="throw" data-p="${me}" data-c="${ci}" class="${hl(c)}" aria-label="Tirar ${esc(cardName(c))}">${cardHTML(c)}</button>`).join('') : '<span class="wait" style="align-self:center">¡Te has librado de todas!</span>'}</div></div>`;
+      bottom = `<div class="myhand"><p class="eyebrow">${t('yourHand', {c: cardsN(h.length)})}</p><div class="cs">${h.length ? h.map((c,ci) => `<button data-act="throw" data-p="${me}" data-c="${ci}" class="${hl(c)}" aria-label="${t('throwAria', {c: esc(cardName(c))})}">${cardHTML(c)}</button>`).join('') : `<span class="wait" style="align-self:center">${t('freeAll')}</span>`}</div></div>`;
     }
   }
   main.innerHTML = `<section class="scr p2 ${L ? 'local' : ''}"><div class="pyr">${rows}</div><div class="p2info">${info}</div>${bottom}</section>`;
-  const hostName = (st.pl[idxOf(st.host)] || {}).n || 'quien crea la partida';
-  if(L) setNext(P.cnt < 10 ? 'Toca una carta de la pirámide' : 'Al autobús ▸', P.cnt >= 10, () => act({t:'next'}));
-  else if(P.pend) setNext('Eligiendo quién bebe…', false);
-  else if(!amHost()) setNext(`Destapa ${hostName}`, false);
-  else if(P.cnt === 0) setNext('Destapar ▸', true, () => act({t:'next'}));
-  else if(P.cnt < 10) setNext(P.cnt === 9 ? 'Destapar la cima ▸' : 'Siguiente carta ▸', true, () => act({t:'next'}));
-  else setNext('Al autobús ▸', true, () => act({t:'next'}));
+  const hostName = (st.pl[idxOf(st.host)] || {}).n || t('admin');
+  if(L) setNext(P.cnt < 10 ? t('tapPyr') : t('toBus'), P.cnt >= 10, () => act({t:'next'}));
+  else if(P.pend) setNext(t('choosingWho'), false);
+  else if(!amHost()) setNext(t('revealsHost', {n: hostName}), false);
+  else if(P.cnt === 0) setNext(t('reveal'), true, () => act({t:'next'}));
+  else if(P.cnt < 10) setNext(P.cnt === 9 ? t('revealTop') : t('nextCard'), true, () => act({t:'next'}));
+  else setNext(t('toBus'), true, () => act({t:'next'}));
 }
 function throwCard(pi, ci, el){
   const P = st && st.p2; if(!P || P.pend) return;
-  if(P.rev < 0) return toast('Espera a que se destape una carta');
+  if(P.rev < 0) return toast(t('waitReveal'));
   if(!LOCAL() && pi !== myIdx()) return;
   const c = st.pl[pi].h[ci], cur = P.py[P.rev]; if(!c) return;
-  if(val(c) !== val(cur)){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); return toast(`No coincide con ${shortArt(cur)}`); }
+  if(val(c) !== val(cur)){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); return toast(t('noMatch', {c: shortArt(cur)})); }
   act({t:'throw', p:pi, c:ci});
 }
 function closeSheet(){ const sh = $('#sheet'); sh.hidden = true; sh.innerHTML = ''; }
@@ -1169,10 +1689,10 @@ function renderSheet(){
   const sh = $('#sheet');
   if(!st || st.ph !== 'p2' || !st.p2.pend || !can(myIdx() === st.p2.pend.f)){ closeSheet(); return; }
   const P = st.p2, n = ROW_DRINKS[rowOf(P.rev)];
-  sh.innerHTML = `<div class="sheet-box" role="dialog" aria-modal="true"><p class="eyebrow">${nameOf(P.pend.f)} tira ${withArt(P.pend.c)}</p>
-    <h3>¿Quién bebe ${n} ${n > 1 ? 'tragos' : 'trago'}?</h3>
+  sh.innerHTML = `<div class="sheet-box" role="dialog" aria-modal="true"><p class="eyebrow">${t('throwsP', {n: nameOf(P.pend.f), c: withArt(P.pend.c)})}</p>
+    <h3>${t('whoDrinks', {d: sips(n)})}</h3>
     <div class="chips">${st.pl.map((p,i) => i === P.pend.f ? '' : `<button class="chip" data-act="target" data-t="${i}">${esc(p.n)}</button>`).join('')}</div>
-    <button class="ghost" data-act="undo">Mejor me la guardo</button></div>`;
+    <button class="ghost" data-act="undo">${t('keepIt')}</button></div>`;
   sh.hidden = false;
 }
 
@@ -1181,42 +1701,42 @@ function showBanner(){
   const P = st.p3; if(!P) return;
   const names = P.rid.map(i => esc(st.pl[i].n));
   const who = names.length === 1 ? names[0] : names.slice(0,-1).join(', ') + ' y ' + names[names.length-1];
-  const sub = P.max === 0 ? 'Nadie tiene cartas: subís todos' : `Con ${P.max} ${P.max === 1 ? 'carta' : 'cartas'}${P.rid.length > 1 ? ' · empate' : ''}`;
-  $('#bannerSlot').innerHTML = `<div class="banner"><div class="ticket notch"><small>Suben al autobús</small><b>${who}</b><small>${sub}</small></div></div>`;
+  const sub = P.max === 0 ? t('nobodyCards') : t('withCards', {c: cardsN(P.max)}) + (P.rid.length > 1 ? ' · ' + t('tieW') : '');
+  $('#bannerSlot').innerHTML = `<div class="banner"><div class="ticket notch"><small>${t('busUp')}</small><b>${who}</b><small>${sub}</small></div></div>`;
   clearTimeout(bannerT); bannerT = setTimeout(() => { $('#bannerSlot').innerHTML = ''; }, 3100);
 }
 function slotHTML(P, i, opt){
   let cls = 'slot'; if(i === P.pos && P.s === 'g') cls += ' cur'; if(i < P.pos || P.s === 'w') cls += ' done';
   if(i === 4) cls += ' cp' + (P.cp ? ' on' : '');
-  return `<div class="${cls}">${cardHTML(P.sl[i], opt)}<span class="tg" title="Tragos si fallas aquí">${i+1}</span></div>`;
+  return `<div class="${cls}">${cardHTML(P.sl[i], opt)}<span class="tg" title="${t('sipsIfFail')}">${i+1}</span></div>`;
 }
 function renderP3Local(E){
   const P = st.p3, L2 = P.last;
-  setPhase(`Parada 3 · Carta ${Math.min(P.pos+1, 9)} de 9`);
+  setPhase(t('stage3', {n: Math.min(P.pos+1, 9)}));
   const slot = i => slotHTML(P, i, {up: !!P.rv[i], flip: !!P.rv[i] && E.flip === P.sl[i]});
   let mid = `<div class="bigdraw">${cardHTML(P.dr, {flip: E.flip === P.dr})}</div>`;
-  if(P.s === 'g') mid += `<div class="ask">¿La siguiente será más alta o más baja?</div><div class="arrows"><button class="arrow" data-act="vote" data-v="mayor" aria-label="Arriba: más alta">▲</button><button class="arrow" data-act="vote" data-v="menor" aria-label="Abajo: más baja">▼</button></div>`;
-  else if(P.s === 'r') mid += `<div class="stamp good">¡Aciertas!</div>`;
-  else if(P.s === 'w') mid += `<div class="stamp win">¡Fin del trayecto!</div>`;
-  else mid += `<div class="stamp bad">¡Fallo!</div>`;
+  if(P.s === 'g') mid += `<div class="ask">${t('nextHL')}</div><div class="arrows"><button class="arrow" data-act="vote" data-v="mayor" aria-label="${t('higherAria')}">▲</button><button class="arrow" data-act="vote" data-v="menor" aria-label="${t('lowerAria')}">▼</button></div>`;
+  else if(P.s === 'r') mid += `<div class="stamp good">${t('hit')}</div>`;
+  else if(P.s === 'w') mid += `<div class="stamp win">${t('endTrip')}</div>`;
+  else mid += `<div class="stamp bad">${t('miss')}</div>`;
   const names = P.rid.map(i => esc(st.pl[i].n)).join(', ');
-  const pop = P.s === 'f' ? `<div class="pop"><div class="pop-box"><span>Bebe</span><b>${L2.n} ${L2.n > 1 ? 'tragos' : 'trago'}</b><small>${P.cp ? 'Volvéis al checkpoint' : 'Vuelta al principio'}</small><button class="next" data-act="cont">Continuar</button></div></div>` : '';
-  main.innerHTML = `<section class="scr p3 loc"><p class="riders">En el bus: <b>${names}</b></p>
+  const pop = P.s === 'f' ? `<div class="pop"><div class="pop-box"><span>${t('drinkWord')}</span><b>${sips(L2.n)}</b><small>${P.cp ? t('backCp') : t('backStart')}</small><button class="next" data-act="cont">${t('continue')}</button></div></div>` : '';
+  main.innerHTML = `<section class="scr p3 loc"><p class="riders">${t('onBus')} <b>${names}</b></p>
     <div class="bus"><div class="bridge">${slot(4)}</div><div class="col l">${[3,2,1,0].map(slot).join('')}</div>
       <div class="mid">${mid}</div><div class="col r">${[5,6,7,8].map(slot).join('')}</div></div>${pop}</section>`;
-  if(P.s === 'g') setNext('Elige ▲ o ▼', false);
+  if(P.s === 'g') setNext(t('chooseArrow'), false);
   else if(P.s === 'r'){
-    setNext('Siguiente ▸', true, () => act({t:'next'}));
+    setNext(t('nextN'), true, () => act({t:'next'}));
     const seq = st.ev.s;
     setTimeout(() => { if(st && st.ev && st.ev.s === seq && st.p3 && st.p3.s === 'r') act({t:'next'}); }, 1600);
   }
-  else if(P.s === 'f') setNext('Continuar ▸', true, () => act({t:'next'}));
-  else setNext('Ver los tragos ▸', true, () => act({t:'next'}));
+  else if(P.s === 'f') setNext(t('continueN'), true, () => act({t:'next'}));
+  else setNext(t('seeSips'), true, () => act({t:'next'}));
 }
 function renderP3(E){
   if(st.p3.loc) return renderP3Local(E);
   const P = st.p3, me = myIdx(), rider = can(P.rid.includes(me)), multi = !LOCAL() && P.rid.length > 1;
-  setPhase(`Parada 3 · Carta ${Math.min(P.pos+1, 9)} de 9`);
+  setPhase(t('stage3', {n: Math.min(P.pos+1, 9)}));
   const landing = typeof E.land === 'number';
   const slot = i => {
     const c = P.sl[i], up = !!P.rv[i];
@@ -1228,41 +1748,41 @@ function renderP3(E){
     const cnt = {mayor:0, menor:0}; Object.values(P.vo).forEach(v => { if(cnt[v] !== undefined) cnt[v]++; });
     const myv = me >= 0 ? P.vo[st.pl[me].id] : null;
     const b = (v,l) => `<button class="choice" data-act="vote" data-v="${v}" aria-pressed="${myv === v}">${l}${multi && cnt[v] ? `<span class="vc">${cnt[v]}</span>` : ''}</button>`;
-    mid = `<div class="ask">${multi ? 'Votad' : LOCAL() ? 'Decidid' : rider ? 'Te toca' : 'Decide'}<b>¿Mayor o menor que ${shortArt(cur)}?</b></div>` +
-      (rider ? `<div class="choices">${b('mayor','Mayor')}${b('menor','Menor')}</div>` : (multi ? `<p class="wait">Mayor ${cnt.mayor} · Menor ${cnt.menor}</p>` : ''));
+    mid = `<div class="ask">${multi ? t('vote') : LOCAL() ? t('decideAll') : rider ? t('yourTurnP') : t('decide')}<b>${t('hlThan', {c: shortArt(cur)})}</b></div>` +
+      (rider ? `<div class="choices">${b('mayor', t('higher'))}${b('menor', t('lower'))}</div>` : (multi ? `<p class="wait">${t('higher')} ${cnt.mayor} · ${t('lower')} ${cnt.menor}</p>` : ''));
   } else if(P.s === 'w'){
-    mid = `<div class="stamp win">¡Fin del trayecto!</div><p class="explain">Bajada tras ${P.fails} ${P.fails === 1 ? 'fallo' : 'fallos'}.</p>`;
+    mid = `<div class="stamp win">${t('endTrip')}</div><p class="explain">${t('getOff', {f: failsN(P.fails)})}</p>`;
   } else {
-    mid = L2.ok ? `<div class="stamp good">¡Pasas!</div><p class="explain">${withArt(L2.c)}.${L2.at === 4 ? ' Checkpoint activado.' : ''}</p>`
-      : `<div class="stamp bad">¡${L2.n} ${L2.n > 1 ? 'tragos' : 'trago'}!</div><p class="explain">${withArt(L2.c)}${val(L2.c) === val(L2.t) ? ' (empate = fallo)' : ''}. ${P.cp ? 'Al checkpoint.' : 'Vuelta al principio.'}</p>`;
+    mid = L2.ok ? `<div class="stamp good">${t('pass')}</div><p class="explain">${withArt(L2.c)}.${L2.at === 4 ? ' ' + t('cpOn') : ''}</p>`
+      : `<div class="stamp bad">${sips(L2.n)}</div><p class="explain">${withArt(L2.c)}${val(L2.c) === val(L2.t) ? ' ' + t('tieFail') : ''}. ${P.cp ? t('toCp') : t('toStart')}</p>`;
   }
   const drawn = L2 ? cardHTML(L2.c, {flip: landing && E.flip === L2.c}) : '<div class="placeholder"></div>';
   const names = P.rid.map(i => esc(st.pl[i].n)).join(', ');
-  main.innerHTML = `<section class="scr p3"><p class="riders">En el bus: <b>${names}</b>${!rider ? ' · tú miras' : ''}</p>
+  main.innerHTML = `<section class="scr p3"><p class="riders">${t('onBus')} <b>${names}</b>${!rider ? ' · ' + t('watching') : ''}</p>
     <div class="bus"><div class="bridge">${slot(4)}</div><div class="col l">${[3,2,1,0].map(slot).join('')}</div>
       <div class="mid"><div class="pile"><div class="deckstack">${cardHTML(null,{up:false})}<span class="cnt">${P.dc}</span></div>${drawn}</div>${mid}</div>
       <div class="col r">${[5,6,7,8].map(slot).join('')}</div></div></section>`;
   if(P.s === 'g'){
     if(multi){ const m = majority(P);
-      if(!rider) setNext('Están votando…', false);
-      else if(m) setNext(`Confirmar: ${m === 'mayor' ? 'Mayor' : 'Menor'} ▸`, true, () => act({t:'next'}));
-      else setNext('Falta mayoría', false);
-    } else setNext(rider ? 'Elige mayor o menor' : `Decide ${st.pl[P.rid[0]].n}`, false);
-  } else if(can(rider || amHost())) setNext(P.s === 'w' ? 'Ver los tragos ▸' : 'Seguir el viaje ▸', true, () => act({t:'next'}));
-  else setNext('Esperando…', false);
+      if(!rider) setNext(t('voting'), false);
+      else if(m) setNext(t('confirm', {v: m === 'mayor' ? t('higher') : t('lower')}), true, () => act({t:'next'}));
+      else setNext(t('noMajority'), false);
+    } else setNext(rider ? t('chooseHL') : t('decideName', {n: st.pl[P.rid[0]].n}), false);
+  } else if(can(rider || amHost())) setNext(P.s === 'w' ? t('seeSips') : t('keepGoing'), true, () => act({t:'next'}));
+  else setNext(t('waiting'), false);
 }
 
 /* ---------- Final ---------- */
 function renderEnd(){
-  setPhase('Fin del trayecto');
+  setPhase(t('phEnd'));
   const order = st.pl.map((p,i) => i).sort((a,b) => st.pl[b].d - st.pl[a].d);
   const rid = st.p3 ? st.p3.rid : [];
-  main.innerHTML = `<section class="scr end"><div class="ticket notch bigcode"><small>Recuento</small><b style="letter-spacing:2px;font-size:clamp(26px,8cqw,36px)">Tragos</b></div>
+  main.innerHTML = `<section class="scr end"><div class="ticket notch bigcode"><small>${t('tally')}</small><b style="letter-spacing:2px;font-size:clamp(26px,8cqw,36px)">${t('sipsTitle')}</b></div>
     <div class="rank">${order.map((i,k) => `<div class="ticket rrow ${rid.includes(i) ? 'rider' : ''}"><div class="stub">${k+1}</div>${avOfPlayer(i)}<span class="nm">${esc(st.pl[i].n)}</span><span class="dr">${st.pl[i].d}</span></div>`).join('')}</div>
-    <p class="hint">En amarillo, quien viajó en el autobús.</p></section>`;
-  setExtra('<button class="secondary" data-act="exit">Salir al menú principal</button>');
-  if(amHost()) setNext('Otra partida ▸', true, () => act({t:'next'}));
-  else setNext('Esperando a que empiece otra', false);
+    <p class="hint">${t('yellowNote')}</p></section>`;
+  setExtra(`<button class="secondary" data-act="exit">${t('exitMenu')}</button>`);
+  if(amHost()) setNext(t('playAgain'), true, () => act({t:'next'}));
+  else setNext(t('waitAnother'), false);
 }
 
 /* ================= Eventos ================= */
@@ -1277,6 +1797,9 @@ document.addEventListener('click', e => {
   else if(a === 'reveal') act({t:'reveal', i:+b.dataset.i});
   else if(a === 'cont') act({t:'next'});
   else if(a === 'lobbydeck') act({t:'deck', v:b.dataset.v});
+  else if(a === 'lobbyav') openAvatarPicker();
+  else if(a === 'lang') setLang(b.dataset.v);
+  else if(a === 'setav') setMyAvatar(b.dataset.v);
   else if(a === 'pickav'){ ui.draftAv = b.dataset.v; ui.avMenu = false; if($('#pfn')) ui.draftName = $('#pfn').value; const g = $('.avgrid'), sc = g ? g.scrollTop : 0; render(); const g2 = $('.avgrid'); if(g2) g2.scrollTop = sc; }
   else if(a === 'avmenu'){ ui.avMenu = !ui.avMenu; if($('#pfn')) ui.draftName = $('#pfn').value; const m = $('.avmenu'); if(m) m.hidden = !ui.avMenu; b.setAttribute('aria-expanded', ui.avMenu); }
   else if(a === 'go'){ ui.screen = b.dataset.v; if(['create','join'].includes(ui.screen) && !cleanName(ui.name)) ui.name = profile.name; if(ui.screen === 'profile'){ ui.draftAv = null; ui.draftName = undefined; } render(); }
@@ -1290,7 +1813,7 @@ main.addEventListener('input', e => {
   const t = e.target;
   if(t.id === 'nm') ui.name = t.value;
   else if(t.id === 'pfn') ui.draftName = t.value;
-  else if(t.id === 'jc'){ t.value = t.value.toUpperCase().replace(/[^A-Z]/g, ''); ui.joinCode = t.value; }
+  else if(t.id === 'jc'){ t.value = t.value.replace(/\D/g, '').slice(0, 4); ui.joinCode = t.value; }
   else if(t.dataset.i !== undefined){ ui.names[+t.dataset.i] = t.value; store.set('names', ui.names); }
 });
 main.addEventListener('change', e => { if(e.target.id === 'adult') ui.draftAdult = e.target.checked; });
@@ -1317,21 +1840,33 @@ $('#optMusic').addEventListener('click', () => { if(!A.ac) musicStart(); setMusi
 $('#optSfx').addEventListener('click', () => { audioInit(); setSfx(!A.sfxOn); });
 $('#optHints').addEventListener('click', () => { ui.hints = !ui.hints; store.set('hints', ui.hints); syncMenu(); if(st && st.ph === 'p2') render(); });
 $('#optRules').addEventListener('click', () => { openMenu(false); showRules(); });
+$('#optLang').addEventListener('click', () => { openMenu(false); showLangs(); });
 $('#optExit').addEventListener('click', () => {
   openMenu(false);
   if(!st && !R){ ui.screen = 'home'; render(); return; }
-  openModal('<h3>¿Salir al menú principal?</h3><p>' + (mode === 'host' ? 'Has creado tú la partida: se acabará para todos.' : 'Saldrás de la partida en curso.') + '</p>',
-    '<div class="mact"><button data-m="close">Seguir jugando</button><button class="warn" data-m="exit">Salir</button></div>');
+  openModal(`<h3>${t('exitQ')}</h3><p>${mode === 'host' ? t('exitHost') : t('exitGuest')}</p>`,
+    `<div class="mact"><button data-m="close">${t('keepPlaying')}</button><button class="warn" data-m="exit">${t('exit')}</button></div>`);
 });
-const RULES = [
-  ['Parada 1 · Las cuatro preguntas', ['Cada jugador recibe 4 cartas por turnos: primero la 1ª a todos, luego la 2ª…', 'Carta 1: ¿par o impar? · Carta 2: ¿mayor o menor que la 1ª? · Carta 3: ¿dentro o fuera del rango de las dos primeras? · Carta 4: ¿mismo palo que alguna de las tuyas o distinto?', 'Si fallas, bebes 1 trago. Si sale el mismo número, también.']],
-  ['Parada 2 · La pirámide', ['10 cartas boca abajo en filas de 4, 3, 2 y 1, que se destapan de la base a la cima.', 'Si tienes el mismo número, tira tu carta y elige quién bebe: base 1 trago, fila 2: 2, fila 3: 3, cima: 5.', 'Puedes guardarte una carta para más arriba, pero al pasar de carta ya no hay vuelta atrás.', 'Quien acabe con más cartas sube al autobús. Si hay empate, suben juntos.', 'En un solo móvil: toca la carta que quieras; las que coinciden se tiran solas y cada uno manda sus tragos.']],
-  ['Parada 3 · El viaje', ['9 cartas en forma de ∩: dos filas de 4 y un puente arriba.', 'Adivina si la carta del mazo será mayor o menor que la del autobús. Empate = fallo.', 'Si fallas, bebes tantos tragos como cartas llevabas (incluida la del fallo) y vuelves a empezar.', 'Si pasas el puente, es checkpoint: vuelves ahí, pero los tragos se cuentan igual.', 'Si viajáis varios, cada uno vota, gana la mayoría y se pulsa Siguiente para confirmar.', 'En un solo móvil: sale una carta del montón y adivinas si la siguiente del recorrido será más alta (▲) o más baja (▼).']]
-];
 function showRules(){
   const dk = st ? st.dk : ui.deck;
-  openModal(`<h3>Cómo se juega</h3><p>${dk === 'poker' ? 'As = 1 · J = 11 · Q = 12 · K = 13' : 'As = 1 · Sota = 10 · Caballo = 11 · Rey = 12'}</p>` + RULES.map(([t,li]) => `<h4>${t}</h4><ul>${li.map(l => `<li>${l}</li>`).join('')}</ul>`).join(''),
-    '<div class="mact"><button data-m="close">Entendido</button></div>');
+  openModal(`<h3>${t('howTo')}</h3><p>${dk === 'poker' ? t('valPoker') : t('valEs')}</p>` + [1,2,3].map(k => `<h4>${t('r' + k + 't')}</h4><ul>${t('r' + k).map(l => `<li>${l}</li>`).join('')}</ul>`).join(''),
+    `<div class="mact"><button data-m="close">${t('gotIt')}</button></div>`);
+}
+function showLangs(){
+  openModal(`<h3>${t('language')}</h3><div class="langlist">${LANGS.map(l => `<button class="langbtn" data-act="lang" data-v="${l}" aria-pressed="${l === LANG}" lang="${l}">${I18N[l].langName}</button>`).join('')}</div>`,
+    `<div class="mact"><button data-m="close">${t('close')}</button></div>`);
+}
+function setLang(l){
+  if(!I18N[l]) return; LANG = l; store.set('lang', l);
+  modal.hidden = true; applyStatic(); render();
+}
+function applyStatic(){
+  document.documentElement.lang = LANG;
+  $('#burger').setAttribute('aria-label', t('openMenu'));
+  $('#drawer').setAttribute('aria-label', t('options'));
+  $('#tOptions').textContent = t('options'); $('#tMusic').textContent = t('music'); $('#tSfx').textContent = t('sfx');
+  $('#tHints').textContent = t('hints'); $('#tLang').textContent = t('language'); $('#tLangCur').textContent = I18N[LANG].langName + ' ›';
+  $('#tRules').textContent = t('rules'); $('#tExit').textContent = t('exitMenu');
 }
 const modal = $('#modal');
 function openModal(html, acts){ $('#modalBox').innerHTML = html + acts; modal.hidden = false; }
@@ -1347,6 +1882,7 @@ document.addEventListener('keydown', e => {
 });
 
 preload(ui.deck);
+applyStatic();
 render();
 getRoom();
 })();

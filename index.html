@@ -1087,13 +1087,7 @@ function p3Init(){
   st.pl.forEach(p => { H.discard.push(...p.h); p.h = []; });
   const sl = []; for(let i=0;i<9;i++) sl.push(draw());
   st.ph = 'p3'; st.p2 = null;
-  if(mode === 'local'){
-    const dr = draw();
-    st.p3 = {loc:1, rid, sl, rv:[0,0,0,0,0,0,0,0,0], pos:0, cp:0, s:'g', dr, last:null, fails:0, vo:{}, dc:H.cards.length, max};
-    ev({snd:'horn', flip:dr, banner:1});
-    return;
-  }
-  st.p3 = {rid, sl, rv:[1,0,0,0,0,0,0,0,0], pos:0, cp:0, s:'g', last:null, fails:0, vo:{}, dc:H.cards.length, max};
+  st.p3 = {loc: mode === 'local' ? 1 : 0, rid, sl, rv:[1,0,0,0,0,0,0,0,0], pos:0, cp:0, s:'g', last:null, fails:0, vo:{}, dc:H.cards.length, max};
   ev({snd:'horn', flip:sl[0], banner:1});
 }
 function p3Resolve(g){
@@ -1107,21 +1101,13 @@ function p3Resolve(g){
   ev({flip:c, land:at, snd: P.s === 'w' ? 'win' : ok ? 'good' : 'bad'});
 }
 function p3LocGuess(g){
-  const P = st.p3, at = P.pos, t = P.sl[at];
-  const ok = g === 'mayor' ? val(t) > val(P.dr) : val(t) < val(P.dr);
-  P.rv[at] = 1; P.last = {ok: ok ? 1 : 0, c:t, t:P.dr, at, n:0, g};
-  if(ok){ if(at === 4) P.cp = 5; P.pos++; P.s = P.pos === 9 ? 'w' : 'r'; }
-  else { const n = at + 1; P.rid.forEach(r => st.pl[r].d += n); P.last.n = n; P.fails++; P.s = 'f'; }
-  ev({flip:t, snd: P.s === 'w' ? 'win' : ok ? 'good' : 'bad'});
+  p3Resolve(g);
+  const P = st.p3; if(P.last && !P.last.ok) P.s = 'f';
 }
 function p3LocNext(){
-  const P = st.p3;
-  if(P.s === 'f'){
-    for(let i = P.cp; i <= P.last.at; i++){ H.discard.push(P.sl[i]); P.sl[i] = draw(); P.rv[i] = 0; }
-    P.pos = P.cp;
-  }
-  H.discard.push(P.dr); P.dr = draw(); P.s = 'g'; P.dc = H.cards.length;
-  ev({flip:P.dr, cover: P.last && !P.last.ok ? 1 : 0});
+  const P = st.p3; P.s = 'g'; let f = null;
+  if(!P.rv[P.pos]){ P.rv[P.pos] = 1; f = P.sl[P.pos]; }
+  ev(f ? {flip:f} : {});
 }
 function majority(P){
   const n = P.rid.length, need = Math.floor(n/2) + 1, cnt = {mayor:0, menor:0};
@@ -1769,11 +1755,12 @@ function slotHTML(P, i, opt){
   return `<div class="${cls}">${cardHTML(P.sl[i], opt)}<span class="tg" title="${t('sipsIfFail')}">${i+1}</span></div>`;
 }
 function renderP3Local(E){
-  const P = st.p3, L2 = P.last;
+  const P = st.p3, L2 = P.last, landing = typeof E.land === 'number';
   setPhase(t('stage3', {n: Math.min(P.pos+1, 9)}));
-  const slot = i => slotHTML(P, i, {up: !!P.rv[i], flip: !!P.rv[i] && E.flip === P.sl[i]});
-  let mid = `<div class="bigdraw">${cardHTML(P.dr, {flip: E.flip === P.dr})}</div>`;
-  if(P.s === 'g') mid += `<div class="ask">${t('nextHL')}</div><div class="arrows"><button class="arrow" data-act="vote" data-v="mayor" aria-label="${t('higherAria')}">▲</button><button class="arrow" data-act="vote" data-v="menor" aria-label="${t('lowerAria')}">▼</button></div>`;
+  const slot = i => { const c = P.sl[i], up = !!P.rv[i]; return slotHTML(P, i, {up, flip: up && !landing && E.flip === c, cls: landing && E.land === i ? 'land' : ''}); };
+  const cur = P.sl[Math.min(P.pos, 8)];
+  let mid = `<div class="bigdraw">${L2 ? cardHTML(L2.c, {flip: landing && E.flip === L2.c}) : cardHTML(null, {up:false})}</div>`;
+  if(P.s === 'g') mid += `<div class="ask">${t('hlThan', {c: shortArt(cur)})}</div><div class="arrows"><button class="arrow" data-act="vote" data-v="mayor" aria-label="${t('higherAria')}">▲</button><button class="arrow" data-act="vote" data-v="menor" aria-label="${t('lowerAria')}">▼</button></div>`;
   else if(P.s === 'r') mid += `<div class="stamp good">${t('hit')}</div>`;
   else if(P.s === 'w') mid += `<div class="stamp win">${t('endTrip')}</div>`;
   else mid += `<div class="stamp bad">${t('miss')}</div>`;
@@ -1910,7 +1897,7 @@ $('#optExit').addEventListener('click', () => {
 });
 function showRules(){
   const dk = st ? st.dk : ui.deck;
-  openModal(`<h3>${t('howTo')}</h3><p>${dk === 'poker' ? t('valPoker') : t('valEs')}</p>` + [1,2,3].map(k => `<h4>${t('r' + k + 't')}</h4><ul>${t('r' + k).map(l => `<li>${l}</li>`).join('')}</ul>`).join(''),
+  openModal(`<h3>${t('howTo')}</h3><p>${dk === 'poker' ? t('valPoker') : t('valEs')}</p>` + [1,2,3].map(k => `<h4>${t('r' + k + 't')}</h4><ul>${t('r' + k).slice(0, k === 3 ? 5 : 9).map(l => `<li>${l}</li>`).join('')}</ul>`).join(''),
     `<div class="mact"><button data-m="close">${t('gotIt')}</button></div>`);
 }
 function showLangs(){
